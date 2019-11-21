@@ -1,0 +1,61 @@
+{
+  "ProgramConfiguration": [
+    {
+      "SqlConfiguration": [
+        {
+          "SqlServer_Name": "",
+          "SqlServer_Instance": "",
+          "SqlServer_Username": "",
+          "SqlServer_Password": ""
+        }
+      ],
+
+      "MediaLibrarySettings": [
+        {
+          "TelevisionShowDrives": [
+            "E",
+            "F",
+            "G",
+            "H",
+            "I"
+          ],
+
+          "MovieDrives": [
+            "M"
+          ],
+
+          "KidsTelevisionDrives": [
+            "A"
+          ],
+
+          "SortDrives": [
+            {
+              "SortDriveLetter": "S",
+              "LocalSortDirectory": "S:\\~downloading\\",
+              "RemoteSortDirectory": "C:\\Users\\bobswat\\OneDrive\\~downloads\\"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "UserConfiguration": [
+    {
+      "AppearancePreferences": [
+        {
+          "UserInterfaceTheme": "default",
+          "UserDisplayName": "Jimmy"
+        }
+      ],
+
+      "UserPermissions": [
+        {
+          "UserPermissions": "Administrator",
+          "AllowedActions":  "All"
+        }
+      ]
+      
+    }
+  ]
+}

@@ -90,8 +90,7 @@ namespace Entities.Sort
 
                     foreach (FileInfo _info in _completedDirectoryFiles)
                     {
-                        SortFile _file = new SortFile { FileName = _info.Name, FilePath = _info.FullName, FileSize = _info.Length };
-                        _file.PopulateFileInfo();
+                        SortFile _file = new SortFile(_info.FullName);
 
                         if (_file.SanitizeTelevisionEpisode(out string SanitizedfileName, out string SanitizedShowName, out string ShowSeasonNumber, out string ShowEpisodeNumber))
                         {
@@ -134,8 +133,7 @@ namespace Entities.Sort
 
                     foreach (FileInfo _info in _downloadingDirectoryFiles)
                     {
-                        SortFile _file = new SortFile { FileName = _info.Name, FilePath = _info.FullName, FileSize = _info.Length };
-                        _file.PopulateFileInfo();
+                        SortFile _file = new SortFile(_info.FullName);
 
                         _mediaFiles.Add(_file);
                     }

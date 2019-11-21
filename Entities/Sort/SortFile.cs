@@ -1,4 +1,5 @@
 ﻿using Entities.Abstract;
+using Entities.Ext;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ namespace Entities.Sort
         public long FileSize { get; set; }
         public string FilePath { get; set; }
         public DateTime DownloadStartDate { get; set; }
-        public DateTime DownloadEndDate { get; set; }
+        public DateTime DateSynchronized { get; set; }
         public string PriorityLevel { get; set; } = "Unscanned - Unknown";
         public Type ClassificationType { get; set; } = Type.GetType("Entities.Sort.SortFile");
         public string SanitizedFileName { get; set; }
@@ -23,8 +24,20 @@ namespace Entities.Sort
 
         public SortFile()
         {
-            
-        }               
+
+        }
+
+        public SortFile(string SortFilePath)
+        {
+            FilePath = SortFilePath;
+
+            DateSynchronized = new FileInfo(FilePath).CreationTime;
+            SortFileInfo = this.PopulateFileInfo();
+
+            FileName = SortFileInfo.Name;
+            FilePath = SortFileInfo.FullName;
+            FileSize = SortFileInfo.Length;
+        }
 
         public bool IsFileNameSanitized()
         {

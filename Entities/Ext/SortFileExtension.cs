@@ -2,16 +2,18 @@
 using Entities.Television;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Entities.Ext
 {
     public static class SortFileExtension
     {
-        public static void PopulateFileInfo(this SortFile _sortFile)
+        public static SortFileInfo PopulateFileInfo(this SortFile _sortFile)
         {
             if (!string.IsNullOrEmpty(_sortFile.FilePath))
             {
@@ -31,7 +33,11 @@ namespace Entities.Ext
 
                 };
 
-                _sortFile.SortFileInfo = _SortInfo;
+                return _SortInfo;
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -60,7 +66,13 @@ namespace Entities.Ext
                     _finalTitle.Append("." + RegResults.Groups["ShowFileExtension"]);
 
                     SanitizedTitle = _finalTitle.ToString();
-                    DisplayShowName = RegResults.Groups["ShowName"].Value.Replace(".", " ");
+                    string SanitizedShowName = RegResults.Groups["ShowName"].Value.Replace(".", " ");
+
+                    //Get CultureInfo and capture TextInfo and apply TitleCase to the show name
+                    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+                    TextInfo textInfo = cultureInfo.TextInfo;
+
+                    DisplayShowName = textInfo.ToTitleCase(SanitizedShowName);
 
                     //If season is only one digit in length, assume we need to prepend a 0
                     if (RegResults.Groups["ShowSeasonNumber"].Value.Length == 1)
