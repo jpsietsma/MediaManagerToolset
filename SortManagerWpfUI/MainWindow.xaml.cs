@@ -153,22 +153,29 @@ namespace SortManagerWpfUI
             {
                 PopulateFilesWaitingForSync();
 
-                SyncProgressPanel.Visibility = Visibility.Visible;
-
-                string _filePath = filesAwaitingSync;
-
-                Thread thread = new Thread(() =>
+                if (!string.IsNullOrEmpty(filesAwaitingSync))
                 {
-                    Uri uri = new Uri(_filePath);
+                    currentSyncFilenameTxt.Text = currentFileName;
 
-                    currentFileName = System.IO.Path.GetFileName(uri.AbsolutePath);
+                    SyncProgressPanel.Visibility = Visibility.Visible;
 
-                    client.DownloadFileAsync(uri, localFolder + currentFileName);
-                });
+                    string _filePath = filesAwaitingSync;
 
-                currentSyncFilenameTxt.Text = currentFileName;
+                    Thread thread = new Thread(() =>
+                    {
+                        Uri uri = new Uri(_filePath);
 
-                thread.Start();
+                        currentFileName = System.IO.Path.GetFileName(uri.AbsolutePath);
+
+                        client.DownloadFileAsync(uri, localFolder + currentFileName);
+                    });
+
+                    thread.Start();
+                }
+                else
+                {
+                    MessageBox.Show("There are no remote files waiting for Synchronization.");
+                }                                         
 
             }
 
