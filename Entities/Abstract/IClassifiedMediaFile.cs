@@ -6,6 +6,6 @@ namespace Entities.Abstract
 {
     public interface IClassifiedMediaFile : IMediaFile
     {
-        Type ClassificationType { get; }
+        Type FileClassification { get; }
     }
 }

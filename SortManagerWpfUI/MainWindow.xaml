@@ -59,27 +59,6 @@
                     <TextBlock x:Name="SortQueueFreeSpace" />
                 </StackPanel>
             </StackPanel>            
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button x:Name="syncRemoteBtn" Content="Sync Remote" Width="80" Click="SyncRemote_Click" />
-            <Label>
-                <Hyperlink Click="SyncFilesWaiting_Click" x:Name="syncQueueHyperlink">
-                    <InlineUIContainer>
-                        <TextBlock Text="" x:Name="remoteSyncHyperlinkText" />
-                    </InlineUIContainer>
-                </Hyperlink>
-            </Label>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="3" x:Name="SyncProgressPanel" Visibility="Collapsed">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Remote Sync in Progress: " FontWeight="Bold" Padding="0 15 20 0" />
-                <TextBlock FontSize="10" VerticalAlignment="Center" FontStyle="Italic" x:Name="currentSyncFilenameTxt" />
-            </StackPanel>
-            <ProgressBar x:Name="remoteSyncProgress" Width="500" Height="15" />
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <TextBlock Text="Synchronizing: " FontSize="12" Padding="5 5 0 0" />
-                <TextBlock FontSize="12" Padding="20 0 0 0" x:Name="syncPercentComplete" />
-            </StackPanel>
         </StackPanel>        
     </Grid>
 </Window>

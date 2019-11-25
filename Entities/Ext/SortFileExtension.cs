@@ -1,4 +1,5 @@
-﻿using Entities.Sort;
+﻿using Entities.Abstract;
+using Entities.Sort;
 using Entities.Television;
 using System;
 using System.Collections.Generic;
@@ -164,6 +165,35 @@ namespace Entities.Ext
                 return null;
             }
         }
+
+        /// <summary>
+        /// Attempt to physically move the sort file to the file library destination
+        /// </summary>
+        /// <param name="_sortFile"></param>
+        /// <returns></returns>
+        public static bool TryMoveSortFile(this SortFile _sortFile)
+        {
+            string showDirectory = _sortFile.SanitizedFilePath.Replace(_sortFile.SanitizedFileName, "");
+
+            if (Directory.Exists(showDirectory))
+            {
+                try
+                {
+                    //To Do: replace with progress bar move after testing
+                    File.Move(_sortFile.FilePath, _sortFile.SanitizedFilePath);
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
             
 
     }
@@ -187,6 +217,13 @@ namespace Entities.Ext
 
             SanitizedShowName = _finalShowTitle;
 
+        }
+
+        public static void GetLibraryHomePath(string _fileName, string _libraryShowHome, out string FinalMovePath)
+        {
+            string _finalPath = _libraryShowHome;           
+
+            FinalMovePath = _finalPath;
         }
 
     }

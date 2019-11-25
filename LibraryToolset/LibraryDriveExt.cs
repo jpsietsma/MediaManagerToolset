@@ -10,13 +10,9 @@ namespace Entities.Ext
         public static double GetDriveSpace(this MediaLibrary _lib, string _driveLetter)
         {
             DriveInfo _info = new DriveInfo(_driveLetter);
-            double _final = 0.00;
-
-
-
+            double _final = _info.AvailableFreeSpace;
 
             return _final;
         }
-
     }
 }

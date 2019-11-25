@@ -18,7 +18,7 @@ namespace Entities.Television
         public long FileSize { get; set; }
         public string PriorityLevel { get; set; }
 
-        public Type ClassificationType { get; set; }
+        public Type FileClassification { get; set; }
 
         public string SanitizedFileName { get; set; }
 
@@ -26,8 +26,6 @@ namespace Entities.Television
         {
 
         }
-
-        public virtual bool SanitizeTelevisionEpisode(out string sans) { sans = null; return false; }
 
         public bool IsFileNameSanitized()
         {

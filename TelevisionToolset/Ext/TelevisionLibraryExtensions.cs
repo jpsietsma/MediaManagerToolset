@@ -9,45 +9,6 @@ namespace TelevisionToolset.Ext
 {
     public static class TelevisionLibraryExtensions
     {
-        public static bool DoesShowExist(string ShowName)
-        {
-            int count = 0;
-
-            foreach (string _showDirectory in Directory.GetDirectories(@"E:\TV Shows").Where(x => x.ToLower().Contains(ShowName.ToLower())))
-            {
-                count++;
-            }
-
-            foreach (string _showDirectory in Directory.GetDirectories(@"F:\TV Shows").Where(x => x.ToLower().Contains(ShowName.ToLower())))
-            {
-                count++;
-            }
-
-            foreach (string _showDirectory in Directory.GetDirectories(@"G:\TV Shows").Where(x => x.ToLower().Contains(ShowName.ToLower())))
-            {
-                count++;
-            }
-
-            foreach (string _showDirectory in Directory.GetDirectories(@"H:\TV Shows").Where(x => x.ToLower().Contains(ShowName.ToLower())))
-            {
-                count++;
-            }
-
-            foreach (string _showDirectory in Directory.GetDirectories(@"I:\TV Shows").Where(x => x.ToLower().Contains(ShowName.ToLower())))
-            {
-                count++;
-            }
-
-            if (count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public static bool DoesShowExist(string ShowName, out string ShowRootDirectory)
         {
             List<string> allShows = new List<string>();

@@ -16,9 +16,10 @@ namespace Entities.Sort
         public DateTime DownloadStartDate { get; set; }
         public DateTime DateSynchronized { get; set; }
         public string PriorityLevel { get; set; } = "Unscanned - Unknown";
-        public Type ClassificationType { get; set; } = Type.GetType("Entities.Sort.SortFile");
+        public Type FileClassification { get; set; } = Type.GetType("Entities.Sort.SortFile");
         public string SanitizedFileName { get; set; }
         public string SanitizedFilePath { get; set; }
+        public string FinalClassificationFilePath { get; set; }
         public SortFileInfo SortFileInfo { get; set; }
         public string SanitizedShowName { get; set; }
 

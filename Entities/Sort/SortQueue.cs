@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Text;
 using Entities.Ext;
 using Entities.Television;
+using System.ComponentModel;
 
 namespace Entities.Sort
 {
@@ -17,7 +17,7 @@ namespace Entities.Sort
         public string StorageSpaceTotal { get; private set; }        
         public string StorageSpaceRemaining { get; private set; }
         public string DriveLetter { get; private set; }
-        public string SortPath { get; set; }       
+        public string SortPath { get; set; }
 
         /// <summary>
         /// Instantiate an empty SortQueue
@@ -26,7 +26,6 @@ namespace Entities.Sort
         {
             CompletedDownloads = new ObservableCollection<IMediaFile>();
             DownloadingFiles = new ObservableCollection<IMediaFile>();
-
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace Entities.Sort
                     StorageSpaceTotal = CalculateDriveSpaceString(SortDriveInfo.TotalSize);
                     StorageSpaceRemaining = CalculateDriveSpaceString(SortDriveInfo.AvailableFreeSpace);                                                      
             }
-        }      
+        }
 
         /// <summary>
         /// Determine and set DriveLetter property based on SortPath property value
@@ -105,7 +104,7 @@ namespace Entities.Sort
                                 FilePath = _file.FilePath,
                                 FileSize = _file.FileSize,
                                 PriorityLevel = _file.PriorityLevel,
-                                ClassificationType = classification,
+                                FileClassification = classification,
                                 SanitizedFileName = SanitizedfileName
                             };
 

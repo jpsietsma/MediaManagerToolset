@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SortManagerWpfUI"
         mc:Ignorable="d"
-        Title="Automation Sort Queue - Awaiting Processing" Height="750" Width="1200">
+        Title="Automation Sort Queue - Awaiting Processing" Height="850" Width="1200">
     <Grid>
         <StackPanel Orientation="Vertical">
             <TextBlock />
@@ -42,13 +42,18 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" x:Name="IsClassifiedCbxPanel" >
                                 <TextBlock Text="Is Classified?" FontSize="16" IsEnabled="False" />
                                 <CheckBox IsChecked="False" Height="15" Margin="25 0 0 0" x:Name="QueueSelection_isFileClassified" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" x:Name="IsSanitizedCbxPanel">
                                 <TextBlock Text="Is Sanitized?" FontSize="16" IsEnabled="False" />
                                 <CheckBox IsChecked="False" Height="15" Margin="28 0 0 0" x:Name="QueueSelection_IsFilenameSanitized"/>
+                            </StackPanel>
+                            <StackPanel x:Name="ClassifiedMovePanel" Visibility="Collapsed">
+                                <Button x:Name="MoveSortToLibraryBtn" Click="MoveSortToLibraryBtn_Click" Content="Move To Library" />
+                                <TextBlock Text="Destination:"/>
+                                <TextBlock x:Name="MoveFinalDestinationTxt"/>
                             </StackPanel>                            
                         </StackPanel>                        
                     </StackPanel>
@@ -57,8 +62,29 @@
                     <Button Content="Sanitize Filename" x:Name="QueueSelection_TrySanitizeBtn" Margin="10 0 0 0" Width="120" FontSize="14" Click="QueueSelection_TrySanitizeBtn_Click" />
                     <Button Content="Classify Item" x:Name="QueueSelection_TryClassifyBtn" Margin="10 0 0 0" Width="90" FontSize="14" Click="QueueSelection_TryClassifyBtn_Click" />
                     <Button Content="File Details" x:Name="QueueSelection_FileInfoBtn" Margin="10 0 0 0" Width="90" FontWeight="Bold" FontSize="16" Click="QueueSelection_FileInfoBtn_Click" />
+                </StackPanel>                
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button x:Name="syncRemoteBtn" Content="Sync Remote" Width="80" Click="SyncRemote_Click" />
+                <Label>
+                    <Hyperlink Click="SyncFilesWaiting_Click" x:Name="syncQueueHyperlink">
+                        <InlineUIContainer>
+                            <TextBlock Text="" x:Name="remoteSyncHyperlinkText" />
+                        </InlineUIContainer>
+                    </Hyperlink>
+                </Label>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Row="3" x:Name="SyncProgressPanel" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Remote Sync in Progress: " FontWeight="Bold" Padding="0 15 20 0" />
+                    <TextBlock FontSize="10" VerticalAlignment="Center" FontStyle="Italic" x:Name="currentSyncFilenameTxt" />
                 </StackPanel>
-            </StackPanel>            
+                <ProgressBar x:Name="remoteSyncProgress" Width="500" Height="15" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Synchronizing: " FontSize="12" Padding="5 5 0 0" />
+                    <TextBlock FontSize="12" Padding="20 0 0 0" x:Name="syncPercentComplete" />
+                </StackPanel>
+            </StackPanel>
         </StackPanel>       
     </Grid>
 </Window>

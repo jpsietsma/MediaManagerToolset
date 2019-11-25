@@ -13,11 +13,11 @@ namespace Entities.Movie
         public long FileSize { get; set; }
         public string PriorityLevel { get; set; }
 
-        public Type ClassificationType { get; set; }
+        public Type FileClassification { get; set; }
 
         public MovieFile()
         {
-            ClassificationType = this.GetType();
+            FileClassification = this.GetType();
         }
 
         public virtual bool SanitizeTelevisionEpisode(out string sans) { sans = null; return false; }
