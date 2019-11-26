@@ -7,12 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\SortCopyToLibrary_icon.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj" />
     <ProjectReference Include="..\TelevisionToolset\TelevisionToolset.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\SortCopyToLibrary_icon.jpg" />
   </ItemGroup>
 
   <ItemGroup>

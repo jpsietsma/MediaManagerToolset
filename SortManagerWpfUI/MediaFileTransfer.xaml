@@ -1,0 +1,32 @@
+﻿<Window x:Class="SortManagerWpfUI.MediaFileTransfer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SortManagerWpfUI"
+        mc:Ignorable="d"
+        Height="220" Width="800">
+    <Grid>
+        <StackPanel Orientation="Vertical" Grid.Row="3" x:Name="SyncProgressPanel">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="File Transfer in Progress: " FontWeight="Bold" Padding="0 15 20 0" />
+                <TextBlock FontSize="10" VerticalAlignment="Center" FontStyle="Italic" x:Name="currentSyncFilenameTxt" />
+            </StackPanel>
+            <ProgressBar x:Name="remoteSyncProgress" Width="500" Height="15" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock FontSize="12" x:Name="syncPercentComplete" HorizontalAlignment="Center" />
+                <TextBlock Text=" Transferred" FontSize="12" Padding="5 5 0 0" HorizontalAlignment="Center" />                
+            </StackPanel>
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Remote File Source: " />
+                <TextBlock Text="" x:Name="SourceFile" />
+                <Button Content="Begin Transfer" HorizontalAlignment="Right" Margin="0 0 10 0" x:Name="BeginTransferManuallyBtn"  Click="BeginTransferManuallyBtn_Click" />
+                <Button Content="Complete Transfer!" HorizontalAlignment="Right" Margin="0 0 10 0" Visibility="Collapsed" x:Name="SuccessfulTransferManuallyBtn" Click="SuccessfulTransferButton_Click" />
+                <TextBlock Text="Final Destination:" />
+                <TextBlock x:Name="DestinationFile" />
+                <TextBlock />
+                <TextBlock FontStyle="Italic" HorizontalAlignment="Center" Text="Window will update automatically when transfer is complete." />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

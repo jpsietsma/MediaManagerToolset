@@ -279,32 +279,11 @@ namespace SortManagerWpfUI
 
         }
 
-        private void QueueSelection_TryMoveToLibrary(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Dispatcher.BeginInvoke(
-                new ThreadStart(() => {
-                    SortQueue newQueue = new SortQueue();
-
-                    newQueue.Activate();
-                    newQueue.Visibility = Visibility.Visible;
-                    newQueue.Topmost = true;
-
-                    this.Close();
-                }));
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         private void MoveSortToLibraryBtn_Click(object sender, RoutedEventArgs e)
         {
             Button clicked = sender as Button;
             StackPanel ParentPanel = clicked.Parent as StackPanel;
+            string source;
             string finalDestination = (ParentPanel.Children[2] as TextBlock).Text;
 
             var ParentWindow = ParentPanel.Parent as StackPanel;
@@ -315,10 +294,15 @@ namespace SortManagerWpfUI
             Grid grid = ParentWindow4.Parent as Grid;
             ListBox SortQueueList = ParentWindow4.Children[2] as ListBox;
 
+            source = (SortQueueList.SelectedItem as IMediaFile).FilePath;
 
-            MessageBox Confirmation = new MessageBox()
+            SortQueue thisWindow = this;
 
-            //var y = e.Source
+            MediaFileTransfer _transferWindow = new MediaFileTransfer(source, finalDestination, thisWindow);
+            _transferWindow.Activate();
+            _transferWindow.Visibility = Visibility.Visible;
+            _transferWindow.Topmost = true;
+
         }
     }
 }
