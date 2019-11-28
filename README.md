@@ -23,9 +23,9 @@
 - Removed: Static object in App.XAML.cs which held program settings
 ```
 
-# Coming Soon! v2.0 in development
+# v2.0 Coming Soon!
 
-### Some expected changes
+### What v2.0 brings to the table
 * Program Settings visible from menu
 >Clicking on Settings -> Program Settings will bring up all available settings to the user within the UI.  Settings are loaded on startup from appsettings.json. Changes can be made to user interface and themes, as well as specific user settings such as automatic login, etc.
 
