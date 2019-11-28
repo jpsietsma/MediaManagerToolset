@@ -27,10 +27,10 @@
 
 ### Some expected changes
 * Program Settings visible from menu
->Clicking on Settings -> Program Settings will bring up all available settings to the user within the UI.  Settings are loaded on startup from appsettings.json
+>Clicking on Settings -> Program Settings will bring up all available settings to the user within the UI.  Settings are loaded on startup from appsettings.json. Changes can be made to user interface and themes, as well as specific user settings such as automatic login, etc.
 
 * Library Settings visible and editable from menu
->View all user libraries and their contents in an easy simple form.  Changes can be made to user interface and themes, as well as specific user settings such as automatic login, etc.
+>View all user libraries and their contents in an easy simple form.  Users can also manage library contents and file storage options, as well.
 
 * Classification Info windows for classified sort media items
 >The Classification button within the sort selection details will finally come to life!  This will give users a look at the media classification type, as well as in a future release we will add the ability to view Show information and metadata on this window.
