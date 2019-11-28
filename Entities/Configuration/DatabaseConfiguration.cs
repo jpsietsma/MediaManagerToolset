@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Entities.Configuration
@@ -13,7 +14,7 @@ namespace Entities.Configuration
         public string DBName { get; set; }
         public bool Trusted_Connection { get; set; }
         public bool Allow_Default_Login { get; set; }
-        public List<string> DefaultLogin { get; set; }
+        public List<DefaultLoginCredential> DefaultLoginCredentials { get; set; }
 
         public DatabaseConfiguration()
         {
@@ -35,10 +36,10 @@ namespace Entities.Configuration
             else if(!Trusted_Connection && Allow_Default_Login)
             {
                 _connStringBuilder.Append("User Id=");
-                _connStringBuilder.Append(DefaultLogin[0] + ";");
+                _connStringBuilder.Append(DefaultLoginCredentials.First().username + ";");
 
                 _connStringBuilder.Append("Password=");
-                _connStringBuilder.Append(DefaultLogin[1] + ";");
+                _connStringBuilder.Append(DefaultLoginCredentials.First().password + ";");
             }
                 
                 return _connStringBuilder.ToString();

@@ -39,23 +39,31 @@
             </MenuItem>
         </Menu>
         <StackPanel Orientation="Horizontal" Margin="50 30 50 10" Grid.Row="1">
-            <StackPanel Orientation="Vertical" Width="350">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="350" Height="275">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Completed Downloading: " />
+                    <TextBlock Text="Completed Downloading: " Margin="15 15 0 15" FontSize="14"/>
                     <TextBlock x:Name="SortQueueCurrentCount" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Currently Downloading: " />
+                    <TextBlock Text="Currently Downloading: " Margin="15 0 15 15" FontSize="14"/>
                     <TextBlock x:Name="SortQueueDownloadingCount" />
                 </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" Width="350">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Total Sort Drivespace: " />
+                    <TextBlock Text="Waiting Remote Sync: " Margin="15 0 15 15" FontSize="14"/>
+                    <TextBlock x:Name="SortQueueRemoteCompletedCount" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="Downloading Remotely: " Margin="15 0 15 15" FontSize="14"/>
+                    <TextBlock x:Name="SortQueueRemoteDownloadingCount" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="350" Height="275" Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Total Sort Drivespace: " Margin="15 15 0 15" FontSize="14"/>
                     <TextBlock x:Name="SortQueueTotalSpace" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Free Sort Drivespace: " />
+                    <TextBlock Text="Free Sort Drivespace: " Margin="15 0 15 15" FontSize="14"/>
                     <TextBlock x:Name="SortQueueFreeSpace" />
                 </StackPanel>
             </StackPanel>            

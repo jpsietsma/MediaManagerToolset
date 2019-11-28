@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entities.Configuration;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,15 +26,18 @@ namespace SortManagerWpfUI
     public partial class MainWindow : Window
     {
         FileSystemWatcher remoteWatcher;
-        string remoteDir = "C:\\Users\\bobswat\\OneDrive\\~downloads";
+        private readonly ProgramConfiguration AppSettings;
 
-        public MainWindow()
+        public MainWindow(IOptions<ProgramConfiguration> settings)
         {            
             InitializeComponent();
+            AppSettings = settings.Value;
+
+            var y = AppSettings.DatabaseConfiguration.ConnectionString;
 
             remoteWatcher = new FileSystemWatcher
             {
-                Path = remoteDir,
+                Path = AppSettings.SortConfiguration.RemoteSortDownloadDirectory,
                 EnableRaisingEvents = true
             };
 
@@ -42,10 +47,13 @@ namespace SortManagerWpfUI
 
             //Get the list of sort files currently waiting processing
             Entities.Sort.SortQueue _queue = new Entities.Sort.SortQueue("S:\\");
-            
+
             //Update our UI fields to display the information
-            SortQueueCurrentCount.Text = _queue.CompletedDownloads.Count().ToString();
-            SortQueueDownloadingCount.Text = _queue.DownloadingFiles.Count().ToString();
+            SortQueueCurrentCount.Text = Directory.GetFiles(AppSettings.SortConfiguration.LocalSortDirectory).Count().ToString();
+            SortQueueDownloadingCount.Text = Directory.GetFiles(AppSettings.SortConfiguration.LocalSortDownloadDirectory).Count().ToString();
+            SortQueueRemoteCompletedCount.Text = Directory.GetFiles(AppSettings.SortConfiguration.RemoteSortDirectory).Count().ToString();
+            SortQueueRemoteDownloadingCount.Text = Directory.GetFiles(AppSettings.SortConfiguration.RemoteSortDownloadDirectory).Count().ToString();
+
             SortQueueTotalSpace.Text = _queue.StorageSpaceTotal.ToString();
             SortQueueFreeSpace.Text = _queue.StorageSpaceRemaining.ToString();           
 
