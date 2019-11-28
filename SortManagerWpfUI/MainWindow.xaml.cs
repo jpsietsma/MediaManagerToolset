@@ -24,7 +24,7 @@ namespace SortManagerWpfUI
     public partial class MainWindow : Window
     {
         FileSystemWatcher remoteWatcher;
-        string remoteDir = "C:\\Users\\bobswat\\OneDrive\\~downloads";        
+        string remoteDir = "C:\\Users\\bobswat\\OneDrive\\~downloads";
 
         public MainWindow()
         {            

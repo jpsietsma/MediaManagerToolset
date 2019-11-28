@@ -3,20 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Linq;
 using Entities.Sort;
 using Entities.Ext;
 using TelevisionToolset.Ext;
 using System.IO;
-using System.Net;
-using System.Threading;
-using System.ComponentModel;
 using Entities.Abstract;
 using System.Collections.ObjectModel;
 
@@ -27,45 +18,36 @@ namespace SortManagerWpfUI
     /// </summary>
     public partial class SortQueue : Window
     {
-        ObservableCollection<IMediaFile> SortFiles = new ObservableCollection<IMediaFile>();
         FileSystemWatcher _sortWatcher;
 
         private Entities.Sort.SortQueue FileSortQueue { get; set; }
-
-        WebClient client;
-        string currentFileName;
+        private ObservableCollection<IMediaFile> _sortFiles;
         string filesAwaitingSync;
         string localFolder = "S:\\~completed_remote\\";
-        string remoteDir = "C:\\Users\\bobswat\\OneDrive\\~downloads";
+
+        public ObservableCollection<IMediaFile> SortFiles { get; set; }
 
         public SortQueue()
         {
             InitializeComponent();
 
             _sortWatcher = new FileSystemWatcher(localFolder);
-            _sortWatcher.Created += _sortWatcher_AddedOrRemoved;
-            _sortWatcher.Deleted += _sortWatcher_AddedOrRemoved;
-            _sortWatcher.EnableRaisingEvents = true;
+                _sortWatcher.Created += _sortWatcher_AddedOrRemoved;
+                _sortWatcher.Deleted += _sortWatcher_AddedOrRemoved;
+                _sortWatcher.EnableRaisingEvents = true;
 
             QueueSelection_IsFilenameSanitized.IsEnabled = false;
             QueueSelection_isFileClassified.IsEnabled = false;
             QueueSelection_isExistingShow.IsEnabled = false;
+            QueueSelection_Details.Visibility = Visibility.Collapsed;
 
             //Assign values to our new observable collection
             FileSortQueue = new Entities.Sort.SortQueue(localFolder);
             SortFiles = FileSortQueue.CompletedDownloads;
 
             CompletedListView.ItemsSource = FileSortQueue.CompletedDownloads;
-            //DownloadListView.ItemsSource = _SortQueue.DownloadingFiles;
-            remoteSyncHyperlinkText.Text = Directory.GetFiles(remoteDir).Count().ToString() + " files ready";
 
-            //DataContext = FileSortQueue;
-            QueueSelection_Details.Visibility = Visibility.Collapsed;
-
-            //Web client to be used for downloads
-            client = new WebClient();
-            client.DownloadProgressChanged += Client_DownloadProgressChanged;
-            client.DownloadFileCompleted += Client_DownloadFileCompleted;
+            
         }
 
         /// <summary>
@@ -176,109 +158,6 @@ namespace SortManagerWpfUI
             QueueSelection_Filepriority.Text = _selectedItem.PriorityLevel;
         }
 
-        /// <summary>
-        /// File sync successfully completed, make sure local and remote are exact sizes then announce to user.  delete file from remote, then refresh next sync file.
-        /// </summary>
-        private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
-        {
-            if (File.Exists(localFolder + filesAwaitingSync.Split('\\').Last()) && new FileInfo(localFolder + filesAwaitingSync.Split('\\').Last()).Length == new FileInfo(filesAwaitingSync).Length)
-            {
-                //filesAwaitingSync.Remove(_thisFileInForeach);
-                MessageBox.Show("File  " + currentFileName + " synchronize complete!", "Message", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                try
-                {
-                    File.Delete(filesAwaitingSync);
-                    PopulateFilesWaitingForSync();
-                    remoteSyncHyperlinkText.Text = FileSortQueue.DownloadingFiles.Count().ToString() + " files ready";
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "An error occurred!");
-                }
-
-            }
-        }
-
-        /// <summary>
-        /// Fires when syncing a file, updates progress bar and displays current working filename
-        /// </summary>
-        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            Dispatcher.BeginInvoke(new Action(delegate
-            {
-                remoteSyncProgress.Minimum = 0;
-                double received = double.Parse(e.BytesReceived.ToString());
-                double total = double.Parse(e.TotalBytesToReceive.ToString());
-                double percentageComplete = (received / total) * 100;
-                syncPercentComplete.Text = $"{ string.Format("{0:0.##}", percentageComplete)}%";
-                remoteSyncProgress.Value = int.Parse(Math.Truncate(percentageComplete).ToString());
-
-                if (currentSyncFilenameTxt.Text != currentFileName)
-                {
-                    currentSyncFilenameTxt.Text = currentFileName;
-                }
-
-            }));
-        }
-
-        private void SyncFilesWaiting_Click(object sender, RoutedEventArgs e)
-        {
-            RemoteSyncFileQueue _remoteQueue = new RemoteSyncFileQueue();
-
-            _remoteQueue.Activate();
-            _remoteQueue.Topmost = true;
-            _remoteQueue.Visibility = Visibility.Visible;
-        }
-
-        /// <summary>
-        /// User clicked the Sync Remote button, grab the filename, create a new thread to begin async download, and then start the thread
-        /// </summary>
-        private void SyncRemote_Click(object sender, RoutedEventArgs e)
-        {
-            PopulateFilesWaitingForSync();
-
-            if (!string.IsNullOrEmpty(filesAwaitingSync))
-            {
-                currentSyncFilenameTxt.Text = currentFileName;
-
-                SyncProgressPanel.Visibility = Visibility.Visible;
-
-                string _filePath = filesAwaitingSync;
-
-                Thread thread = new Thread(() =>
-                {
-                    Uri uri = new Uri(_filePath);
-
-                    currentFileName = System.IO.Path.GetFileName(uri.AbsolutePath);
-
-                    client.DownloadFileAsync(uri, localFolder + currentFileName);
-                });
-
-                thread.Start();
-            }
-            else
-            {
-                MessageBox.Show("There are no remote files waiting for Synchronization.");
-            }
-
-        }
-
-        private void QueueSelection_TrySanitizeBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void QueueSelection_TryClassifyBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void QueueSelection_FileInfoBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void MoveSortToLibraryBtn_Click(object sender, RoutedEventArgs e)
         {
             Button clicked = sender as Button;
@@ -304,5 +183,23 @@ namespace SortManagerWpfUI
             _transferWindow.Topmost = true;
 
         }
+
+        #region NEED TO WORK ON - LOW PRIORITY
+        private void QueueSelection_TrySanitizeBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void QueueSelection_TryClassifyBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void QueueSelection_FileInfoBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
+
     }
 }

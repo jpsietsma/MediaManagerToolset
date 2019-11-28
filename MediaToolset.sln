@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieToolset", "MovieToolse
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SortManagerWpfUI", "SortManagerWpfUI\SortManagerWpfUI.csproj", "{356B0C87-20CF-46E2-A98A-99D202C998E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryToolset", "LibraryToolset\LibraryToolset.csproj", "{8A4BC370-4FA6-49B8-AB0F-6F989C24C9DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryToolset", "LibraryToolset\LibraryToolset.csproj", "{8A4BC370-4FA6-49B8-AB0F-6F989C24C9DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlexToolset", "PlexToolset\PlexToolset.csproj", "{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{8A4BC370-4FA6-49B8-AB0F-6F989C24C9DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A4BC370-4FA6-49B8-AB0F-6F989C24C9DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A4BC370-4FA6-49B8-AB0F-6F989C24C9DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

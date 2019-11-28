@@ -63,17 +63,7 @@
                     <Button Content="Classify Item" x:Name="QueueSelection_TryClassifyBtn" Margin="10 0 0 0" Width="90" FontSize="14" Click="QueueSelection_TryClassifyBtn_Click" />
                     <Button Content="File Details" x:Name="QueueSelection_FileInfoBtn" Margin="10 0 0 0" Width="90" FontWeight="Bold" FontSize="16" Click="QueueSelection_FileInfoBtn_Click" />
                 </StackPanel>                
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <Button x:Name="syncRemoteBtn" Content="Sync Remote" Width="80" Click="SyncRemote_Click" />
-                <Label>
-                    <Hyperlink Click="SyncFilesWaiting_Click" x:Name="syncQueueHyperlink">
-                        <InlineUIContainer>
-                            <TextBlock Text="" x:Name="remoteSyncHyperlinkText" />
-                        </InlineUIContainer>
-                    </Hyperlink>
-                </Label>
-            </StackPanel>
+            </StackPanel>            
             <StackPanel Orientation="Vertical" Grid.Row="3" x:Name="SyncProgressPanel" Visibility="Collapsed">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="Remote Sync in Progress: " FontWeight="Bold" Padding="0 15 20 0" />

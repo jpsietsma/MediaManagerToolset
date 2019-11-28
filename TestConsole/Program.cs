@@ -29,16 +29,16 @@ namespace TestConsole
             //Console.WriteLine(Library.GetFreeDriveSpace());
             //Console.WriteLine(Library.GetTotalDriveSpace());
 
-            //var config = LoadProgramSettings();
+            var config = LoadProgramSettings();
 
         }
 
-        public static WpfConfigurationSettings LoadProgramSettings()
+        public static ProgramConfiguration LoadProgramSettings()
         {
-            using (StreamReader r = new StreamReader("ProgramSettings.json"))
+            using (StreamReader r = new StreamReader("..\\..\\..\\..\\SortManagerWpfUI\\Properties\\appsettings.json"))
             {
                 string json = r.ReadToEnd();
-                WpfConfigurationSettings ProgramSettings = JsonConvert.DeserializeObject<WpfConfigurationSettings>(json);
+                ProgramConfiguration ProgramSettings = JsonConvert.DeserializeObject<AppLoadResult>(json).ProgramConfiguration;
 
                 return ProgramSettings;
             }
