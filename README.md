@@ -9,9 +9,13 @@
 # v1.5 is available!
 
 ### Changes made in V1.5:
-```diff 
+```diff  
 + Added appsettings.json configuration file to handle static values such as media library locations, etc.
+```
+```diff  
 + Added Dependency Injection for .net core 3.0, configured AppSettings for injection
+```
+```diff  
 + Auto-Refreshing SortQueue ListBox contents on detected changes
 ```
 
@@ -22,10 +26,17 @@
 # Coming Soon! v2.0 in development
 
 ### Some expected changes
-```diff
-! Program Settings visible from menu
-! Library Settings visible and editable from menu
-! Classification Info windows for classified sort media items
-! File Info windows for classified and unclassified/non-classifiable media items
-! Stylized buttons for UI interface, Cleaned up Main Window data table stylized and interactive
-```
+* Program Settings visible from menu
+>Clicking on Settings -> Program Settings will bring up all available settings to the user within the UI.  Settings are loaded on startup from appsettings.json
+
+* Library Settings visible and editable from menu
+>View all user libraries and their contents in an easy simple form.  Changes can be made to user interface and themes, as well as specific user settings such as automatic login, etc.
+
+* Classification Info windows for classified sort media items
+>The Classification button within the sort selection details will finally come to life!  This will give users a look at the media classification type, as well as in a future release we will add the ability to view Show information and metadata on this window.
+
+* File Info windows for classified and unclassified/non-classifiable media items
+>Show all sorts of file and disk information about a sort selection, more info to come..
+
+* Stylized buttons for UI interface, Cleaned up Main Window data table stylized and interactive
+>We've been busy adding new features for you guys!  But now our user interface could definitely use a facelift.  UI styling will become a major part of v2 in the second half of the lifecycle, meaning prettier buttons and layouts for the user!
