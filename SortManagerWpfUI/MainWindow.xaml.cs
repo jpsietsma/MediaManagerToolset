@@ -26,7 +26,7 @@ namespace SortManagerWpfUI
     public partial class MainWindow : Window
     {
         FileSystemWatcher remoteWatcher;
-        private readonly ProgramConfiguration AppSettings;
+        public readonly ProgramConfiguration AppSettings;
 
         public MainWindow(IOptions<ProgramConfiguration> settings)
         {            
@@ -42,8 +42,8 @@ namespace SortManagerWpfUI
             };
 
             //Set our FileSystemWatcher event triggers
-            remoteWatcher.Created += RemoteWatcher_RemoteFileAwaitngSync;
-            remoteWatcher.Deleted += RemoteWatcher_RemoteFileDeletedAfterCompletion;            
+            remoteWatcher.Created += RemoteWatcher_RemoteFileSyncReady;
+            remoteWatcher.Deleted += RemoteWatcher_RemoteFileSyncDeleted;            
 
             //Get the list of sort files currently waiting processing
             Entities.Sort.SortQueue _queue = new Entities.Sort.SortQueue("S:\\");
@@ -62,7 +62,7 @@ namespace SortManagerWpfUI
         #region Section: Event Handling Methods...
 
             
-            private void RemoteWatcher_RemoteFileDeletedAfterCompletion(object sender, FileSystemEventArgs e)
+            private void RemoteWatcher_RemoteFileSyncDeleted(object sender, FileSystemEventArgs e)
             {
                 
             }
@@ -70,14 +70,21 @@ namespace SortManagerWpfUI
             /// <summary>
             /// New File has been added to the remote folder - Messagebox to user
             /// </summary>
-            private void RemoteWatcher_RemoteFileAwaitngSync(object sender, FileSystemEventArgs e)
+            private void RemoteWatcher_RemoteFileSyncReady(object sender, FileSystemEventArgs e)
             {
-                string newFilePath = e.FullPath;
+                string existingFilePath = e.FullPath;
 
-                if (newFilePath.Split(".").Last() == "mkv" || newFilePath.Split(".").Last() == "avi" || newFilePath.Split(".").Last() == "mp4")
+                if (existingFilePath.Split(".").Last() == "mkv" || existingFilePath.Split(".").Last() == "avi" || existingFilePath.Split(".").Last() == "mp4")
                 {
 
-                    MessageBox.Show($"{e.Name} is ready to sync!\nLocated: {newFilePath}");
+                    try
+                    {
+                        File.Copy(existingFilePath, AppSettings.SortConfiguration.RemoteSortDirectory + existingFilePath.Split("\\").Last());
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("unable to move remote files to sort directory.", ex);
+                    }
 
                 }
             
@@ -142,7 +149,7 @@ namespace SortManagerWpfUI
             /// </summary>
             private void MenuItem_Admin_ProgramSettings(object sender, RoutedEventArgs e)
             {
-                ProgramSettings _programSettingsWindow = new ProgramSettings();
+                ProgramSettings _programSettingsWindow = new ProgramSettings(AppSettings);
 
                 _programSettingsWindow.Topmost = true;
                 _programSettingsWindow.Activate();
@@ -151,7 +158,11 @@ namespace SortManagerWpfUI
 
             private void MenuItem_Admin_LibrarySettings(object sender, RoutedEventArgs e)
             {
+                LibrarySettings _librarySettingsWindow = new LibrarySettings(AppSettings);
 
+                _librarySettingsWindow.Topmost = true;
+                _librarySettingsWindow.Activate();
+                _librarySettingsWindow.Visibility = Visibility.Visible;
             }
 
         #endregion

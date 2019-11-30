@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Properties\DataSources\**" />
+    <EmbeddedResource Remove="Properties\DataSources\**" />
+    <None Remove="Properties\DataSources\**" />
+    <Page Remove="Properties\DataSources\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Images\SortCopyToLibrary_icon.jpg" />
     <None Remove="Properties\appsettings.json" />
   </ItemGroup>
@@ -23,12 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -36,12 +40,6 @@
 
   <ItemGroup>
     <Resource Include="Images\SortCopyToLibrary_icon.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ProgramSettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

@@ -41,12 +41,20 @@ namespace SortManagerWpfUI
 
             var mainWindow = ServiceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
+
         }
 
         private void ConfigureServices(IServiceCollection services)
         {
             services.Configure<ProgramConfiguration>(Configuration.GetSection(nameof(ProgramConfiguration)));
             services.AddTransient(typeof(MainWindow));
+            services.AddTransient(typeof(ProgramSettings));
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+
+            base.OnExit(e);
         }
     }
 }

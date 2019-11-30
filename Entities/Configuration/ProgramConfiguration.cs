@@ -11,6 +11,7 @@ namespace Entities.Configuration
         public SortConfiguration SortConfiguration { get; set; }
         public TelevisionLibraryConfiguration TelevisionLibraryConfiguration { get; set; }
         public MovieLibraryConfiguration MovieLibraryConfiguration { get; set; }
-    }
+        
+    }    
     
 }

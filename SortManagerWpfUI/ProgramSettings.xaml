@@ -5,8 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SortManagerWpfUI"
         mc:Ignorable="d"
-        Title="ProgramSettings" Height="450" Width="800">
+        Title="Program Settings" Height="450" Width="800">
     <Grid>
-        
+        <StackPanel>
+            <TextBlock Text="SQL Connection String: " />
+            <TextBlock x:Name="config_SQLConnString" />
+            <TextBlock Text="" />
+            
+            <TextBlock Text="SQL Username" />
+            <TextBlock x:Name="config_SQLUsername" />
+            <TextBlock Text="" />
+            
+            <TextBlock Text="SQL Password" />
+            <TextBlock x:Name="config_SQLPassword" />
+            <TextBlock Text="" />
+            
+            <TextBlock Text="SQL Server" />
+            <TextBlock x:Name="config_SQLServer" />
+            <TextBlock Text="" />
+            
+            <TextBlock Text="SQL Instance" />
+            <TextBlock x:Name="config_SQLInstance" />
+            <TextBlock Text="" />
+
+            <TextBlock Text="SQL Instance" />
+            <TextBlock x:Name="config_SQLDBName" />
+            <TextBlock Text="" />
+
+            <TextBlock Text="SQL Trusted Connection?" />
+            <CheckBox x:Name="config_SQLTrustedConnection" />
+            <TextBlock Text="" />
+            
+        </StackPanel>
     </Grid>
 </Window>

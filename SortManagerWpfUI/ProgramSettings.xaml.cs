@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Entities.Configuration;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -17,9 +19,24 @@ namespace SortManagerWpfUI
     /// </summary>
     public partial class ProgramSettings : Window
     {
-        public ProgramSettings()
+        private readonly ProgramConfiguration AppSettings;
+
+        public ProgramSettings(ProgramConfiguration settings)
         {
             InitializeComponent();
+
+            AppSettings = settings;
+
+            PopulateUI();
+
+        }
+
+        private void PopulateUI()
+        {
+            config_SQLConnString.Text = AppSettings.DatabaseConfiguration.ConnectionString;
+            config_SQLServer.Text = AppSettings.DatabaseConfiguration.DBServerName;
+            config_SQLInstance.Text = AppSettings.DatabaseConfiguration.DBServerInstance;
+            config_SQLDBName.Text = AppSettings.DatabaseConfiguration.DBName;
         }
     }
 }
