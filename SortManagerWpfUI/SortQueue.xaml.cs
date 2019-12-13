@@ -10,6 +10,8 @@ using TelevisionToolset.Ext;
 using System.IO;
 using Entities.Abstract;
 using System.Collections.ObjectModel;
+using Entities.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace SortManagerWpfUI
 {
@@ -19,22 +21,28 @@ namespace SortManagerWpfUI
     public partial class SortQueue : Window
     {
         FileSystemWatcher _sortWatcher;
+        ProgramConfiguration AppSettings;
 
         private Entities.Sort.SortQueue FileSortQueue { get; set; }
         private ObservableCollection<IMediaFile> _sortFiles;
         string filesAwaitingSync;
-        string localFolder = "S:\\~completed_remote\\";
 
         public ObservableCollection<IMediaFile> SortFiles { get; set; }
 
         public SortQueue()
         {
-            InitializeComponent();
+            InitializeComponent();            
+        }
 
-            _sortWatcher = new FileSystemWatcher(localFolder);
-                _sortWatcher.Created += _sortWatcher_AddedOrRemoved;
-                _sortWatcher.Deleted += _sortWatcher_AddedOrRemoved;
-                _sortWatcher.EnableRaisingEvents = true;
+        public SortQueue(IOptions<ProgramConfiguration> _settings)
+        {
+            InitializeComponent();
+            AppSettings = _settings.Value;
+
+            _sortWatcher = new FileSystemWatcher(AppSettings.SortConfiguration.LocalSortDirectory);
+            _sortWatcher.Created += SortDirectory_FileAdded;
+            _sortWatcher.Deleted += SortDirectory_FileRemoved;
+            _sortWatcher.EnableRaisingEvents = true;
 
             QueueSelection_IsFilenameSanitized.IsEnabled = false;
             QueueSelection_isFileClassified.IsEnabled = false;
@@ -42,18 +50,17 @@ namespace SortManagerWpfUI
             QueueSelection_Details.Visibility = Visibility.Collapsed;
 
             //Assign values to our new observable collection
-            FileSortQueue = new Entities.Sort.SortQueue(localFolder);
+            FileSortQueue = new Entities.Sort.SortQueue(AppSettings.SortConfiguration.LocalSortDirectory);
             SortFiles = FileSortQueue.CompletedDownloads;
 
             CompletedListView.ItemsSource = FileSortQueue.CompletedDownloads;
 
-            
         }
 
         /// <summary>
-        /// When file watcher detects file changes to the sort folder, refresh the sort queue
+        /// When file watcher detects a file has been added to the sort directory
         /// </summary>
-        private void _sortWatcher_AddedOrRemoved(object sender, FileSystemEventArgs e)
+        private void SortDirectory_FileAdded(object sender, FileSystemEventArgs e)
         {
             //MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to refresh the queue?", "Sort Queue files changed!", MessageBoxButton.YesNo);
 
@@ -70,14 +77,36 @@ namespace SortManagerWpfUI
             //        this.Close();
             //    }));
             //}            
-        }      
+        }
+
+        /// <summary>
+        /// When file watcher detects file has been removed from the sort directory
+        /// </summary>
+        private void SortDirectory_FileRemoved(object sender, FileSystemEventArgs e)
+        {
+            //MessageBoxResult messageBoxResult = MessageBox.Show("Do you want to refresh the queue?", "Sort Queue files changed!", MessageBoxButton.YesNo);
+
+            //if (messageBoxResult == MessageBoxResult.Yes)
+            //{
+            //    Dispatcher.BeginInvoke(
+            //    new ThreadStart(() => {
+            //        SortQueue newQueue = new SortQueue();
+
+            //        newQueue.Activate();
+            //        newQueue.Visibility = Visibility.Visible;
+            //        newQueue.Topmost = true;
+
+            //        this.Close();
+            //    }));
+            //}            
+        }
 
         /// <summary>
         /// Grab the filename of the next file up for sync locally
         /// </summary>
         private void PopulateFilesWaitingForSync()
         {
-            filesAwaitingSync = Directory.GetFiles("C:\\Users\\bobswat\\OneDrive\\~downloads").ToList().FirstOrDefault();
+            filesAwaitingSync = Directory.GetFiles(AppSettings.SortConfiguration.RemoteSortDirectory).ToList().FirstOrDefault();
         }
 
         private void QueueSelection_Changed(object sender, SelectionChangedEventArgs e)
