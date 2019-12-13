@@ -9,12 +9,6 @@ namespace Entities.Ext
 {
     public static class SortQueueExtention
     {
-        public static SortQueue RescanAndClassifySortQueue(this SortQueue _queue)
-        {
-            SortQueue _newQueue = new SortQueue(_queue.SortPath);
-
-            return _newQueue;
-        }
         
     }
 }

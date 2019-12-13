@@ -12,6 +12,7 @@ using Entities.Abstract;
 using System.Collections.ObjectModel;
 using Entities.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SortManagerWpfUI
 {
@@ -20,6 +21,8 @@ namespace SortManagerWpfUI
     /// </summary>
     public partial class SortQueue : Window
     {
+        IServiceProvider ServiceProvider;
+
         FileSystemWatcher _sortWatcher;
         ProgramConfiguration AppSettings;
 
@@ -39,6 +42,8 @@ namespace SortManagerWpfUI
             InitializeComponent();
             AppSettings = _settings.Value;
 
+            ServiceProvider = (App.Current as App).ServiceProvider;
+
             _sortWatcher = new FileSystemWatcher(AppSettings.SortConfiguration.LocalSortDirectory);
             _sortWatcher.Created += SortDirectory_FileAdded;
             _sortWatcher.Deleted += SortDirectory_FileRemoved;
@@ -50,7 +55,7 @@ namespace SortManagerWpfUI
             QueueSelection_Details.Visibility = Visibility.Collapsed;
 
             //Assign values to our new observable collection
-            FileSortQueue = new Entities.Sort.SortQueue(AppSettings.SortConfiguration.LocalSortDirectory);
+            FileSortQueue = ServiceProvider.GetRequiredService<Entities.Sort.SortQueue>();
             SortFiles = FileSortQueue.CompletedDownloads;
 
             CompletedListView.ItemsSource = FileSortQueue.CompletedDownloads;

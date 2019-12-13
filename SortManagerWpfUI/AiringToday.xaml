@@ -1,0 +1,46 @@
+﻿<Window x:Class="SortManagerWpfUI.AiringToday"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SortManagerWpfUI"
+        mc:Ignorable="d"
+        Title="Television Show | Library Contents" Height="950" Width="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="AiringTodayHeader" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="0" />
+        <DataGrid Grid.Row="1" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="6" x:Name="AiringTodayDataGrid">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Set Priority" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="Button_Click" Tag="{Binding Name}">__!__</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

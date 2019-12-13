@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities.Data.TvMaze
 {
-    public class TvMazeResult
+    public class TvMazeShowResult
     {
         public double score { get; set; }
         public TvMazeShowDetails show { get; set; }

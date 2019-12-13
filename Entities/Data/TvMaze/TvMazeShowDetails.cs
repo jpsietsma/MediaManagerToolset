@@ -13,7 +13,7 @@ namespace Entities.Data.TvMaze
         public string language { get; set; }
         public List<string> genres { get; set; }
         public string status { get; set; }
-        public int runtime { get; set; }
+        public int? runtime { get; set; }
         public string premiered { get; set; }
         public string officialSite { get; set; }
         public TvMazeShowSchedule schedule { get; set; }

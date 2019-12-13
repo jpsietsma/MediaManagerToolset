@@ -47,14 +47,26 @@ namespace SortManagerWpfUI
         private void ConfigureServices(IServiceCollection services)
         {
             services.Configure<ProgramConfiguration>(Configuration.GetSection(nameof(ProgramConfiguration)));
-            services.AddTransient(typeof(MainWindow));
-            services.AddTransient(typeof(ProgramSettings));
+            services.AddSingleton(typeof(MainWindow));
+            services.AddSingleton(typeof(ProgramSettings));
+            services.AddSingleton(typeof(LibrarySettings));
+            services.AddSingleton(typeof(SortQueue));
+            services.AddSingleton(typeof(Entities.Sort.SortQueue));
+            services.AddSingleton(typeof(AiringToday));
+            services.AddSingleton(typeof(TvMazeShowSearch));
+            services.AddSingleton(typeof(AddNewPriorityShow));
+
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
 
             base.OnExit(e);
+        }
+
+        public IServiceProvider GetService()
+        {
+            return ServiceProvider;
         }
     }
 }
