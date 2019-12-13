@@ -6,10 +6,12 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -49,7 +51,7 @@ namespace SortManagerWpfUI
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(@"http://api.tvmaze.com/");
-            //client.DefaultRequestHeaders.Add("appkey", "myapp_key");
+            client.DefaultRequestHeaders.Add("ApiToken", AppSettings.MediaAPIKeyConfiguration.ApiKeyInfo.Where(x => x.Name == "TVMaze").FirstOrDefault().ApiToken);
             client.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -64,7 +66,11 @@ namespace SortManagerWpfUI
 
                 foreach (TvMazeEpisodeAiringResult _episodeAiringToday in airingResults)
                 {
-                    shows.Add(_episodeAiringToday.show.GetViewModel());
+                    var vm =_episodeAiringToday.show.GetViewModel();
+
+                    vm.IsExistingShow = DoesShowExist(vm.Name, out int showPremiereYear);
+
+                    shows.Add(vm);
                 }
 
                 AiringTodayHeader.Text = $@"New Television Episodes Airing Today: { _today.DayOfWeek } { _today.Date.Month }/{ _today.Day }/{ _today.Year }";
@@ -89,6 +95,50 @@ namespace SortManagerWpfUI
                 new AddNewPriorityShow(Settings).Show();
             }
             
+        }
+
+        private bool DoesShowExist(string ShowName, out int showPremiereYear)
+        {
+            List<string> allShows = new List<string>();
+            showPremiereYear = -1;
+
+            foreach (string _drive in AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders)
+            {
+                var dirs = Directory.GetDirectories(_drive);
+
+                foreach (string _show in dirs)
+                {
+                    string showDirectoryName = _show.Split("//").Last();
+
+                    if (showDirectoryName.ToLower().Contains(ShowName.ToLower()))
+                    {
+                        string regex = @"(?<ShowName>.*)\s(?<ShowPremiere>[(](?<PremiereYear>\d\d\d\d)[)])";
+                        var match = Regex.Match(showDirectoryName, regex);
+
+                        if (match.Success)
+                        {
+                            int.TryParse(match.Groups["PremiereYear"].Value, out showPremiereYear);
+                        }
+                        else
+                        {
+                            //Premiere year is not in library folder name but show matches
+                            //Allows for fuzzy doesshowexist logic
+                            showPremiereYear = 0;
+                        }
+
+                        allShows.Add(_show);
+                    }
+                }
+            }
+
+            if (allShows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

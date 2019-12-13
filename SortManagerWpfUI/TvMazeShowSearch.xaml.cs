@@ -69,20 +69,26 @@ namespace SortManagerWpfUI
                 foreach (TvMazeShowResult _searchResult in showResults)
                 {
                     var vm = _searchResult.show.GetViewModel();
-                    int showPremiereYear = 0;
-                    //vm.IsExistingShow = 
+                    int showPremiereYear;
 
                     if (DoesShowExist(vm.Name, out showPremiereYear))
                     {
-                        if (showPremiereYear == 0)
-                        {                            
-                            vm.IsExistingShow = true;
+                        if (showPremiereYear > 0)
+                        {
+                            if (_searchResult.show.premiered.StartsWith(showPremiereYear.ToString()))
+                            {
+                                vm.IsExistingShow = true;
+                            }
+                            
                         }
                         else
                         {
-
+                            //vm.IsExistingShow = true;
                         }
-                        
+                    }
+                    else
+                    {
+                        vm.IsExistingShow = false;
                     } 
 
                 shows.Add(vm);
@@ -101,7 +107,8 @@ namespace SortManagerWpfUI
         private bool DoesShowExist(string ShowName, out int showPremiereYear)
         {
             List<string> allShows = new List<string>();
-            showPremiereYear = 0;
+            showPremiereYear = -1;
+            ShowName = ShowName.ToLower();
 
             foreach (string _drive in AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders)
             {
@@ -109,9 +116,9 @@ namespace SortManagerWpfUI
 
                 foreach (string _show in dirs)
                 {
-                    string showDirectoryName = _show.Split("//").Last();
+                    string showDirectoryName = _show.Split("\\").Last().ToLower();
 
-                    if (showDirectoryName.ToLower().Contains(ShowName.ToLower()))
+                    if (showDirectoryName.Contains(ShowName))
                     {
                         string regex = @"(?<ShowName>.*)\s(?<ShowPremiere>[(](?<PremiereYear>\d\d\d\d)[)])";
                         var match = Regex.Match(showDirectoryName, regex);
@@ -119,6 +126,12 @@ namespace SortManagerWpfUI
                         if (match.Success)
                         {
                             int.TryParse(match.Groups["PremiereYear"].Value, out showPremiereYear);
+                        }
+                        else
+                        {
+                            //Premiere year is not in library folder name but show matches
+                            //Allows for fuzzy doesshowexist logic
+                            showPremiereYear = 0;
                         }
 
                         allShows.Add(_show);

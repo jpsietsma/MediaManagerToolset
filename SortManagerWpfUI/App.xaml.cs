@@ -53,8 +53,8 @@ namespace SortManagerWpfUI
             services.AddSingleton(typeof(SortQueue));
             services.AddSingleton(typeof(Entities.Sort.SortQueue));
             services.AddSingleton(typeof(AiringToday));
-            services.AddSingleton(typeof(TvMazeShowSearch));
-            services.AddSingleton(typeof(AddNewPriorityShow));
+            services.AddTransient(typeof(TvMazeShowSearch));
+            services.AddTransient(typeof(AddNewPriorityShow));
 
         }
 
