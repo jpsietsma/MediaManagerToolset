@@ -1,9 +1,12 @@
 ﻿using Entities.Configuration;
 using Entities.Data;
+using Entities.Data.EF_Core;
 using Entities.Data.TvMaze;
 using Entities.Ext;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using SortManagerWpfUI.Library;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,18 +32,21 @@ namespace SortManagerWpfUI
     /// </summary>
     public partial class AiringToday : Window
     {
+        dynamic SelectedEntry;
+
         private readonly ProgramConfiguration AppSettings;
+        private readonly DatabaseContext DatabaseContext;
         private readonly IOptions<ProgramConfiguration> Settings;
+        private readonly IServiceProvider ServiceProvider;
 
-        private IServiceProvider ServiceProvider;
-
-        string _query = "cops";
-
-        public AiringToday(IOptions<ProgramConfiguration> _settings)
+        public AiringToday(IOptions<ProgramConfiguration> _settings, DatabaseContext _context)
         {
             InitializeComponent();
             Settings = _settings;
             AppSettings = _settings.Value;
+            DatabaseContext = _context;
+
+            ServiceProvider = (App.Current as App).ServiceProvider;
 
             PopulateUI();
         }
@@ -59,22 +65,33 @@ namespace SortManagerWpfUI
             if (response.IsSuccessStatusCode)
             {
                 string str = response.Content.ReadAsStringAsync().Result;
-                List<TvMazeEpisodeAiringResult> airingResults = JsonConvert.DeserializeObject<List<TvMazeEpisodeAiringResult>>(str);
+                List<TheMovieDbEpisodeAiringResult> airingResults = JsonConvert.DeserializeObject<List<TheMovieDbEpisodeAiringResult>>(str);
 
                 //List<TvMazeResult> showResults = response.Content.ReadAsAsync<List<TvMazeResult>>().Result;
                 List<TvMazeShowResultViewModel> shows = new List<TvMazeShowResultViewModel>();
 
-                foreach (TvMazeEpisodeAiringResult _episodeAiringToday in airingResults)
+                foreach (TheMovieDbEpisodeAiringResult _episodeAiringToday in airingResults)
                 {
                     var vm =_episodeAiringToday.show.GetViewModel();
 
-                    vm.IsExistingShow = DoesShowExist(vm.Name, out int showPremiereYear);
+                    vm.IsExistingShow = DoesShowExist(vm.Name, out int showPremiereYear, out string MatchedDirectoryName);
+
+                    if (vm.IsExistingShow)
+                    {
+                        if (showPremiereYear < 0)
+                        {
+                            var x = _episodeAiringToday.show.premiered;
+                            var y = x.StartsWith(showPremiereYear.ToString());
+
+                            vm.IsExistingShow = _episodeAiringToday.show.premiered.StartsWith(showPremiereYear.ToString());
+                        }
+                    }
 
                     shows.Add(vm);
                 }
 
                 AiringTodayHeader.Text = $@"New Television Episodes Airing Today: { _today.DayOfWeek } { _today.Date.Month }/{ _today.Day }/{ _today.Year }";
-                shows = shows.Where(x => x.AiringDay == _today.DayOfWeek.ToString()).ToList();
+                shows = shows.Where(x => x.AiringDay == _today.DayOfWeek.ToString()).ToList().OrderByDescending(x => x.IsExistingShow).ThenBy(x => x.Name).ToList();                
                 AiringTodayDataGrid.ItemsSource = shows;
 
             }
@@ -88,19 +105,26 @@ namespace SortManagerWpfUI
         {
             if ((sender as Button).Tag != null)
             {
-                string _showName = (sender as Button).Tag.ToString();
+                string _showName = (sender as Button).Name.ToString();
+                string imdbId = (sender as Button).Tag.ToString();
 
-                MessageBox.Show(_showName);
+                using (DatabaseContext)
+                {
+                    //do EF SQL add here to priority shows with Stored Procedure
+                }
 
-                new AddNewPriorityShow(Settings).Show();
+                var AddNewPriorityWindow = new AddNewPriorityShow(Settings);
+                AddNewPriorityWindow.DataContext = SelectedEntry;
+                AddNewPriorityWindow.Show();
             }
             
         }
 
-        private bool DoesShowExist(string ShowName, out int showPremiereYear)
+        private bool DoesShowExist(string ShowName, out int showPremiereYear, out string matchedShowDirectoryName)
         {
             List<string> allShows = new List<string>();
             showPremiereYear = -1;
+            matchedShowDirectoryName = string.Empty;
 
             foreach (string _drive in AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders)
             {
@@ -112,6 +136,8 @@ namespace SortManagerWpfUI
 
                     if (showDirectoryName.ToLower().Contains(ShowName.ToLower()))
                     {
+                        matchedShowDirectoryName = showDirectoryName;
+
                         string regex = @"(?<ShowName>.*)\s(?<ShowPremiere>[(](?<PremiereYear>\d\d\d\d)[)])";
                         var match = Regex.Match(showDirectoryName, regex);
 
@@ -139,6 +165,18 @@ namespace SortManagerWpfUI
             {
                 return false;
             }
+        }
+
+        private void Button_Click_GetMoreInfo(object sender, RoutedEventArgs e)
+        {
+            var _newWindow = ServiceProvider.GetRequiredService<ViewShowDetails>();
+                _newWindow.DataContext = SelectedEntry as TvMazeShowResultViewModel;
+                _newWindow.Show();
+        }
+
+        private void AiringTodayDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedEntry = (e.Source as DataGrid).SelectedItem;
         }
     }
 }

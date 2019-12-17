@@ -34,7 +34,6 @@ namespace SortManagerWpfUI
         public readonly ProgramConfiguration AppSettings;
 
         public IServiceProvider ServiceProvider { get; private set; }
-
         public IConfiguration Configuration { get; private set; }
 
         public MainWindow(IOptions<ProgramConfiguration> settings)
@@ -130,6 +129,11 @@ namespace SortManagerWpfUI
             private void MenuItem_Maintenance_MissingEpisodes(object sender, RoutedEventArgs e)
             {
 
+            }
+
+            private void MenuItem_Maintenance_SortFileDialogTest(object sender, RoutedEventArgs e)
+            {
+                new SortFileInfoDialog().Show();
             }
             
             /// <summary>

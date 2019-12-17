@@ -10,12 +10,14 @@ using System.ComponentModel;
 using Microsoft.Extensions.Options;
 using Entities.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Entities.Data.EF_Core;
 
 namespace Entities.Sort
 {
     public class SortQueue
     {
         private ProgramConfiguration AppSettings;
+        DatabaseContext DatabaseContext;
         private IServiceProvider ServiceProvider;
 
         public ObservableCollection<IMediaFile> CompletedDownloads { get; private set; }
@@ -28,9 +30,10 @@ namespace Entities.Sort
         /// <summary>
         /// Get a new sortqueue
         /// </summary>
-        public SortQueue(IOptions<ProgramConfiguration> _settings)
+        public SortQueue(IOptions<ProgramConfiguration> _settings, DatabaseContext _context)
         {
             AppSettings = _settings.Value;
+            DatabaseContext = _context;
 
             CompletedDownloads = new ObservableCollection<IMediaFile>();
             DownloadingFiles = new ObservableCollection<IMediaFile>();

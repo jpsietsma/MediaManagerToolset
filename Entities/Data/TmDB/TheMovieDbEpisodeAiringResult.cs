@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities.Data.TvMaze
 {
-    public class TvMazeEpisodeAiringResult
+    public class TheMovieDbEpisodeAiringResult
 {
         public string url { get; set; }
         public string name { get; set; }

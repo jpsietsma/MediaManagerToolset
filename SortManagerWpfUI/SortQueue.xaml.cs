@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using Entities.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
+using Entities.Data.EF_Core;
 
 namespace SortManagerWpfUI
 {
@@ -22,25 +23,22 @@ namespace SortManagerWpfUI
     public partial class SortQueue : Window
     {
         IServiceProvider ServiceProvider;
-
+        DatabaseContext DatabaseContext;
         FileSystemWatcher _sortWatcher;
         ProgramConfiguration AppSettings;
 
         private Entities.Sort.SortQueue FileSortQueue { get; set; }
         private ObservableCollection<IMediaFile> _sortFiles;
         string filesAwaitingSync;
+        private dynamic selectedSortItem;
 
         public ObservableCollection<IMediaFile> SortFiles { get; set; }
 
-        public SortQueue()
-        {
-            InitializeComponent();            
-        }
-
-        public SortQueue(IOptions<ProgramConfiguration> _settings)
+        public SortQueue(IOptions<ProgramConfiguration> _settings, DatabaseContext _context)
         {
             InitializeComponent();
             AppSettings = _settings.Value;
+            DatabaseContext = _context;
 
             ServiceProvider = (App.Current as App).ServiceProvider;
 
@@ -121,7 +119,9 @@ namespace SortManagerWpfUI
 
             ListBox _lb = CompletedListView;
 
-            dynamic _selectedItem = _lb.SelectedValue as dynamic;                
+            dynamic _selectedItem = _lb.SelectedValue as dynamic;
+            selectedSortItem = _selectedItem;
+
 
             QueueSelection_Filename.Text = _selectedItem.FileName;
             QueueSelection_Filesize.Text = (_selectedItem.FileSize / 1024) / 1024 + " MB";                               
@@ -231,7 +231,9 @@ namespace SortManagerWpfUI
 
         private void QueueSelection_FileInfoBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var _fileInfoDialog = ServiceProvider.GetRequiredService<SortFileInfoDialog>();
+                _fileInfoDialog.DataContext = selectedSortItem;
+                _fileInfoDialog.Show();
         }
         #endregion
 

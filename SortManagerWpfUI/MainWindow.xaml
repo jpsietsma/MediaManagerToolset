@@ -39,7 +39,6 @@
             </MenuItem>
             <MenuItem Header="Maintenance">
                 <MenuItem Header="Missing Episodes" x:Name="MenuMaintenanceMissingEpisodes" Click="MenuItem_Maintenance_MissingEpisodes" />
-                <MenuItem Header="Missing Seasons" x:Name="MenuMaintenanceMissingSeasons" Click="MenuItem_Maintenance_MissingSeasons" />
             </MenuItem>
             <MenuItem Header="Administration">
                 <MenuItem Header="User Settings" x:Name="MenuAdminUserSettings" Click="MenuItem_Admin_UserSettings" />

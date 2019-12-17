@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryToolset", "LibraryTo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlexToolset", "PlexToolset\PlexToolset.csproj", "{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloadHelpers", "DownloadHelpers\DownloadHelpers.csproj", "{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{929D1C7E-BCC5-4971-8124-0760392B45CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{929D1C7E-BCC5-4971-8124-0760392B45CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{929D1C7E-BCC5-4971-8124-0760392B45CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{929D1C7E-BCC5-4971-8124-0760392B45CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{929D1C7E-BCC5-4971-8124-0760392B45CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

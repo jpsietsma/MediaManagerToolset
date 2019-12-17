@@ -26,7 +26,7 @@ namespace Entities.Ext
                 AiringDay = _model.schedule.days.FirstOrDefault(),
                 AiringTime = _model.schedule.time.ToString(),
                 //IsExistingShow = new TelevisionLibrary().DoesShowExist(_selectedItem.ShowName, out string ShowRootDirectory)
-                //Summary = _model.summary
+                Summary = _model.summary
             };
         }
 
