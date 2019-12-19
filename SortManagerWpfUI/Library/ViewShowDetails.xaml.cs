@@ -1,4 +1,5 @@
 ﻿using Entities.Data.TvMaze;
+using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,6 +23,16 @@ namespace SortManagerWpfUI.Library
         {
             InitializeComponent();
 
+            closeButton = new ButtonAdv();
+            closeButton.Height = 35;
+            closeButton.Width = 150;
+            closeButton.Label = "Close";
+
+        }
+
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

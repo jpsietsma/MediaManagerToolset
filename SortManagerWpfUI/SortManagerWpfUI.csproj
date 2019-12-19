@@ -39,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Syncfusion.Shared.WPF">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Syncfusion\Essential Studio\WPF\17.4.0.39\precompiledassemblies\netcoreapp3.0\Syncfusion.Shared.WPF.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Images\SortCopyToLibrary_icon.jpg" />
   </ItemGroup>
 

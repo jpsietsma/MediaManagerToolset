@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SortManagerWpfUI"
+        xmlns:sync="http://schemas.syncfusion.com/wpf"
         mc:Ignorable="d"
         Title="Television Show | Library Contents" Height="950" Width="1200">
     <Grid>
@@ -117,19 +118,19 @@
                             <StackPanel Orientation="Horizontal">
 
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Click="Button_Click" Tag="{Binding Name}" Width="60" Height="30">Priority!</Button>
+                                    <sync:ButtonAdv Click="Button_Click" Tag="{Binding Name}" Width="60" Height="30" Label="_!!_" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" x:Name="AddShowButtonPanel">
-                                    <Button Click="Button_Click" Tag="{Binding Name}" Margin="20 0 0 0">Add</Button>
+                                    <sync:ButtonAdv Click="Button_Click" Tag="{Binding Name}" Margin="20 0 0 0" Label="Add" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" x:Name="RemoveShowButtonPanel">
-                                    <Button Click="Button_Click" Tag="{Binding Name}" Margin="20 0 0 0">Remove</Button>
+                                    <sync:ButtonAdv Click="Button_Click" Tag="{Binding Name}" Margin="20 0 0 0" Label="Remove" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" x:Name="FileInfoButtonPanel">
-                                    <Button Click="Button_Click_GetMoreInfo" Tag="{Binding }" Margin="20 0 0 0">Get Info</Button>
+                                    <sync:ButtonAdv Click="Button_Click_GetMoreInfo" Tag="" Margin="20 0 0 0" Label="Get Info" />
                                 </StackPanel>
 
                             </StackPanel>                            

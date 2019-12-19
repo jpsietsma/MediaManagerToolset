@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SortManagerWpfUI.Library;
+using Syncfusion.Windows.Tools.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -103,10 +104,10 @@ namespace SortManagerWpfUI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as Button).Tag != null)
+            if ((sender as ButtonAdv).Tag != null)
             {
-                string _showName = (sender as Button).Name.ToString();
-                string imdbId = (sender as Button).Tag.ToString();
+                string _showName = (sender as ButtonAdv).Name.ToString();
+                string imdbId = (sender as ButtonAdv).Tag.ToString();
 
                 using (DatabaseContext)
                 {
