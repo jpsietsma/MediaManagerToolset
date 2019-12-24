@@ -1,6 +1,7 @@
 ﻿using Entities.Abstract;
 using Entities.Configuration;
 using Entities.Data.EF_Core;
+using Entities.Data.EF_Core.DatabaseEntities;
 using Entities.Data.EzTv;
 using Entities.Data.OpenMovieDb;
 using Entities.Data.TmDB;
@@ -13,7 +14,7 @@ using System.Net;
 
 namespace Entities.Data
 {
-    public abstract class ApiHelper: IApiHelper
+    public class ApiHelper : IApiHelper
     {
         public readonly ProgramConfiguration AppSettings;
 
@@ -29,6 +30,27 @@ namespace Entities.Data
 
         }
 
-        public abstract dynamic MakeAPICall(string ImdbQueryId = "6048596", string TheMovieDbQueryId = "44", string language = "en-US");             
+        public dynamic MakeAPICall(string ImdbQueryId = "6048596", string TheMovieDbQueryId = "44", string language = "en-US")
+        {
+            dynamic Result;
+
+            using (var client = new WebClient())
+            {
+                string RequestUrl = @"http://api.sietsmadevelopment.com/TelevisionLibrary/";
+                client.BaseAddress = RequestUrl;
+
+                client.Headers.Clear();
+                client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+
+                //GET Method  
+                string response = client.DownloadString(RequestUrl);
+
+                Result = JsonConvert.DeserializeObject<TelevisionShow>(response);
+            }
+
+            return Result;
+        }
+        
+
     }    
 }

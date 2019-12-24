@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.Configuration;
+using Entities.Data;
+using Entities.Data.EF_Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +27,14 @@ namespace MediaLibraryMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddControllersWithViews();
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<DatabaseContext>(option => option.UseSqlServer(Configuration["database:connection"]));
+
+            services.AddScoped<DatabaseContext>();
+            services.Configure<ProgramConfiguration>(Configuration.GetSection(nameof(ProgramConfiguration)));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

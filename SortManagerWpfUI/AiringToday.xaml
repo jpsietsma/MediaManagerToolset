@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SortManagerWpfUI"
         xmlns:sync="http://schemas.syncfusion.com/wpf"
+        xmlns:editors="clr-namespace:Syncfusion.Windows.Controls.Input;assembly=Syncfusion.SfInput.Wpf"
         mc:Ignorable="d"
         Title="Television Show | Library Contents" Height="950" Width="1200">
     <Grid>
@@ -27,6 +28,18 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
+
+        <TextBlock Text="Find Shows in Library: " HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="3"/>
+        <sync:SfTextBoxExt Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" x:Name="AutoCompleteTextBox">
+            <editors:SfTextBoxExt.AutoCompleteItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="User.png" Margin="2" Stretch="Uniform" Width="12"/>
+                        <TextBlock Text="{Binding Name}" Margin="5 2"/>
+                    </StackPanel>
+                </DataTemplate>
+            </editors:SfTextBoxExt.AutoCompleteItemTemplate>
+        </sync:SfTextBoxExt>
 
         <TextBlock x:Name="AiringTodayHeader" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="0" />
         <DataGrid Grid.Row="1" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="6" x:Name="AiringTodayDataGrid" Width="1100" AutoGenerateColumns="False" SelectionChanged="AiringTodayDataGrid_SelectionChanged">
@@ -122,7 +135,7 @@
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" x:Name="AddShowButtonPanel">
-                                    <sync:ButtonAdv Click="Button_Click" Tag="{Binding Name}" Margin="20 0 0 0" Label="Add" />
+                                    <sync:ButtonAdv Click="AddMissingButton_Click" Tag="{Binding Name}" Margin="20 0 0 0" Label="Add" />
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" x:Name="RemoveShowButtonPanel">

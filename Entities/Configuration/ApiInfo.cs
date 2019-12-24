@@ -8,6 +8,7 @@ namespace Entities.Configuration
     {
         public string Name { get; set; }
         public string Base_URL { get; set; }
+        public string Image_Base_Url { get; set; }
         public object Authentication_URL { get; set; }
         public string ApiToken { get; set; }
         public object auth_username { get; set; }

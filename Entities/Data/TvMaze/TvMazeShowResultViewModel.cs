@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Entities.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Entities.Data.TvMaze
 {
@@ -18,6 +20,12 @@ namespace Entities.Data.TvMaze
         public string? NetworkName { get; set; }
         public string? AiringTime { get; set; }
         public bool IsExistingShow { get; set; }
+
+        public string StripHtmlFromSummary()
+        {
+            return Regex.Replace(Summary, "<.*?>", String.Empty);
+        }
+
     }
 
 }

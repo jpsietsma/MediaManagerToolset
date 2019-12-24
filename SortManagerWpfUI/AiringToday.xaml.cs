@@ -8,6 +8,9 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using SortManagerWpfUI.Library;
 using Syncfusion.Windows.Tools.Controls;
+using Syncfusion.Windows.Controls;
+using Syncfusion.Windows.Shared;
+using Syncfusion.Windows.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +28,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Syncfusion.Windows.Controls.Input;
+using Entities.Configuration.Ext;
 
 namespace SortManagerWpfUI
 {
@@ -54,13 +59,12 @@ namespace SortManagerWpfUI
 
         private void PopulateUI()
         {
-            DateTime _today = DateTime.Today;
+            DateTime _today = DateTime.Today;            
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(@"http://api.tvmaze.com/");
             client.DefaultRequestHeaders.Add("ApiToken", AppSettings.MediaAPIKeyConfiguration.ApiKeyInfo.Where(x => x.Name == "TVMaze").FirstOrDefault().ApiToken);
-            client.DefaultRequestHeaders.Accept.Add(
-               new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             HttpResponseMessage response = client.GetAsync($@"schedule?country=US&date={ _today.Date.Year }-{ _today.Month }-{ _today.Day }").Result;
             if (response.IsSuccessStatusCode)
@@ -95,6 +99,19 @@ namespace SortManagerWpfUI
                 shows = shows.Where(x => x.AiringDay == _today.DayOfWeek.ToString()).ToList().OrderByDescending(x => x.IsExistingShow).ThenBy(x => x.Name).ToList();                
                 AiringTodayDataGrid.ItemsSource = shows;
 
+                AutoCompleteTextBox = new SfTextBoxExt()
+                {
+                    AutoCompleteSource = shows,
+                    SearchItemPath = "Name",
+                    PopupDelay = new TimeSpan(0,0,2),
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Width = 300,
+                    Height = 25,
+                    AutoCompleteMode = AutoCompleteMode.Suggest
+
+                };
+
             }
             else
             {
@@ -109,10 +126,8 @@ namespace SortManagerWpfUI
                 string _showName = (sender as ButtonAdv).Name.ToString();
                 string imdbId = (sender as ButtonAdv).Tag.ToString();
 
-                using (DatabaseContext)
-                {
-                    //do EF SQL add here to priority shows with Stored Procedure
-                }
+                var x = DatabaseContext.SearchShows("Test");
+                //var x = DatabaseContext.Shows;
 
                 var AddNewPriorityWindow = new AddNewPriorityShow(Settings);
                 AddNewPriorityWindow.DataContext = SelectedEntry;
@@ -121,57 +136,67 @@ namespace SortManagerWpfUI
             
         }
 
+        private void AddMissingButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as ButtonAdv).Tag != null)
+            {
+                string _showName = (sender as ButtonAdv).Name.ToString();
+                string imdbId = (sender as ButtonAdv).Tag.ToString();
+
+
+                //DatabaseContext.AddMissingEpisodeRecord(0, 1, 2, "path", null, null, null);
+                //var x = DatabaseContext.SearchShows("Test");
+                //var x = DatabaseContext.Shows;
+
+                var AddNewPriorityWindow = ServiceProvider.GetRequiredService<AddNewPriorityShow>();
+                AddNewPriorityWindow.DataContext = SelectedEntry;
+                AddNewPriorityWindow.Show();
+            }
+
+        }
+
         private bool DoesShowExist(string ShowName, out int showPremiereYear, out string matchedShowDirectoryName)
         {
             List<string> allShows = new List<string>();
             showPremiereYear = -1;
-            matchedShowDirectoryName = string.Empty;
+            matchedShowDirectoryName = string.Empty;            
 
-            foreach (string _drive in AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders)
+            foreach (string _show in AppSettings.TelevisionLibraryConfiguration.GetTelevisionLibraryContents())
             {
-                var dirs = Directory.GetDirectories(_drive);
+                string showDirectoryName = _show.Split("//").Last();
 
-                foreach (string _show in dirs)
+                if (showDirectoryName.ToLower().Contains(ShowName.ToLower()))
                 {
-                    string showDirectoryName = _show.Split("//").Last();
+                    matchedShowDirectoryName = showDirectoryName;
 
-                    if (showDirectoryName.ToLower().Contains(ShowName.ToLower()))
+                    string regex = @"(?<ShowName>.*)\s(?<ShowPremiere>[(](?<PremiereYear>\d\d\d\d)[)])";
+                    var match = Regex.Match(showDirectoryName, regex);
+
+                    if (match.Success)
                     {
-                        matchedShowDirectoryName = showDirectoryName;
-
-                        string regex = @"(?<ShowName>.*)\s(?<ShowPremiere>[(](?<PremiereYear>\d\d\d\d)[)])";
-                        var match = Regex.Match(showDirectoryName, regex);
-
-                        if (match.Success)
-                        {
-                            int.TryParse(match.Groups["PremiereYear"].Value, out showPremiereYear);
-                        }
-                        else
-                        {
-                            //Premiere year is not in library folder name but show matches
-                            //Allows for fuzzy doesshowexist logic
-                            showPremiereYear = 0;
-                        }
-
-                        allShows.Add(_show);
+                        int.TryParse(match.Groups["PremiereYear"].Value, out showPremiereYear);
                     }
+                    else
+                    {
+                        //Premiere year is not in library folder name but show matches
+                        //Allows for fuzzy doesshowexist logic
+                        showPremiereYear = 0;
+                    }
+
+                    allShows.Add(_show);
                 }
             }
 
-            if (allShows.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return allShows.Count > 0;            
         }
 
         private void Button_Click_GetMoreInfo(object sender, RoutedEventArgs e)
         {
+            var _entry = SelectedEntry as TvMazeShowResultViewModel;
+                _entry.Summary = _entry.StripHtmlFromSummary();
+
             var _newWindow = ServiceProvider.GetRequiredService<ViewShowDetails>();
-                _newWindow.DataContext = SelectedEntry as TvMazeShowResultViewModel;
+                _newWindow.DataContext = _entry;            
                 _newWindow.Show();
         }
 

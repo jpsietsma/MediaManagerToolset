@@ -8,17 +8,23 @@ using Microsoft.Extensions.Logging;
 using MediaLibraryMVC.Models;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace MediaLibraryMVC.Controllers
 {
     public class HomeController : Controller
     {
-        List<string> _dataList;
+        List<TelevisionShowViewModel> _dataList;
+        WebClient _webClient;
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            _dataList = new List<TelevisionShowViewModel>();
         }
 
         public IActionResult Index()
@@ -28,23 +34,21 @@ namespace MediaLibraryMVC.Controllers
 
         public IActionResult GetAllShows()
         {
-            _dataList = new List<string>();
-                _dataList.AddRange(Directory.GetDirectories(@"\\jimmybeast-sdn\E\TV Shows"));
-                _dataList.AddRange(Directory.GetDirectories(@"\\jimmybeast-sdn\F\TV Shows"));
-                _dataList.AddRange(Directory.GetDirectories(@"\\jimmybeast-sdn\G\TV Shows"));
-                _dataList.AddRange(Directory.GetDirectories(@"\\jimmybeast-sdn\H\TV Shows"));
-                _dataList.AddRange(Directory.GetDirectories(@"\\jimmybeast-sdn\I\TV Shows"));
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/");
+            client.DefaultRequestHeaders.Accept.Add(
+               new MediaTypeWithQualityHeaderValue("application/json"));
 
+            HttpResponseMessage response = client.GetAsync($@"TelevisionLibrary").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string str = response.Content.ReadAsStringAsync().Result;
+                _dataList = JsonConvert.DeserializeObject<List<TelevisionShowViewModel>>(str);
+            }
 
-            List<JsonViewModel> _modelList = new List<JsonViewModel>();
-            JsonViewModel _model = new JsonViewModel();
+            ViewBag.dataSource = _dataList;
 
-            _model.JsonData = JsonConvert.SerializeObject(_dataList);
-
-            _modelList.Add(_model);            
-            
-
-            return View(_modelList);
+            return View();
         }
 
         public IActionResult Privacy()
