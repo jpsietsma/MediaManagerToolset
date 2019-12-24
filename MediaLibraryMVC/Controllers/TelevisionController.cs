@@ -28,7 +28,8 @@ namespace MediaLibraryMVC.Controllers
         }
 
         public IActionResult Library()
-        {            
+        {
+            ViewData["Title"] = "Television Shows";
             List<TelevisionShow> _libraryContents = new List<TelevisionShow>();
 
             using (var client = new WebClient())
@@ -44,6 +45,11 @@ namespace MediaLibraryMVC.Controllers
 
                 _libraryContents = JsonConvert.DeserializeObject<List<TelevisionShow>>(response);
                 _libraryContents = _libraryContents.OrderBy(p => p.ShowName).ToList();
+
+                foreach (TelevisionShow Show in _libraryContents)
+                {
+                    Show.ShowPath = Show.ShowPath.Replace(@"\\JimmyBeast-sdn\", "");
+                }
             }
 
             ViewBag.DataSource = _libraryContents;
@@ -53,6 +59,8 @@ namespace MediaLibraryMVC.Controllers
 
         public IActionResult ShowDetails(int _showId)
         {
+            ViewBag.ShowName = "Test Show 1";
+
             TelevisionShow Show = new TelevisionShow();
             Show.ShowName = "Test Show";
             Show.ShowPath = @"\\JimmyBeast-sdn\F\Test Show";

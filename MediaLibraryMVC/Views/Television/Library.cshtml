@@ -12,12 +12,13 @@
         var pageSize = grid.pageSettings.pageSize;   //initial page size
         var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
         grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+
    }
     </script>
 
 <h1>Television Show Library</h1>
 
-    <ejs-grid id="Grid" dataSource="@ViewBag.DataSource" allowPaging="true" allowPdfExport="true" width="1100" height="700" load="load">
+    <ejs-grid id="Grid" dataSource="@ViewBag.DataSource" allowSorting="true" allowPaging="true" width="1100" height="750" load="load">
 
         <e-grid-columns>
             <e-grid-column field="Id" headerText="Show ID" textAlign="Center" width="80"></e-grid-column>

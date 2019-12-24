@@ -1,13 +1,13 @@
 ﻿@model Entities.Television.TelevisionShow
 
 @{
-    ViewData["Title"] = "ShowDetails";
+    ViewData["Title"] = "Show Overview";
 }
 
-<h1>ShowDetails</h1>
+<h1>@ViewBag.ShowName</h1>
 
 <div>
-    <h4>TelevisionShow</h4>
+    <h4>Television Show | Details Overview</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -37,6 +37,5 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Library">Back to List</a>
 </div>
