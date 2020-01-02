@@ -15,8 +15,8 @@ namespace Entities.Data.EF_Core
     {
         //DbSet property declarations
         public virtual DbSet<DatabaseEntities.TelevisionShow> Shows { get; set; }
-        public virtual DbSet<Television.TelevisionShow> TelevisionShows { get; set; }
-        public virtual DbSet<MissingTelevisionEpisode> MissingEpisodes { get; set; }
+        public virtual DbSet<Television.TelevisionShow> TelevisionShowLibrary { get; set; }
+        public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
 
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)

@@ -31,12 +31,57 @@ namespace MediaLibraryMVC
         {
             services.AddControllersWithViews();
 
-            //Configure our httpclient named instances to inject for API httpClient calls
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.DatabaseConfiguration.ConnectionString));
+
+            //Configure our httpclient named instances to inject for API httpClient calls to the local television library
             services.AddHttpClient("SDNTelevisionLibraryQuery", c=> {
 
                 c.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/TelevisionLibrary/");
 
             });
+
+            //Configure our httpclient named instances to inject for API httpclient calls to TheMovieDb
+            services.AddHttpClient("TheMovieDBShowQuery", c => {
+
+                c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&page=1");
+
+            });
+
+            
+
+            ////Get external Ids using TheMovieDb ID for each show
+            //using (var client = new WebClient())
+            //{
+            //    if (result != null)
+            //    {
+            //        string apiKey = "c0604d69b7df230f03504bdc8475887a";
+
+            //        string RequestUrl = @$"https://api.themoviedb.org/3/tv/{ result.id }/external_ids?api_key={ apiKey }&language=en-US&page=1";
+            //        client.BaseAddress = RequestUrl;
+
+            //        client.Headers.Clear();
+            //        client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+
+            //        try
+            //        {
+            //            //GET Method  
+            //            string response = client.DownloadString(RequestUrl);
+
+            //            var x = JsonConvert.DeserializeObject<TheMovieDbExternalIds>(response);
+            //            Show.imdbId = x.imdb_id;
+            //            Show.theMovieDbId = x.id.ToString();
+            //        }
+            //        catch (Exception)
+            //        {
+
+            //        }
+
+            //    } 
+
+            //}
+
+
+
 
             //Configure our Request messages to inject for API httpClient calls
             var request = new HttpRequestMessage() { Method = HttpMethod.Get };

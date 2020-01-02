@@ -22,9 +22,10 @@ namespace MediaLibraryMVC.Controllers
         ProgramConfiguration AppSettings;
         IHttpClientFactory HttpClientFactory;
 
-        public TelevisionController(ProgramConfiguration _settings)
+        public TelevisionController(ProgramConfiguration _settings, DatabaseContext _context)
         {
-            AppSettings = _settings;            
+            AppSettings = _settings;
+            DbContext = _context;
         }
 
         public IActionResult Index()
@@ -45,6 +46,8 @@ namespace MediaLibraryMVC.Controllers
             //Get our television show library contents using a named httpclient from our injected factory
             var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
 
+            var mdbClient = HttpClientFactory.CreateClient("TheMovieDBShowQuery");
+
             var request = _requestMessage;
                 request.RequestUri = client.BaseAddress;
 
@@ -58,61 +61,7 @@ namespace MediaLibraryMVC.Controllers
                 foreach (TelevisionShow Show in _libraryContents)
                 {
                     Show.ShowPath = Show.ShowPath.Replace(@"\\JimmyBeast-sdn\", "");
-                    Show.PosterImage = @"https://image.tmdb.org/t/p/w500" + Show.PosterImage;
-
-                    ////Get TheMovieDb IDs for each show
-                    //TheMovieDbShowResult result = new TheMovieDbShowResult();
-
-                    //using (var client = new WebClient())
-                    //{
-                    //    string showname = Show.ShowName;
-                    //    string apiKey = "c0604d69b7df230f03504bdc8475887a";
-
-                    //    string RequestUrl = @$"https://api.themoviedb.org/3/search/tv?api_key={ apiKey }&language=en-US&query={ showname }&page=1";
-                    //    client.BaseAddress = RequestUrl;
-
-                    //    client.Headers.Clear();
-                    //    client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-
-                    //    //GET Method
-                    //    string response = client.DownloadString(RequestUrl);
-
-                    //    if (JsonConvert.DeserializeObject<TheMovieDbShowSearchResults>(response).results.Count > 0)
-                    //    {
-                    //        result = JsonConvert.DeserializeObject<TheMovieDbShowSearchResults>(response).results.First();
-                    //    }                   
-                    //}
-
-                    ////Get external Ids using TheMovieDb ID for each show
-                    //using (var client = new WebClient())
-                    //{
-                    //    if (result != null)
-                    //    {
-                    //        string apiKey = "c0604d69b7df230f03504bdc8475887a";
-
-                    //        string RequestUrl = @$"https://api.themoviedb.org/3/tv/{ result.id }/external_ids?api_key={ apiKey }&language=en-US&page=1";
-                    //        client.BaseAddress = RequestUrl;
-
-                    //        client.Headers.Clear();
-                    //        client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-
-                    //        try
-                    //        {
-                    //            //GET Method  
-                    //            string response = client.DownloadString(RequestUrl);
-
-                    //            var x = JsonConvert.DeserializeObject<TheMovieDbExternalIds>(response);
-                    //            Show.imdbId = x.imdb_id;
-                    //            Show.theMovieDbId = x.id.ToString();
-                    //        }
-                    //        catch (Exception)
-                    //        {
-
-                    //        }
-
-                    //    } 
-
-                    //}
+                    Show.PosterImage = @"https://image.tmdb.org/t/p/w500" + Show.PosterImage;                    
                 }
             }            
 
@@ -122,12 +71,8 @@ namespace MediaLibraryMVC.Controllers
         }
 
         public IActionResult ShowDetails(int _showId)
-        {
-            ViewBag.ShowName = "Test Show 1";
-
-            TelevisionShow Show = new TelevisionShow();
-            Show.ShowName = "Test Show";
-            Show.ShowPath = @"\\JimmyBeast-sdn\F\Test Show";
+        {           
+            TelevisionShow Show = DbContext.TelevisionShowLibrary.Where(x => x.Id == _showId).FirstOrDefault();
 
             return View(Show);
         }
