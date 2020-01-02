@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Entities.Configuration;
 using Entities.Data;
@@ -29,12 +30,19 @@ namespace MediaLibraryMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //Configure our httpclient named instances to inject for API httpClient calls
             services.AddHttpClient("SDNTelevisionLibraryQuery", c=> {
 
                 c.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/TelevisionLibrary/");
 
             });
 
+            //Configure our Request messages to inject for API httpClient calls
+            var request = new HttpRequestMessage() { Method = HttpMethod.Get };
+            request.Headers.Add("Accept", "application/json");
+
+            services.AddSingleton<HttpRequestMessage>(request);
             services.AddSingleton<ProgramConfiguration>(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration);
 
         }

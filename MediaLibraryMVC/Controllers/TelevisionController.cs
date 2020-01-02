@@ -35,7 +35,7 @@ namespace MediaLibraryMVC.Controllers
             return View();            
         }
 
-        public async Task<IActionResult> Library([FromServices] IHttpClientFactory _clientFactory)
+        public async Task<IActionResult> Library([FromServices] IHttpClientFactory _clientFactory, HttpRequestMessage _requestMessage)
         {
             HttpClientFactory = _clientFactory;
 
@@ -45,8 +45,8 @@ namespace MediaLibraryMVC.Controllers
             //Get our television show library contents using a named httpclient from our injected factory
             var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
 
-            var request = new HttpRequestMessage(HttpMethod.Get, client.BaseAddress);
-            request.Headers.Add("Accept", "application/json");
+            var request = _requestMessage;
+                request.RequestUri = client.BaseAddress;
 
             //GET Method  
             var response = await client.SendAsync(request);
