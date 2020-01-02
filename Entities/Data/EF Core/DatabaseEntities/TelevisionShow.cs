@@ -20,5 +20,8 @@ namespace Entities.Data.EF_Core.DatabaseEntities
 
         [Display(Name = "IMDB Show ID")]
         public string ImdbId { get; set; }
+
+        [Display(Name = "TheMovieDb Show ID")]
+        public string TheMovieDbId { get; set; }
     }
 }

@@ -15,25 +15,106 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MediaLibraryMVC</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <ejs-menu id="menu" items="@ViewBag.NavigationMenuItems" template="#menuTemplate" width="800px"></ejs-menu>
+
+
+        <!-- Template to render Menu -->
+        <script id="menuTemplate" type="text/x-template">
+            ${if(Category)}
+            ${text}
+            ${else if (items)}
+            <div style="width: 300px;display: flex;justify-content: space-between;">
+                <span style="width:100%;">${text.value}</span>
+            </div>
+            ${else}
+            <div tabindex="0" class="e-card">
+                <div class="e-card-header">
+                    <div class="e-card-header-caption">
+                        <div class="e-card-header-title">About Us</div>
+                    </div>
+                </div>
+                <div class="e-card-content">
+                    ${about.value}
+                </div>
+                <div class="e-card-actions">
+                    <button class="e-btn e-outline" style="pointer-events: auto;">
+                        Read More
+                    </button>
                 </div>
             </div>
-        </nav>
+            ${/if}
+        </script>
+        <style>
+            .menu-control {
+                margin-top: 45px;
+                text-align: center;
+            }
+
+            /* Common ul & li styles */
+            .e-bigger .e-menu-wrapper ul.e-ul,
+            .e-menu-wrapper ul.e-ul {
+                padding: 0;
+            }
+
+                .e-bigger .e-menu-wrapper ul.e-ul .e-menu-item,
+                .e-menu-wrapper ul.e-ul .e-menu-item {
+                    display: flex;
+                    padding: 0 10px;
+                    outline-color: transparent;
+                }
+
+            /** Avatar customization */
+            .e-menu-wrapper ul .e-menu-item .e-avatar {
+                background-color: inherit;
+                font-size: 8px;
+                margin-right: 8px;
+                align-self: center;
+                width: auto;
+                overflow: visible;
+            }
+
+            .e-bigger .e-menu-wrapper ul .e-menu-item .e-avatar {
+                font-size: 10px;
+            }
+
+            /** Badge customization */
+            .e-menu-wrapper ul .e-menu-item .e-badge {
+                margin-left: 10px;
+                align-self: center;
+                overflow: visible;
+            }
+
+            /** Card customization */
+            .e-menu-wrapper ul.e-ul .e-menu-item .e-card {
+                width: 290px;
+                font-size: inherit;
+                background-color: inherit;
+                border-color: transparent;
+            }
+
+            .e-bigger .e-menu-wrapper ul.e-ul .e-menu-item .e-card {
+                width: 320px;
+            }
+
+            .e-menu-wrapper ul.e-ul .e-menu-item .e-card .e-card-content {
+                white-space: normal;
+                color: inherit;
+                padding-top: 0;
+                text-align: justify;
+                font-size: inherit;
+            }
+
+            .e-menu-wrapper ul.e-ul .e-menu-item#about {
+                height: auto;
+                padding: 0;
+            }
+
+                .e-menu-wrapper ul.e-ul .e-menu-item#about.e-focused {
+                    background-color: transparent;
+                    outline-color: transparent;
+                    pointer-events: none;
+                }
+        </style>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -43,7 +124,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - MediaLibraryMVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2019 - Sietsma Development Media Toolset - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

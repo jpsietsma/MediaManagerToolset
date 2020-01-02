@@ -17,14 +17,17 @@ namespace MediaLibraryMVC.Controllers
     public class HomeController : Controller
     {
         List<TelevisionShowViewModel> _dataList;
-        WebClient _webClient;
+        HttpClient _webClient;
+
+        List<object> NavMenuItems = new List<object>();
 
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _dataList = new List<TelevisionShowViewModel>();
+            _dataList = new List<TelevisionShowViewModel>();          
+            
         }
 
         public IActionResult Index()
@@ -34,12 +37,12 @@ namespace MediaLibraryMVC.Controllers
 
         public IActionResult GetAllShows()
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/");
-            client.DefaultRequestHeaders.Accept.Add(
+            _webClient = new HttpClient();
+            _webClient.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/");
+            _webClient.DefaultRequestHeaders.Accept.Add(
                new MediaTypeWithQualityHeaderValue("application/json"));
 
-            HttpResponseMessage response = client.GetAsync($@"TelevisionLibrary").Result;
+            HttpResponseMessage response = _webClient.GetAsync($@"TelevisionLibrary").Result;
             if (response.IsSuccessStatusCode)
             {
                 string str = response.Content.ReadAsStringAsync().Result;

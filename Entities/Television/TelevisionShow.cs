@@ -18,5 +18,11 @@ namespace Entities.Television
 
         [Display(Name = "TvMaze ID")]
         public string tvMazeId { get; set; }
+
+        [Display(Name = "TheMovieDB ID")]
+        public string theMovieDbId { get; set; }
+
+        [Display(Name = "Image Path")]
+        public string PosterImage { get; set; }
     }
 }
