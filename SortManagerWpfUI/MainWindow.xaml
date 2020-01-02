@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SortManagerWpfUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Media Toolset | User Dashboard" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
@@ -13,8 +13,14 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         
-        <Menu x:Name="FileMenu" Grid.Row="0">
+        <Menu x:Name="FileMenu" Grid.Row="0" Grid.ColumnSpan="4">
             <MenuItem Header="File">
                 <MenuItem Header="Exit" x:Name="MenuFileExit" Click="MenuItem_File_Exit" />
             </MenuItem>
@@ -23,14 +29,16 @@
             </MenuItem>
             <MenuItem Header="Television">
                 <MenuItem Header="Add Show" x:Name="MenuTelevisionAddShow" Click="MenuItem_Television_AddShow" />
-                <MenuItem Header="TV Library" x:Name="MenuTelevisionLibrary" Click="MenuItem_Television_TvLibrary" />
+                <MenuItem Header="AiringToday" x:Name="MenuTelevisionAiringToday" Click="MenuItem_Television_AiringToday" />
             </MenuItem>
             <MenuItem Header="Movies">
                 <MenuItem Header="Movie Library" x:Name="MenuMoviesLibrary" Click="MenuItem_Movies_MovieLibrary" />
             </MenuItem>
+            <MenuItem Header="Search">
+                <MenuItem Header="TvMaze Show Search" x:Name="MenuSearchTvMaze" Click="MenuItem_Search_TvMaze" />
+            </MenuItem>
             <MenuItem Header="Maintenance">
                 <MenuItem Header="Missing Episodes" x:Name="MenuMaintenanceMissingEpisodes" Click="MenuItem_Maintenance_MissingEpisodes" />
-                <MenuItem Header="Missing Seasons" x:Name="MenuMaintenanceMissingSeasons" Click="MenuItem_Maintenance_MissingSeasons" />
             </MenuItem>
             <MenuItem Header="Administration">
                 <MenuItem Header="User Settings" x:Name="MenuAdminUserSettings" Click="MenuItem_Admin_UserSettings" />
@@ -38,33 +46,33 @@
                 <MenuItem Header="Library Settings" x:Name="MenuAdminLibrarySettings" Click="MenuItem_Admin_LibrarySettings" />
             </MenuItem>
         </Menu>
-        <StackPanel Orientation="Horizontal" Margin="50 30 50 10" Grid.Row="1">
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="350" Height="275">
+        <StackPanel Orientation="Horizontal" Margin="50 30 50 10" Grid.Row="1" Grid.ColumnSpan="4">
+            <StackPanel Orientation="Vertical" Width="350" Height="275">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Completed Downloading: " Margin="15 15 0 15" FontSize="14"/>
-                    <TextBlock x:Name="SortQueueCurrentCount" />
+                    <TextBlock x:Name="SortQueueCurrentCount" VerticalAlignment="Center" HorizontalAlignment="Center" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Currently Downloading: " Margin="15 0 15 15" FontSize="14"/>
-                    <TextBlock x:Name="SortQueueDownloadingCount" />
+                    <TextBlock x:Name="SortQueueDownloadingCount" VerticalAlignment="Center" HorizontalAlignment="Center"  />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Waiting Remote Sync: " Margin="15 0 15 15" FontSize="14"/>
-                    <TextBlock x:Name="SortQueueRemoteCompletedCount" />
+                    <TextBlock x:Name="SortQueueRemoteCompletedCount" VerticalAlignment="Center" HorizontalAlignment="Center"  />
                 </StackPanel>
-                <StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Downloading Remotely: " Margin="15 0 15 15" FontSize="14"/>
-                    <TextBlock x:Name="SortQueueRemoteDownloadingCount" />
+                    <TextBlock x:Name="SortQueueRemoteDownloadingCount" VerticalAlignment="Center" HorizontalAlignment="Center"  />
                 </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center" Width="350" Height="275" Grid.Row="1">
+            <StackPanel Orientation="Vertical" Width="350" Height="275" Grid.Row="1">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Total Sort Drivespace: " Margin="15 15 0 15" FontSize="14"/>
-                    <TextBlock x:Name="SortQueueTotalSpace" />
+                    <TextBlock x:Name="SortQueueTotalSpace" VerticalAlignment="Center" HorizontalAlignment="Center"  />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Free Sort Drivespace: " Margin="15 0 15 15" FontSize="14"/>
-                    <TextBlock x:Name="SortQueueFreeSpace" />
+                    <TextBlock x:Name="SortQueueFreeSpace" VerticalAlignment="Center" HorizontalAlignment="Center"  />
                 </StackPanel>
             </StackPanel>            
         </StackPanel>        

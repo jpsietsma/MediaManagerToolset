@@ -1,0 +1,156 @@
+﻿<Window x:Class="SortManagerWpfUI.AiringToday"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SortManagerWpfUI"
+        xmlns:sync="http://schemas.syncfusion.com/wpf"
+        xmlns:editors="clr-namespace:Syncfusion.Windows.Controls.Input;assembly=Syncfusion.SfInput.Wpf"
+        mc:Ignorable="d"
+        Title="Television Show | Library Contents" Height="950" Width="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Find Shows in Library: " HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="3"/>
+        <sync:SfTextBoxExt Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="2" x:Name="AutoCompleteTextBox">
+            <editors:SfTextBoxExt.AutoCompleteItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="User.png" Margin="2" Stretch="Uniform" Width="12"/>
+                        <TextBlock Text="{Binding Name}" Margin="5 2"/>
+                    </StackPanel>
+                </DataTemplate>
+            </editors:SfTextBoxExt.AutoCompleteItemTemplate>
+        </sync:SfTextBoxExt>
+
+        <TextBlock x:Name="AiringTodayHeader" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="4" Grid.Row="0" />
+        <DataGrid Grid.Row="1" Grid.RowSpan="5" Grid.Column="1" Grid.ColumnSpan="6" x:Name="AiringTodayDataGrid" Width="1100" AutoGenerateColumns="False" SelectionChanged="AiringTodayDataGrid_SelectionChanged">
+            <DataGrid.Columns>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="TvMaze ID" FontSize="15" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Id}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="IMDB ID" FontSize="15" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Imdb}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="TheTvDB ID" FontSize="15" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Thetvdb}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Existing Show?" FontSize="15" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding IsExistingShow}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Show Name" FontSize="15" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Genre" FontSize="15" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Type}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Runtime" FontSize="15" FontWeight="Bold" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Runtime}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width="*">
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Library Actions" Margin="40 0 0 0" FontWeight="Bold" FontSize="15" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>                            
+                            <StackPanel Orientation="Horizontal">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <sync:ButtonAdv Click="Button_Click" Tag="{Binding Name}" Width="60" Height="30" Label="_!!_" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" x:Name="AddShowButtonPanel">
+                                    <sync:ButtonAdv Click="AddMissingButton_Click" Tag="{Binding Name}" Margin="20 0 0 0" Label="Add" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" x:Name="RemoveShowButtonPanel">
+                                    <sync:ButtonAdv Click="Button_Click" Tag="{Binding Name}" Margin="20 0 0 0" Label="Remove" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" x:Name="FileInfoButtonPanel">
+                                    <sync:ButtonAdv Click="Button_Click_GetMoreInfo" Tag="" Margin="20 0 0 0" Label="Get Info" />
+                                </StackPanel>
+
+                            </StackPanel>                            
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>                    
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

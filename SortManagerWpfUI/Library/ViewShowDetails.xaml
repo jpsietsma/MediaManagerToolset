@@ -1,0 +1,112 @@
+﻿<Window x:Class="SortManagerWpfUI.Library.ViewShowDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SortManagerWpfUI.Library"
+        xmlns:sync="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        Title="ViewShowDetails" Height="700" Width="900">
+    <Grid x:Name="DetailsGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- Show Poster--><Border x:Name="ShowPosterImage" Grid.Row="2" Grid.Column="2" Grid.RowSpan="4" Grid.ColumnSpan="2" BorderBrush="Black" BorderThickness=".25" />
+        <!-- Show Name--><TextBlock Text="{Binding Name}" Grid.Row="1" Grid.Column="4" Grid.ColumnSpan="4" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <!-- Show Summary--><TextBlock Text="{Binding Summary }" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="3" Grid.RowSpan="3" TextWrapping="Wrap" />
+        <!-- Show DateInfo   use stackpanel?? --><Border Grid.Row="2" Grid.Column="7" Grid.ColumnSpan="2" Grid.RowSpan="4" BorderThickness=".25" BorderBrush="Black" Margin="20 0 0 0" />
+        <TabControl Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="7" Grid.RowSpan="3">
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Show Overview" />
+                </TabItem.Header>
+                <StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Show Directory: " />
+                        <TextBlock Text="{Binding ShowLibraryDirectory}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Airing Status: " />
+                        <TextBlock Text="{Binding AiringStatus}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Episodes in Library: " />
+                        <TextBlock Text="{Binding ShowLibraryDirectory}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Seasons in Library: " />
+                        <TextBlock Text="{Binding ShowLibraryDirectory}" />
+                    </StackPanel>
+                </StackPanel>                
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Season Content" />
+                </TabItem.Header>
+                <StackPanel>
+                    <DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Show Season" />
+                            <DataGridTextColumn Header="Season Path" />
+                            <DataGridTextColumn Header="Season Actions" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Episode List" />
+                </TabItem.Header>
+                <StackPanel>
+                    <DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Episode #" />
+                            <DataGridTextColumn Header="Season #" />
+                            <DataGridTextColumn Header="Episode Actions" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Viewing Statistics" />
+                </TabItem.Header>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock Text="Requested Content" />
+                </TabItem.Header>
+                <DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Request Type" />
+                        <DataGridTextColumn Header="Request Owner" />
+                        <DataGridTextColumn Header="Request Status" />
+                        <DataGridTextColumn Header="Request Actions" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+        <sync:ButtonAdv x:Name="closeButton" Click="closeButton_Click" Grid.Row="9" Grid.Column="8" Label="Close" />
+    </Grid>
+</Window>

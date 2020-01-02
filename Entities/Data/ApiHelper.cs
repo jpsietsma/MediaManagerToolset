@@ -1,100 +1,56 @@
-﻿using System;
+﻿using Entities.Abstract;
+using Entities.Configuration;
+using Entities.Data.EF_Core;
+using Entities.Data.EF_Core.DatabaseEntities;
+using Entities.Data.EzTv;
+using Entities.Data.OpenMovieDb;
+using Entities.Data.TmDB;
+using Entities.Data.TvMaze;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace Entities.Data
 {
-    public class ApiHelper
+    public class ApiHelper : IApiHelper
     {
-        public string Response { get; set; }
-        public string Url { get; set; }
+        public readonly ProgramConfiguration AppSettings;
 
-        public ApiHelper(string query, string url = "http://api.tvmaze.com/search/shows")
+        public DatabaseContext DatabaseContext { get; set; }
+
+        public string Response { get; private set; }
+        public string RequestUrl { get; set; }
+
+        public ApiHelper(ProgramConfiguration _settings, DatabaseContext _dbContext)
         {
-            Url = url + "?q=" + query;
+            AppSettings = _settings;
+            DatabaseContext = _dbContext;
+
         }
 
-        public async Task WebApiCall()
+        public dynamic MakeAPICall(string ImdbQueryId = "6048596", string TheMovieDbQueryId = "44", string language = "en-US")
         {
-            using (var client = new HttpClient())
+            dynamic Result;
+
+            using (var client = new WebClient())
             {
-                client.BaseAddress = new Uri(Url);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                string RequestUrl = @"http://api.sietsmadevelopment.com/TelevisionLibrary/";
+                client.BaseAddress = RequestUrl;
+
+                client.Headers.Clear();
+                client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+
                 //GET Method  
-                HttpResponseMessage response = await client.GetAsync(Url);
-                if (response.IsSuccessStatusCode)
-                {
-                    Response = response.Content.ToString();
-                }
-            
+                string response = client.DownloadString(RequestUrl);
+
+                Result = JsonConvert.DeserializeObject<TelevisionShow>(response);
             }
 
+            return Result;
         }
+        
 
-        public async Task TvMazeCall(TvMazeApiCalls _callType, List<KeyValuePair<string, string>> _params)
-        {
-            switch (_callType)
-            {
-                case TvMazeApiCalls.SINGLE_SHOW:
-                    {
-                        Url = "single";
-                        break;
-                    }
-                    
-                case TvMazeApiCalls.RESULTS_SHOW:
-                    {
-                        Url = "result";
-                        break;
-                    }
-
-                case TvMazeApiCalls.ADD_FOLLOWED:
-                    {
-                        Url = "follow show";
-                        break;
-                    }
-
-                case TvMazeApiCalls.LIST_FOLLOWED:
-                    {
-                        Url = "list followed shows";
-                        break;
-                    }
-
-                case TvMazeApiCalls.REMOVE_FOLLOWED:
-                    {
-                        Url = "remove followed show";
-                        break;
-                    }
-            }
-
-            using (var client = new HttpClient())
-            {
-
-                client.BaseAddress = new Uri(Url);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                //GET Method  
-                HttpResponseMessage response = await client.GetAsync(Url);
-                if (response.IsSuccessStatusCode)
-                {
-                    Response = response.Content.ToString();
-                }
-
-            }
-        }
-
-
-        public enum TvMazeApiCalls
-        {
-            SINGLE_SHOW,
-            RESULTS_SHOW,
-            ADD_FOLLOWED,
-            LIST_FOLLOWED,
-            REMOVE_FOLLOWED
-
-        }
     }    
 }

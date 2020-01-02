@@ -1,6 +1,12 @@
 ﻿using Entities.Configuration;
+using Entities.Data.TvMaze;
+using Entities.Ext;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,14 +25,14 @@ namespace SortManagerWpfUI
     public partial class LibrarySettings : Window
     {
         private readonly ProgramConfiguration AppSettings;
+        string _query = "cops";
 
-        public LibrarySettings(ProgramConfiguration settings)
+        public LibrarySettings(IOptions<ProgramConfiguration> _settings)
         {
             InitializeComponent();
-            AppSettings = settings;
+            AppSettings = _settings.Value;
 
-            List<string> LibraryList = AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders;
-            LibraryListBox.ItemsSource = LibraryList;
-        }
+            LibraryListBox.ItemsSource = AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders;
+        }        
     }
 }

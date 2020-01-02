@@ -7,11 +7,19 @@ using System.Text;
 using Entities.Ext;
 using Entities.Television;
 using System.ComponentModel;
+using Microsoft.Extensions.Options;
+using Entities.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Entities.Data.EF_Core;
 
 namespace Entities.Sort
 {
     public class SortQueue
     {
+        private ProgramConfiguration AppSettings;
+        DatabaseContext DatabaseContext;
+        private IServiceProvider ServiceProvider;
+
         public ObservableCollection<IMediaFile> CompletedDownloads { get; private set; }
         public ObservableCollection<IMediaFile> DownloadingFiles { get; private set; }
         public string StorageSpaceTotal { get; private set; }        
@@ -20,34 +28,24 @@ namespace Entities.Sort
         public string SortPath { get; set; }
 
         /// <summary>
-        /// Instantiate an empty SortQueue
+        /// Get a new sortqueue
         /// </summary>
-        public SortQueue()
+        public SortQueue(IOptions<ProgramConfiguration> _settings, DatabaseContext _context)
         {
-            CompletedDownloads = new ObservableCollection<IMediaFile>();
-            DownloadingFiles = new ObservableCollection<IMediaFile>();
-        }
+            AppSettings = _settings.Value;
+            DatabaseContext = _context;
 
-        /// <summary>
-        /// Instantiate a new sort queue object based off of the provided path
-        /// </summary>
-        /// <param name="_path">Root sort folder path to scan</param>
-        public SortQueue(string _path, bool _scanDirectory = true)
-        {
             CompletedDownloads = new ObservableCollection<IMediaFile>();
             DownloadingFiles = new ObservableCollection<IMediaFile>();
 
-            SortPath = _path;
+            SortPath = AppSettings.SortConfiguration.LocalSortDirectory;
 
-            if (_scanDirectory)
-            {
-                PopulateDriveLetter();
-                ScanPopulateQueues();
+            PopulateDriveLetter();
+            ScanPopulateQueues();
 
-                DriveInfo SortDriveInfo = new DriveInfo(DriveLetter);
-                    StorageSpaceTotal = CalculateDriveSpaceString(SortDriveInfo.TotalSize);
-                    StorageSpaceRemaining = CalculateDriveSpaceString(SortDriveInfo.AvailableFreeSpace);                                                      
-            }
+            DriveInfo SortDriveInfo = new DriveInfo(DriveLetter);
+            StorageSpaceTotal = CalculateDriveSpaceInMBString(SortDriveInfo.TotalSize);
+            StorageSpaceRemaining = CalculateDriveSpaceInMBString(SortDriveInfo.AvailableFreeSpace);
         }
 
         /// <summary>
@@ -142,7 +140,7 @@ namespace Entities.Sort
             }            
         }
 
-        private string CalculateDriveSpaceString(double _storageSpaceValue)
+        private string CalculateDriveSpaceInMBString(double _storageSpaceValue)
         {
             string _final = string.Empty;
 
@@ -154,6 +152,6 @@ namespace Entities.Sort
 
             return _final;
         }
-        
+
     }
 }

@@ -1,8 +1,11 @@
-﻿using Entities.Data.TvMaze;
+﻿using Entities.Data;
+using Entities.Data.TvMaze;
+using Entities.Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Entities.Ext
 {
@@ -12,14 +15,20 @@ namespace Entities.Ext
         {
             return new TvMazeShowResultViewModel
             {
+                Id = _model.id,
+                Imdb = _model.externals.imdb,
+                Thetvdb = _model.externals.thetvdb,
                 Name = _model.name,
-                NetworkName = _model.network.name,
+                NetworkName = _model.network != null ? _model.network.name : "",
                 Type = _model.type,
                 Runtime = _model.runtime.ToString(),
                 Status = _model.status,
-                AiringDay = _model.schedule.days.First(),
-                //Summary = _model.summary
+                AiringDay = _model.schedule.days.FirstOrDefault(),
+                AiringTime = _model.schedule.time.ToString(),
+                //IsExistingShow = new TelevisionLibrary().DoesShowExist(_selectedItem.ShowName, out string ShowRootDirectory)
+                Summary = _model.summary
             };
         }
+
     }
 }

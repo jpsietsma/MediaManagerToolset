@@ -1,4 +1,5 @@
-﻿using Entities.Configuration;
+﻿using Entities.Abstract;
+using Entities.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -27,7 +28,7 @@ namespace SortManagerWpfUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        FileSystemWatcher remoteWatcher;
+        FileSystemWatcher SortDirectoryWatcher;
         Entities.Sort.SortQueue SortQueue;
 
         public readonly ProgramConfiguration AppSettings;
@@ -39,20 +40,11 @@ namespace SortManagerWpfUI
         {            
             InitializeComponent();
             AppSettings = settings.Value;
+            ServiceProvider = (App.Current as App).ServiceProvider;
 
-            ConfigureDI();
+            SortDirectoryWatcher = ConfigureSortWatcher();            
 
-            remoteWatcher = new FileSystemWatcher
-            {
-                Path = AppSettings.SortConfiguration.RemoteSortDownloadDirectory,
-                EnableRaisingEvents = true
-            };
-
-            //Set our FileSystemWatcher event triggers
-            remoteWatcher.Created += RemoteWatcher_RemoteFileSyncReady;
-            remoteWatcher.Deleted += RemoteWatcher_RemoteFileSyncDeleted;            
-
-            SortQueue = new Entities.Sort.SortQueue(AppSettings.SortConfiguration.LocalSortDirectory);
+            SortQueue = ServiceProvider.GetRequiredService<Entities.Sort.SortQueue>();
 
             PopulateUI(SortQueue);
         }
@@ -103,13 +95,12 @@ namespace SortManagerWpfUI
             /// </summary>
             private void MenuItem_Sort_CurrentQueue(object sender, RoutedEventArgs e)
             {
-                var newWindow = ServiceProvider.GetRequiredService<SortQueue>();
-                    newWindow.Show();                
+                ServiceProvider.GetRequiredService<SortQueue>().Show();               
             }
 
             private void MenuItem_Admin_UserSettings(object sender, RoutedEventArgs e)
             {
-
+                ServiceProvider.GetRequiredService<UserSettings>().Show();
             }
 
             private void MenuItem_Maintenance_MissingSeasons(object sender, RoutedEventArgs e)
@@ -122,9 +113,12 @@ namespace SortManagerWpfUI
 
             }
 
-            private void MenuItem_Television_TvLibrary(object sender, RoutedEventArgs e)
+            /// <summary>
+            /// User clicked on Television -> Tv Library
+            /// </summary>            
+            private void MenuItem_Television_AiringToday(object sender, RoutedEventArgs e)
             {
-
+                ServiceProvider.GetRequiredService<AiringToday>().Show();
             }
 
             private void MenuItem_Television_AddShow(object sender, RoutedEventArgs e)
@@ -136,29 +130,51 @@ namespace SortManagerWpfUI
             {
 
             }
+
+            private void MenuItem_Maintenance_SortFileDialogTest(object sender, RoutedEventArgs e)
+            {
+                new SortFileInfoDialog().Show();
+            }
+            
+            /// <summary>
+            /// User clicked on Search -> TvMaze Show search
+            /// </summary>
+            private void MenuItem_Search_TvMaze(object sender, RoutedEventArgs e)
+            {
+                ServiceProvider.GetRequiredService<TvMazeShowSearch>().Show();
+            }
             
             /// <summary>
             /// User clicked on Admin -> Program Settings
             /// </summary>
             private void MenuItem_Admin_ProgramSettings(object sender, RoutedEventArgs e)
             {
-                ProgramSettings _programSettingsWindow = new ProgramSettings(AppSettings);
-
-                _programSettingsWindow.Topmost = true;
-                _programSettingsWindow.Activate();
-                _programSettingsWindow.Visibility = Visibility.Visible;
+                ServiceProvider.GetRequiredService<ProgramSettings>().Show();
             }
 
+            /// <summary>
+            /// User clicked on Admin -> Library Settings
+            /// </summary>
             private void MenuItem_Admin_LibrarySettings(object sender, RoutedEventArgs e)
             {
-                LibrarySettings _librarySettingsWindow = new LibrarySettings(AppSettings);
-
-                _librarySettingsWindow.Topmost = true;
-                _librarySettingsWindow.Activate();
-                _librarySettingsWindow.Visibility = Visibility.Visible;
+                ServiceProvider.GetRequiredService<LibrarySettings>().Show();
             }
 
         #endregion
+
+        private FileSystemWatcher ConfigureSortWatcher()
+        {
+            var watcher = new FileSystemWatcher
+            {
+                Path = AppSettings.SortConfiguration.LocalSortDirectory,
+                EnableRaisingEvents = true
+            };
+
+            watcher.Created += RemoteWatcher_RemoteFileSyncReady;
+            watcher.Deleted += RemoteWatcher_RemoteFileSyncDeleted;
+
+            return watcher;
+        }
 
         #region Section: Populate UI
             private void PopulateUI(Entities.Sort.SortQueue _queue)
@@ -172,28 +188,6 @@ namespace SortManagerWpfUI
             SortQueueFreeSpace.Text = _queue.StorageSpaceRemaining.ToString();
         }
         #endregion
-
-        #region Section: Dependency Injection
-            private void ConfigureDI()
-            {
-                var builder = new ConfigurationBuilder()
-                 .SetBasePath(Directory.GetCurrentDirectory())
-                 .AddJsonFile(".\\Properties\\AppSettings.json", optional: false, reloadOnChange: true);
-
-                Configuration = builder.Build();
-
-                var serviceCollection = new ServiceCollection();
-                ConfigureServices(serviceCollection);
-
-                ServiceProvider = serviceCollection.BuildServiceProvider();
-            }
-            private void ConfigureServices(IServiceCollection services)
-            {
-                services.Configure<ProgramConfiguration>(Configuration.GetSection(nameof(ProgramConfiguration)));
-                services.AddTransient(typeof(MainWindow));
-                services.AddTransient(typeof(ProgramSettings));
-                services.AddTransient(typeof(SortQueue));
-            }
-        #endregion
+        
     }
 }

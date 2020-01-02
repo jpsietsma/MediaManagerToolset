@@ -59,12 +59,12 @@ namespace Entities.Ext
                 if (RegResults.Groups.Count == 5)
                 {
                     StringBuilder _finalTitle = new StringBuilder();
-                    _finalTitle.Append(RegResults.Groups["ShowName"]);
-                    _finalTitle.Append(".S");
-                    _finalTitle.Append(RegResults.Groups["ShowSeasonNumber"]);
-                    _finalTitle.Append("E");
-                    _finalTitle.Append(RegResults.Groups["ShowEpisodeNumber"]);
-                    _finalTitle.Append("." + RegResults.Groups["ShowFileExtension"]);
+                        _finalTitle.Append(RegResults.Groups["ShowName"]);
+                        _finalTitle.Append(".S");
+                        _finalTitle.Append(RegResults.Groups["ShowSeasonNumber"]);
+                        _finalTitle.Append("E");
+                        _finalTitle.Append(RegResults.Groups["ShowEpisodeNumber"]);
+                        _finalTitle.Append("." + RegResults.Groups["ShowFileExtension"]);
 
                     SanitizedTitle = _finalTitle.ToString();
                     string SanitizedShowName = RegResults.Groups["ShowName"].Value.Replace(".", " ");

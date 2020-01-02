@@ -1,0 +1,17 @@
+﻿@using Syncfusion.EJ2
+
+    <div class="control-section">
+
+        <ejs-grid id="Grid" dataSource="ViewBag.dataSource" allowPaging="true">
+            <e-grid-pagesettings pageCount="10"></e-grid-pagesettings>
+            <e-grid-columns>
+                <e-grid-column field="Id" headerText="Id" textAlign="Left" width="60"></e-grid-column>
+                <e-grid-column field="TvMazeId" headerText="TVMaze ID" textAlign="Left" width="60"></e-grid-column>
+                <e-grid-column field="ImdbId" headerText="Imdb ID" textAlign="Left" width="60"></e-grid-column>
+                <e-grid-column field="ShowName" headerText="Television Show Name" textAlign="Left" width="120"></e-grid-column>
+                <e-grid-column field="ShowPath" headerText="Show Home Path" width="200" textAlign="Left"></e-grid-column>
+
+            </e-grid-columns>
+        </ejs-grid>
+
+    </div>
