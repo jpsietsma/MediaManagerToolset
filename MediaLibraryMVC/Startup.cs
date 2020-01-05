@@ -33,14 +33,16 @@ namespace MediaLibraryMVC
 
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.DatabaseConfiguration.ConnectionString));
 
-            //Configure our httpclient named instances to inject for API httpClient calls to the local television library
+            //Configure our httpclient named instances to inject for API 
+            
+            // Configures httpClient calls to the local television library
             services.AddHttpClient("SDNTelevisionLibraryQuery", c=> {
 
                 c.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/TelevisionLibrary/");
 
             });
 
-            //Configure our httpclient named instances to inject for API httpclient calls to TheMovieDb
+            //Configure our httpclient calls to TheMovieDb
             services.AddHttpClient("TheMovieDBShowQuery", c => {
 
                 c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&page=1");
@@ -86,9 +88,13 @@ namespace MediaLibraryMVC
             //Configure our Request messages to inject for API httpClient calls
             var request = new HttpRequestMessage() { Method = HttpMethod.Get };
             request.Headers.Add("Accept", "application/json");
+            services.AddSingleton(request);
 
-            services.AddSingleton<HttpRequestMessage>(request);
-            services.AddSingleton<ProgramConfiguration>(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration);
+            //Add our ProgramConfiguration to the service container for injection
+            services.AddSingleton(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration);
+
+            //Add our DatabaseContext for EF to the service container for injection
+            services.AddScoped<DatabaseContext>();
 
         }
 

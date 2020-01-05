@@ -70,11 +70,12 @@ namespace MediaLibraryMVC.Controllers
             return View();
         }
 
-        public IActionResult ShowDetails(int _showId)
+        public IActionResult ShowDetails(int id)
         {           
-            TelevisionShow Show = DbContext.TelevisionShowLibrary.Where(x => x.Id == _showId).FirstOrDefault();
+            TelevisionShow Show = DbContext.TelevisionShowLibrary.Where(x => x.Id == id).FirstOrDefault();
 
             return View(Show);
-        }
+        }        
+
     }
 }
