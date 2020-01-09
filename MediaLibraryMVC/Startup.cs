@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using Entities.Configuration;
+using Entities.Configuration.AutoMapper;
 using Entities.Data;
 using Entities.Data.EF_Core;
 using Microsoft.AspNetCore.Builder;
@@ -32,9 +34,10 @@ namespace MediaLibraryMVC
             services.AddControllersWithViews();
 
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.DatabaseConfiguration.ConnectionString));
+            services.AddAutoMapper(c => c.AddProfile<AutoMapperProfiles>(), typeof(Startup));
 
             //Configure our httpclient named instances to inject for API 
-            
+
             // Configures httpClient calls to the local television library
             services.AddHttpClient("SDNTelevisionLibraryQuery", c=> {
 

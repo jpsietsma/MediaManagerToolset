@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AutoMapper;
 using Entities.Configuration;
 using Entities.Data;
 using Entities.Data.EF_Core;
@@ -21,11 +22,13 @@ namespace MediaLibraryMVC.Controllers
         DatabaseContext DbContext;
         ProgramConfiguration AppSettings;
         IHttpClientFactory HttpClientFactory;
+        IMapper AutoMapper;
 
-        public TelevisionController(ProgramConfiguration _settings, DatabaseContext _context)
+        public TelevisionController(ProgramConfiguration _settings, DatabaseContext _context, IMapper _mapper)
         {
             AppSettings = _settings;
             DbContext = _context;
+            AutoMapper = _mapper;
         }
 
         public IActionResult Index()
@@ -41,7 +44,7 @@ namespace MediaLibraryMVC.Controllers
             HttpClientFactory = _clientFactory;
 
             ViewData["Title"] = "Television Shows";
-            List<TelevisionShow> _libraryContents = new List<TelevisionShow>();
+            List<Entities.Television.ViewModels.TelevisionShowViewModel> _libraryContents = new List<Entities.Television.ViewModels.TelevisionShowViewModel>();
 
             //Get our television show library contents using a named httpclient from our injected factory
             var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
@@ -56,9 +59,9 @@ namespace MediaLibraryMVC.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                _libraryContents = JsonConvert.DeserializeObject<List<TelevisionShow>>(await response.Content.ReadAsStringAsync()).OrderBy(p => p.ShowName).ToList();
+                _libraryContents = JsonConvert.DeserializeObject<List<Entities.Television.ViewModels.TelevisionShowViewModel>>(await response.Content.ReadAsStringAsync()).OrderBy(p => p.ShowName).ToList();
 
-                foreach (TelevisionShow Show in _libraryContents)
+                foreach (Entities.Television.ViewModels.TelevisionShowViewModel Show in _libraryContents)
                 {
                     Show.ShowPath = Show.ShowPath.Replace(@"\\JimmyBeast-sdn\", "");
                     Show.PosterImage = @"https://image.tmdb.org/t/p/w500" + Show.PosterImage;                    
@@ -70,9 +73,23 @@ namespace MediaLibraryMVC.Controllers
             return View();
         }
 
+        public async Task<IActionResult> LibraryFromDatabase()
+        {
+            List<Entities.Television.ViewModels.TelevisionShowViewModel> data = new List<Entities.Television.ViewModels.TelevisionShowViewModel>();
+
+            foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShowLibrary.ToList())
+            {
+                data.Add(AutoMapper.Map<Entities.Television.ViewModels.TelevisionShowViewModel>(_show));
+            }
+
+            ViewBag.DataSource = data;
+
+            return View("Library");
+        }
+
         public IActionResult ShowDetails(int id)
-        {           
-            TelevisionShow Show = DbContext.TelevisionShowLibrary.Where(x => x.Id == id).FirstOrDefault();
+        {
+            Entities.Data.EF_Core.DatabaseEntities.TelevisionShow Show = DbContext.TelevisionShowLibrary.Where(x => x.Id == id).FirstOrDefault();
 
             return View(Show);
         }        

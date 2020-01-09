@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Television.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -9,19 +10,23 @@ namespace Entities.Data.EF_Core.DatabaseEntities
     {
         public int Id { get; set; }
 
-        [Display(Name = "Television Show")]
-        public string TelevisionShowName { get; set; }
+        public string ShowName { get; set; }
 
-        [Display(Name = "Library Path")]
-        public string TelevisionShowLibraryPath { get; set; }
+        public string ShowPath { get; set; }
 
-        [Display(Name = "TvMaze Show ID")]
-        public string TvMazeId { get; set; }
+        public string tvMazeId { get; set; }
 
-        [Display(Name = "IMDB Show ID")]
-        public string ImdbId { get; set; }
+        public string imdbId { get; set; }
 
-        [Display(Name = "TheMovieDb Show ID")]
-        public string TheMovieDbId { get; set; }
+        public int theMovieDbId { get; set; }
+
+        public string PosterImage { get; set; }
+
+        public TelevisionShow()
+        {
+
+        }
+
     }
+
 }
