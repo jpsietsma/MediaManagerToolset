@@ -49,7 +49,7 @@ namespace MediaLibraryMVC.Controllers
             //Get our television show library contents using a named httpclient from our injected factory
             var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
 
-            var mdbClient = HttpClientFactory.CreateClient("TheMovieDBShowQuery");
+            var libscanClient = HttpClientFactory.CreateClient("TvMazeLibraryScan");
 
             var request = _requestMessage;
                 request.RequestUri = client.BaseAddress;
@@ -64,7 +64,8 @@ namespace MediaLibraryMVC.Controllers
                 foreach (Entities.Television.ViewModels.TelevisionShowViewModel Show in _libraryContents)
                 {
                     Show.ShowPath = Show.ShowPath.Replace(@"\\JimmyBeast-sdn\", "");
-                    Show.PosterImage = @"https://image.tmdb.org/t/p/w500" + Show.PosterImage;                    
+                    Show.PosterImage = Show.PosterImage;
+                    //Show.Seasons.Add(new Entities.Television.ViewModels.TelevisionSeasonViewModel());
                 }
             }            
 
@@ -73,19 +74,22 @@ namespace MediaLibraryMVC.Controllers
             return View();
         }
 
-        public async Task<IActionResult> LibraryFromDatabase()
-        {
-            List<Entities.Television.ViewModels.TelevisionShowViewModel> data = new List<Entities.Television.ViewModels.TelevisionShowViewModel>();
 
-            foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShowLibrary.ToList())
-            {
-                data.Add(AutoMapper.Map<Entities.Television.ViewModels.TelevisionShowViewModel>(_show));
-            }
+        // Library action method uses API which now uses this method as opposed to scanning directories directly
+        //public IActionResult LibraryFromDatabase()
+        //{
+        //    List<Entities.Television.ViewModels.TelevisionShowViewModel> data = new List<Entities.Television.ViewModels.TelevisionShowViewModel>();
 
-            ViewBag.DataSource = data;
+        //    foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShowLibrary.ToList())
+        //    {
+        //        var x = AutoMapper.Map<Entities.Television.ViewModels.TelevisionShowViewModel>(_show);
+        //        data.Add(x);
+        //    }
 
-            return View("Library");
-        }
+        //    ViewBag.DataSource = data;
+
+        //    return View("Library");
+        //}
 
         public IActionResult ShowDetails(int id)
         {

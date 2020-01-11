@@ -41,7 +41,7 @@ namespace MediaLibraryMVC
             // Configures httpClient calls to the local television library
             services.AddHttpClient("SDNTelevisionLibraryQuery", c=> {
 
-                c.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/TelevisionLibrary/");
+                c.BaseAddress = new Uri(@"http://api.sietsmadevelopment.com/TV/TelevisionLibrary");
 
             });
 
@@ -52,7 +52,15 @@ namespace MediaLibraryMVC
 
             });
 
-            
+            //Configure our httpclient calls to TvMaze to be used when matching library scans
+            //
+
+            services.AddHttpClient("TvMazeLibraryScan", c =>
+            {
+                c.BaseAddress = new Uri(@"http://api.tvmaze.com/singlesearch/shows?q=FBI&embed[]=episodes&embed[]=seasons");
+            });
+
+
 
             ////Get external Ids using TheMovieDb ID for each show
             //using (var client = new WebClient())

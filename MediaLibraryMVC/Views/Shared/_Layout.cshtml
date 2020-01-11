@@ -15,35 +15,8 @@
 </head>
 <body>
     <header>
-        <ejs-menu id="menu" items="@ViewBag.NavigationMenuItems" template="#menuTemplate" width="800px"></ejs-menu>
-
-
-        <!-- Template to render Menu -->
-        <script id="menuTemplate" type="text/x-template">
-            ${if(Category)}
-            ${text}
-            ${else if (items)}
-            <div style="width: 300px;display: flex;justify-content: space-between;">
-                <span style="width:100%;">${text.value}</span>
-            </div>
-            ${else}
-            <div tabindex="0" class="e-card">
-                <div class="e-card-header">
-                    <div class="e-card-header-caption">
-                        <div class="e-card-header-title">About Us</div>
-                    </div>
-                </div>
-                <div class="e-card-content">
-                    ${about.value}
-                </div>
-                <div class="e-card-actions">
-                    <button class="e-btn e-outline" style="pointer-events: auto;">
-                        Read More
-                    </button>
-                </div>
-            </div>
-            ${/if}
-        </script>
+        <ejs-menu id="menu" items="@ViewBag.NavigationMenuItems" width="800px"></ejs-menu>
+                       
         <style>
             .menu-control {
                 margin-top: 45px;

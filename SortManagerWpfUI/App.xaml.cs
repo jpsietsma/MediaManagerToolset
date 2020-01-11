@@ -55,11 +55,9 @@ namespace SortManagerWpfUI
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(GetConnectionString()));
-            services.Configure<ProgramConfiguration>(Configuration.GetSection(nameof(ProgramConfiguration)));
 
+            services.AddSingleton(Configuration.Get<ProgramConfiguration>());
             services.AddSingleton(typeof(MainWindow));
-            services.AddSingleton(typeof(ProgramConfiguration));
-            services.AddSingleton(typeof(ProgramSettings));
             services.AddSingleton(typeof(LibrarySettings));
             services.AddSingleton(typeof(SortQueue));
             services.AddSingleton(typeof(Entities.Sort.SortQueue));
