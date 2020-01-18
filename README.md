@@ -1,29 +1,32 @@
 # Media Manager Toolset
 
 ### Program Summary:
+#### Think: Personal media server.
 * Renaming Files to match proper media filename format<br>
 * Classifying files after download completion<br>
 * Prioritize certain media over others<br>
 * Automate all aspects from file download completion to adding items to media libraries
+* Allow and maintain access to media through the web to various authenticated users.  
 
-# v1.5 is available!
+# v2.5 is now the latest version!
+### Changes made in V2.5:
+* Classification Info windows for classified sort media items
+>The Classification button within the sort selection details will finally come to life!  This will give users a look at the media classification type, as well as in a future release we will add the ability to view Show information and metadata on this window.
 
-### Changes made in V1.5:
-```diff  
-+ Added appsettings.json configuration file to handle static values such as media library locations, etc.
-```
-```diff  
-+ Added Dependency Injection for .net core 3.0, configured AppSettings for injection
-```
-```diff  
-+ Auto-Refreshing SortQueue ListBox contents on detected changes
-```
+* File Info windows for classified and unclassified/non-classifiable media items
+>Show all sorts of file and disk information about a sort selection, more info to come..
 
+```diff  
++ Moved CoreMVC project to .net core 3.1
+```
 ```diff 
-- Removed: Static object in App.XAML.cs which held program settings
++ WebAPI now provides as a datasource for local television libraries and such.
+```
+```diff 
+- Dependency injection for Identity, HttpClients for api calls, and Automapper.
 ```
 
-# v2.0 is now the latest version!
+# v2.0 is available
 
 ### What v2.0 brings to the table
 * Program Settings visible from menu
@@ -46,9 +49,20 @@
 + Added: DI appsettings now available in all classes
 ```
 
-#v2.5 in the works..
-* Classification Info windows for classified sort media items
->The Classification button within the sort selection details will finally come to life!  This will give users a look at the media classification type, as well as in a future release we will add the ability to view Show information and metadata on this window.
+# v1.5 is available!
 
-* File Info windows for classified and unclassified/non-classifiable media items
->Show all sorts of file and disk information about a sort selection, more info to come..
+### Changes made in V1.5:
+```diff  
++ Added appsettings.json configuration file to handle static values such as media library locations, etc.
+```
+```diff  
++ Added Dependency Injection for .net core 3.0, configured AppSettings for injection
+```
+```diff  
++ Auto-Refreshing SortQueue ListBox contents on detected changes
+```
+
+```diff 
+- Removed: Static object in App.XAML.cs which held program settings
+```
+
