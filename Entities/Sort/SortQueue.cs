@@ -30,9 +30,9 @@ namespace Entities.Sort
         /// <summary>
         /// Get a new sortqueue
         /// </summary>
-        public SortQueue(IOptions<ProgramConfiguration> _settings, DatabaseContext _context)
+        public SortQueue(ProgramConfiguration _settings, DatabaseContext _context)
         {
-            AppSettings = _settings.Value;
+            AppSettings = _settings;
             DatabaseContext = _context;
 
             CompletedDownloads = new ObservableCollection<IMediaFile>();

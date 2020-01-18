@@ -36,13 +36,13 @@ namespace SortManagerWpfUI
         public IServiceProvider ServiceProvider { get; private set; }
         public IConfiguration Configuration { get; private set; }
 
-        public MainWindow(IOptions<ProgramConfiguration> settings)
+        public MainWindow(ProgramConfiguration settings)
         {            
             InitializeComponent();
-            AppSettings = settings.Value;
+            AppSettings = settings;
             ServiceProvider = (App.Current as App).ServiceProvider;
 
-            SortDirectoryWatcher = ConfigureSortWatcher();            
+            //SortDirectoryWatcher = ConfigureSortWatcher();            
 
             SortQueue = ServiceProvider.GetRequiredService<Entities.Sort.SortQueue>();
 

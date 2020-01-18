@@ -1,34 +1,31 @@
-﻿using Entities.Data.EF_Core.DatabaseEntities;
-using Entities.Television;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using Entities.Data.EF_Core.DatabaseEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
-namespace Entities.Data.EF_Core
+namespace MediaToolsetCoreMVC.Data
 {
-    public class DatabaseContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
-        //DbSet property declarations
-        public virtual DbSet<DatabaseEntities.TelevisionShow> TelevisionShowLibrary { get; set; }
+        public virtual DbSet<TelevisionShow> TelevisionShowLibrary { get; set; }
         public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
 
-
-        public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
         {
-            
         }
 
-        public List<DatabaseEntities.TelevisionShow> SearchShows(string showName = null)
+        public List<TelevisionShow> SearchShows(string showName = null)
         {
             var showNameParameter = string.IsNullOrEmpty(showName) ? new ObjectParameter("ShowName", showName) : new ObjectParameter("ShowName", typeof(string));
 
             var shows = this.TelevisionShowLibrary.FromSqlRaw("[dbo].[SearchShowsByName] {0}", showName).ToList();
-            
+
             return shows;
         }
 

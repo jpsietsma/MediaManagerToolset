@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Entities.Television.ViewModels.TelevisionShowViewModel>
+
+@{
+    ViewData["Title"] = "Television Library";
+
+    List<object> toolbarItems = new List<object>();
+    toolbarItems.Add("Edit");
+    toolbarItems.Add("Delete");
+    toolbarItems.Add("Update");
+    toolbarItems.Add("ExcelExport");
+    toolbarItems.Add("Search");
+}
+
+<script>
+    function loadShow() {
+        var grid = document.getElementById('Grid').ej2_instances[0];
+        var rowHeight = grid.getRowHeight();  //height of the each row
+        var gridHeight = grid.height;  //grid height
+        var pageSize = grid.pageSettings.pageSize;   //initial page size
+        var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
+        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+
+    }
+
+</script>
+
+<h1>Television Show Library</h1>
+
+<ejs-grid id="Grid" allowExcelExport="true" allowSelection="true" toolbar=toolbarItems dataSource="@ViewBag.DataSource" allowSorting="true" allowPaging="true" width="1500" height="750" detailTemplate="#detailtemplate" gridLines="Both" load="loadShow">
+
+    <e-grid-columns>
+        <e-grid-column field="Id" headerText="Show ID" textAlign="Center" width="80"></e-grid-column>
+        <e-grid-column field="ShowName" headerText="Television Show Name" textAlign="Left" width="150"></e-grid-column>
+        <e-grid-column field="ShowPath" headerText="Library Path" textAlign="Left" width="200"></e-grid-column>
+        <e-grid-column field="ShowGenre" headerText="Show Genre" textAlign="Left" width="80"></e-grid-column>
+        @*<e-grid-column field="imdbId" headerText="IMDB Show ID" textAlign="Left" width="80"></e-grid-column>
+        <e-grid-column field="theMovieDbId" headerText="TheMovieDb ID" textAlign="Left" width="80"></e-grid-column>
+        <e-grid-column field="PosterImage" headerText="Show Poster Image" textAlign="Left" width="250"></e-grid-column>*@
+    </e-grid-columns>
+
+</ejs-grid>
+
+<script type="text/x-template" id="detailtemplate">
+    <table style="width: 100%; height: 300px; background-color: #c2baba">
+        <tr>
+            <td>
+                
+            </td>
+        </tr>
+
+    </table>
+</script>
+
+@*<script type="text/x-template" id="seasondetailtemplate">
+    <table style="width: 100%; height: 300px; background-color: #c2baba">
+        <tr>
+            <td>
+                <ejs-grid id="EpisodeGrid" dataSource="${Episodes}" allowSorting="true" allowPaging="true" width="100%" height="100%" detailTemplate="#episodedetailtemplate" gridLines="Both" load="load">
+
+                    <e-grid-columns>
+                        <e-grid-column field="Id" headerText="Show ID" textAlign="Center" width="80"></e-grid-column>
+                        <e-grid-column field="EpisodeName" headerText="Season" textAlign="Left" width="150"></e-grid-column>
+                        <e-grid-column field="EpisodeNumber" headerText="Episodes Available" textAlign="Left" width="80"></e-grid-column>
+                        <e-grid-column field="SeasonNumber" headerText="IMDB Season ID" textAlign="Left" width="80"></e-grid-column>
+                        <e-grid-column field="theMovieDbId" headerText="TheMovieDb Season ID" textAlign="Left" width="80"></e-grid-column>
+                    </e-grid-columns>
+
+                </ejs-grid>
+            </td>
+        </tr>
+
+    </table>
+</script>
+
+<script type="text/x-template" id="episodedetailtemplate">
+    <table style="width: 100%; height: 300px; background-color: #c2baba">
+        <tr>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            Id: ${Id}
+                        </td>
+                        <td>
+                            Episode Number: ${EpisodeNumber}
+                        </td>
+                        <td>
+                            Episode Name: ${EpisodeName}
+                        </td>
+                    </tr>                        
+                </table>                
+            </td>
+        </tr>
+
+    </table>
+</script>*@

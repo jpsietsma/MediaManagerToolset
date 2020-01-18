@@ -1,0 +1,41 @@
+﻿@model Entities.Television.TelevisionShow
+
+@{
+    ViewData["Title"] = "Show Overview";
+}
+
+<h1>{ model.ShowName }</h1>
+
+<div>
+    <h4>Television Show | Details Overview</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShowName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShowName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShowPath)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShowPath)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.imdbId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.imdbId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.tvMazeId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.tvMazeId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Library">Back to List</a>
+</div>
