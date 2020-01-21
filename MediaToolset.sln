@@ -15,13 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryToolset", "LibraryTo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlexToolset", "PlexToolset\PlexToolset.csproj", "{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DownloadHelpers", "DownloadHelpers\DownloadHelpers.csproj", "{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataServices", "DataServices\DataServices.csproj", "{293FA37E-23FF-4FB5-8786-57D7F71FBDC8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaToolsetAPI", "MediaToolsetAPI\MediaToolsetAPI.csproj", "{7AFA4148-A593-4322-B6F7-6B55E7AC81A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaToolsetCoreMVC", "MediaToolsetCoreMVC\MediaToolsetCoreMVC.csproj", "{0406FF9D-C7FE-4745-AE51-95B187332333}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaToolsetWebCoreMVC", "MediaToolsetWebCoreMVC\MediaToolsetWebCoreMVC.csproj", "{71AF28B7-016A-4087-ACC0-8786EE052F3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,22 +49,14 @@ Global
 		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F403B2BF-1E85-4A19-8929-0E4EC3DF4F13}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77FD1480-FFB5-49CE-9BF9-F060ACB9C05D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{293FA37E-23FF-4FB5-8786-57D7F71FBDC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{293FA37E-23FF-4FB5-8786-57D7F71FBDC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{293FA37E-23FF-4FB5-8786-57D7F71FBDC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{293FA37E-23FF-4FB5-8786-57D7F71FBDC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7AFA4148-A593-4322-B6F7-6B55E7AC81A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7AFA4148-A593-4322-B6F7-6B55E7AC81A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AFA4148-A593-4322-B6F7-6B55E7AC81A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AFA4148-A593-4322-B6F7-6B55E7AC81A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0406FF9D-C7FE-4745-AE51-95B187332333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0406FF9D-C7FE-4745-AE51-95B187332333}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0406FF9D-C7FE-4745-AE51-95B187332333}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0406FF9D-C7FE-4745-AE51-95B187332333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71AF28B7-016A-4087-ACC0-8786EE052F3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71AF28B7-016A-4087-ACC0-8786EE052F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71AF28B7-016A-4087-ACC0-8786EE052F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71AF28B7-016A-4087-ACC0-8786EE052F3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

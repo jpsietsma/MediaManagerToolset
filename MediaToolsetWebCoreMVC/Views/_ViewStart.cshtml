@@ -1,0 +1,152 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MediaToolsetWebCoreMVC.Models.Identity
+
+@inject SignInManager<AuthenticatedUser> SignInManager
+@inject UserManager<AuthenticatedUser> UserManager
+
+@{
+
+    Layout = "_Layout";
+
+    List<object> NavMenuItems = new List<object>();
+
+    NavMenuItems.Add(new
+    {
+        Category = "Television",
+        text = "Television",
+        items = new List<object>()
+        {
+            new
+            {
+                text = "Show Library",
+                url = "/Television/Library"
+            },
+
+            new
+            {
+                text = "Admin Dashboard"
+            }
+        }
+    });
+
+    NavMenuItems.Add(new
+    {
+        Category = "Movies",
+        text = "Movies"
+    });
+
+    NavMenuItems.Add(new
+    {
+        Category = "Sort",
+        text = "Sort Queue",
+        items = new List<object>()
+        {
+            new
+            {
+                text = "Current Queue"
+            },
+
+            new
+            {
+                text = "ReScan Contents"
+            },
+
+            new
+            {
+                text = "Classify Contents"
+            },
+
+            new
+            {
+                text = "Admin Dashboard"
+            }
+        }
+    });
+
+    NavMenuItems.Add(new
+    {
+        Category = "Media Lookup",
+        text = "Media Lookup",
+        items = new List<object>()
+        {
+            new
+            {
+                text = "Tv Maze"
+            },
+
+            new
+            {
+                text = "The Movie DB"
+            },
+
+            new
+            {
+                text = "Open Movie DB"
+            }
+        }
+    });
+
+    NavMenuItems.Add(new
+    {
+        Category = "Media Acquisition",
+        text = "Media Acquisition",
+        items = new List<object>()
+        {
+            new
+            {
+                text = "EzTV",
+                items = new List<object>()
+                {
+                    new
+                    {
+                        text = "Add Download"
+                    }
+                }
+            },
+
+            new
+            {
+                text = "Classification"
+            }
+        }
+    });
+
+    NavMenuItems.Add(new
+    {
+        Category = "Administration",
+        text = "Administration",
+        items = new List<object>()
+        {
+            new
+            {
+                text = "Settings"
+            },
+
+            new
+            {
+                text = "Classification"
+            },
+            new
+            {
+                Category = "Administration",
+                text = "User Management",
+                items = new List<object>()
+                {
+                    new
+                    {
+                        text = "User Accounts"
+                    },
+
+                    new
+                    {
+                        text = "Authorization & Roles",
+                        url = "/Role"
+                    }
+                }
+            }
+        }
+    });
+
+    ViewBag.NavigationMenuItems = NavMenuItems;
+
+}

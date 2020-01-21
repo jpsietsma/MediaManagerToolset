@@ -10,8 +10,10 @@ namespace Entities.Configuration
         public MediaAPIKeyConfiguration MediaAPIKeyConfiguration { get; set; }
         public SortConfiguration SortConfiguration { get; set; }
         public TelevisionLibraryConfiguration TelevisionLibraryConfiguration { get; set; }
-        public MovieLibraryConfiguration MovieLibraryConfiguration { get; set; }        
-        
+        public MovieLibraryConfiguration MovieLibraryConfiguration { get; set; }
+        public EmailConfiguration EmailConfiguration { get; set; }
+        public DefaultSuperAdminAccount DefaultSuperAdminAccount { get; set; }
+
     }    
     
 }

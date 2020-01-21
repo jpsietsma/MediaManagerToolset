@@ -34,8 +34,28 @@ namespace MediaToolsetCoreMVC
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services
+                .AddIdentity<IdentityUser, IdentityRole>(options => {
+
+                    options.SignIn.RequireConfirmedAccount = true;
+
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequiredLength = 10;
+                    options.Password.RequireNonAlphanumeric = false;
+
+                    options.User.RequireUniqueEmail = true;
+
+                })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services
+                .ConfigureApplicationCookie(options => {
+
+                    //Configure cookie options here such as login and logout urls
+                
+                });
 
             #region Section: Media Toolset Configuration...
 
