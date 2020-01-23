@@ -178,6 +178,11 @@ namespace MediaToolsetWebCoreMVC.Controllers
                             {
                                 text = "Create Role",
                                 url = "/Role/Create"
+                            },
+                            new
+                            {
+                                text = "Notifications & Logging",
+                                url = "/Administrator/AdminLogs"
                             }
                         }
                     }

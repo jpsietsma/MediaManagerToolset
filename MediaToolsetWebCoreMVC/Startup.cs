@@ -113,6 +113,7 @@ namespace MediaToolsetWebCoreMVC
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();            
             services.AddScoped<AuthenticatedUserInfo>();
             services.AddScoped<UserController>();
+            services.AddScoped<AdministratorController>();
             services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();

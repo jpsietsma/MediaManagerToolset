@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Data.EF_Core.DatabaseEntities;
+using Entities.Logging;
 using MediaToolsetWebCoreMVC.Areas.Identity.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ namespace MediaToolsetWebCoreMVC.Data
         public virtual DbSet<TelevisionShow> TelevisionShowLibrary { get; set; }
         public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
         public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }
+        public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }
 
         public IdentityDatabaseContext(DbContextOptions<IdentityDatabaseContext> options)
             : base(options)

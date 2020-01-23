@@ -93,7 +93,7 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
                     {
                         if (user.IsAdminApproved)
                         {
-                            _logger.LogInformation("User logged in.");
+                            _logger.LogInformation($"User logged in: {Input.Email}");
                             return LocalRedirect(returnUrl);
                         }
                         else
