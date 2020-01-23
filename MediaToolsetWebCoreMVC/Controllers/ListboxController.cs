@@ -148,47 +148,100 @@ namespace MediaToolsetWebCoreMVC.Controllers
                     Category = "Administration",
                     text = "Administration",
                     items = new List<object>()
+                    {
+                        new
+                        {
+                            text = "Settings"
+                        },
+
+                        new
+                        {
+                            text = "Classification"
+                        },
+                        new
+                        {
+                            Category = "Administration",
+                            text = "User Management",
+                            items = new List<object>()
+                            {
+                                new
+                                {
+                                    text = "Accounts",
+                                    items = new List<object>()
+                                    {
+                                        new
+                                        {
+                                            text = "Create Account",
+                                            url = "/User/Create"
+                                        },
+                                        new
+                                        {
+                                            text = "Manage",
+                                            url = "/User/Manage"
+                                        }
+                                    }
+                                },
+                                new
+                                {
+                                    text = "Roles",
+                                    items = new List<object>()
+                                    {
+                                        new
+                                        {
+                                            text = "Manage Role Membership",
+                                            url = "/Role"
+                                        },
+                                        new
+                                        {
+                                            text = "Create Role",
+                                            url = "/Role/Create"
+                                        }
+                                    }
+                                }                                                                                                                           
+                            }
+                        },
+                        new
+                        {
+                            text = "Notifications & Logging",
+                            url = "/Administrator/AdminLogs"
+                        }
+                    }
+                });
+            }
+
+            NavMenuItems.Add(new
+            {
+                text = UserInfo.UserName,
+                items = new List<object>()
                 {
                     new
                     {
-                        text = "Settings"
-                    },
-
-                    new
-                    {
-                        text = "Classification"
+                        text = "Profile"
                     },
                     new
                     {
-                        Category = "Administration",
-                        text = "User Management",
-                        items = new List<object>()
+                        text = "Roles",
+                        items = new List<object>
                         {
                             new
                             {
-                                text = "User Accounts"
-                            },
-
-                            new
-                            {
-                                text = "Manage Roles",
-                                url = "/Role"
-                            },
-                            new
-                            {
-                                text = "Create Role",
-                                url = "/Role/Create"
-                            },
-                            new
-                            {
-                                text = "Notifications & Logging",
-                                url = "/Administrator/AdminLogs"
+                                text = "My Roles",
+                                url = "/User/MyRoles"
                             }
                         }
+                    },
+                    new
+                    {
+                        text = "Login Permissions",
+                        url = "/Identity/Account/Manage/ManageLoginPermissions"
+                    },
+                    new
+                    {
+                        text = "Logout",
+                        url = "/Identity/Account/Logout"
                     }
                 }
-                });
-            }
+            });
 
             return NavMenuItems;
         }

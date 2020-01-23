@@ -72,6 +72,13 @@ namespace MediaToolsetWebCoreMVC.Data
             SaveChanges();
         }
 
+        public List<AdministratorLog> GetAdministrationLogs()
+        {
+            var x = Set<AdministratorLog>().FromSqlRaw("dbo.GetAdminLogs").ToList();
+
+            return x;
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -20,9 +20,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         public IActionResult AdminLogs()
         {
-            var messages = DatabaseContext.AdministrationMessageLog.ToList();
-
-            return View(messages);
+            return View(DatabaseContext.GetAdministrationLogs());
         }
     }
 }
