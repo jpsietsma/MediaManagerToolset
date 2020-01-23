@@ -9,6 +9,8 @@ namespace MediaToolsetWebCoreMVC.Models.Identity
     // Add profile data for application users by adding properties to the AuthenticatedUser class
     public class AuthenticatedUser : IdentityUser
     {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public bool IsAdminApproved { get; set; }
     }
