@@ -1,0 +1,27 @@
+﻿@model MediaToolsetWebCoreMVC.Areas.Identity.Data.AuthenticatedUserInfo
+
+@{
+    ViewData["Title"] = "LoginPermissions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Manage User Login Permissions</h1>
+<br />
+<br />
+<table>
+    <tr>
+        <td>Id</td>
+        <td>Permission Name</td>
+        <td>Assigned Permission</td>
+    </tr>
+    @foreach (var permission in Model.LoginPermissions)
+    {
+        <tr>
+            <td>@permission.Id</td>
+            <td>@permission.Name</td>
+            <td><input type="checkbox" checked="@permission.HasPermission" disabled /></td>
+        </tr>
+    }
+</table>
+
+

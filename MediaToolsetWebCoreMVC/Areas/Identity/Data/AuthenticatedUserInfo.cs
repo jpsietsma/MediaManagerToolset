@@ -1,4 +1,5 @@
-﻿using MediaToolsetWebCoreMVC.Models.Identity;
+﻿using MediaToolsetWebCoreMVC.Data;
+using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -15,6 +16,7 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
         private readonly UserManager<AuthenticatedUser> UserManager;
         private readonly AuthenticatedUser AuthenticatedUser;
         private readonly SignInManager<AuthenticatedUser> SignInManager;
+        private readonly IdentityDatabaseContext DatabaseContext;
 
         public string Id { get; private set; }
         public List<string> UserRoles { get; private set; }
@@ -22,12 +24,14 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
         public string UserName { get; private set; }
         public string PhoneNumber { get; private set; }
         public DateTime? RegistrationDate { get; private set; }
+        public List<AuthenticatedUserLoginPermission> LoginPermissions { get; private set; }
 
-        public AuthenticatedUserInfo(IHttpContextAccessor _httpContextAccessor, UserManager<AuthenticatedUser> _userManager, SignInManager<AuthenticatedUser> _signInManager)
+        public AuthenticatedUserInfo(IHttpContextAccessor _httpContextAccessor, UserManager<AuthenticatedUser> _userManager, SignInManager<AuthenticatedUser> _signInManager, IdentityDatabaseContext _identityContext)
         {            
             HttpContextAccessor = _httpContextAccessor;
             UserManager = _userManager;
             SignInManager = _signInManager;
+            DatabaseContext = _identityContext;
 
             if (_httpContextAccessor.HttpContext.User.Claims.Count() > 0)
             {
@@ -36,7 +40,7 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
 
                 RetrieveUserDetails();
             }                    
-        }
+        }               
 
         private void RetrieveUserDetails()
         {
@@ -46,6 +50,7 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
             PhoneNumber = AuthenticatedUser.PhoneNumber;
             RegistrationDate = AuthenticatedUser.RegistrationDate;
             UserRoles = UserManager.GetRolesAsync(AuthenticatedUser).Result.ToList();
+            LoginPermissions = DatabaseContext.GetLoginPermissions(Id);
         }
 
         public bool IsRoleMember(string roleName)
@@ -54,6 +59,21 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
                 return true;
             else
                 return false;
+        }
+
+        public bool HasLoginPermission(string permissionName)
+        {
+            var permission = LoginPermissions.Where(p => p.Name == permissionName).FirstOrDefault();
+            
+            if (permission != null)
+            {
+                if (permission.HasPermission)
+                    return true;
+                else
+                    return false;
+            }
+
+            return false;
         }
                 
     }

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using MediaToolsetWebCoreMVC.Data;
 
 namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
 {
@@ -21,14 +22,17 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
         private readonly UserManager<AuthenticatedUser> _userManager;
         private readonly SignInManager<AuthenticatedUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IdentityDatabaseContext DatabaseContext;
 
         public LoginModel(SignInManager<AuthenticatedUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<AuthenticatedUser> userManager)
+            UserManager<AuthenticatedUser> userManager,
+            IdentityDatabaseContext _databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            DatabaseContext = _databaseContext;
         }
 
         [BindProperty]
@@ -83,8 +87,29 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                    if (DatabaseContext.AspNetUserLoginPermissions.Where(p => p.Name == "AllowWebLogin" && p.HasPermission && p.UserId == user.Id).Count() > 0)
+                    {
+                        if (user.IsAdminApproved)
+                        {
+                            _logger.LogInformation("User logged in.");
+                            return LocalRedirect(returnUrl);
+                        }
+                        else
+                        {
+                            _logger.LogInformation("User account waiting on administrative approval.");
+                            ModelState.AddModelError(string.Empty, "Account is pending administrative approval.");
+                            return Page();
+                        }
+                       
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Account is denied web access.");
+                        return Page();
+                    }
+                    
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -97,7 +122,7 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Account waiting on email confirmation.");
                     return Page();
                 }
             }

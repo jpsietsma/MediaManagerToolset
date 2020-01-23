@@ -7,6 +7,7 @@ using AutoMapper;
 using Entities.Configuration;
 using Entities.Configuration.AutoMapper;
 using MediaToolsetWebCoreMVC.Areas.Identity.Data;
+using MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account.Manage;
 using MediaToolsetWebCoreMVC.Areas.Identity.Services;
 using MediaToolsetWebCoreMVC.Controllers;
 using MediaToolsetWebCoreMVC.Data;
@@ -109,8 +110,9 @@ namespace MediaToolsetWebCoreMVC
                 services.AddSingleton<IEmailConfiguration>(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.EmailConfiguration);
             #endregion
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();            
             services.AddScoped<AuthenticatedUserInfo>();
+            services.AddScoped<UserController>();
             services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();

@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Data.EF_Core.DatabaseEntities;
+using MediaToolsetWebCoreMVC.Areas.Identity.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace MediaToolsetWebCoreMVC.Data
     {
         public virtual DbSet<TelevisionShow> TelevisionShowLibrary { get; set; }
         public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
+        public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }
 
         public IdentityDatabaseContext(DbContextOptions<IdentityDatabaseContext> options)
             : base(options)
@@ -29,6 +31,11 @@ namespace MediaToolsetWebCoreMVC.Data
             var shows = this.TelevisionShowLibrary.FromSqlRaw("[dbo].[SearchShowsByName] {0}", showName).ToList();
 
             return shows;
+        }
+
+        public List<AuthenticatedUserLoginPermission> GetLoginPermissions(string userId)
+        {
+            return AspNetUserLoginPermissions.Where(u => u.UserId == userId).ToList();            
         }
 
         public void AddMissingEpisodeRecord(int _ShowId, int _SeasonId, int _EpisodeId, string _EpisodeFilePath = null, string _ImdbId = null, string _TvMazeId = null, string _TheMovieDbId = null)

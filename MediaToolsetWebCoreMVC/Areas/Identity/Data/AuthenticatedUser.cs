@@ -10,5 +10,6 @@ namespace MediaToolsetWebCoreMVC.Models.Identity
     public class AuthenticatedUser : IdentityUser
     {
         public DateTime? RegistrationDate { get; set; }
+        public bool IsAdminApproved { get; set; }
     }
 }

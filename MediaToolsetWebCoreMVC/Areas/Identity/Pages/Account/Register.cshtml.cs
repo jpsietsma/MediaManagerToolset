@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using MediaToolsetWebCoreMVC.Data;
+using MediaToolsetWebCoreMVC.Areas.Identity.Data;
 
 namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
 {
@@ -24,17 +26,20 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
         private readonly UserManager<AuthenticatedUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IdentityDatabaseContext DatabaseContext;
 
         public RegisterModel(
             UserManager<AuthenticatedUser> userManager,
             SignInManager<AuthenticatedUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IdentityDatabaseContext _databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            DatabaseContext = _databaseContext;
         }
 
         [BindProperty]
@@ -90,11 +95,11 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AuthenticatedUser { UserName = Input.Email, Email = Input.Email };
+                var user = new AuthenticatedUser { UserName = Input.Email, Email = Input.Email, IsAdminApproved = false };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation($"User created a new account with password: ({ user.UserName })");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -103,6 +108,8 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
+
+                    await AssignDefaultPermissions(user.Id);
 
                     await _emailSender.SendEmailAsync(Input.Email, "SDN Media Toolset - Confirm Account Registration",
                         $"Welcome {Input.FirstName}!  Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
@@ -115,7 +122,7 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
-                    }
+                    }                    
                 }
                 foreach (var error in result.Errors)
                 {
@@ -125,6 +132,26 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task AssignDefaultPermissions(string userId)
+        {
+            var defaultPermission = new AuthenticatedUserDefaultLoginPermissions();
+
+            try
+            {
+                foreach (var permission in defaultPermission.Permissions)
+                {
+                    permission.UserId = userId;
+                }
+
+                DatabaseContext.AspNetUserLoginPermissions.AddRange(defaultPermission.Permissions);
+                await DatabaseContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);                
+            }
         }
     }
 }
