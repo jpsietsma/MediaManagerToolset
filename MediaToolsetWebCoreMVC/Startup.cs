@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Configuration;
 using Entities.Configuration.AutoMapper;
+using MediaToolsetWebCoreMVC.Areas.Identity.Data;
 using MediaToolsetWebCoreMVC.Areas.Identity.Services;
 using MediaToolsetWebCoreMVC.Controllers;
 using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -57,8 +59,6 @@ namespace MediaToolsetWebCoreMVC
                 .AddSignInManager<SignInManager<AuthenticatedUser>>()
                 .AddUserManager<UserManager<AuthenticatedUser>>()
                 .AddDefaultTokenProviders();
-
-            services.AddScoped<RoleManager<IdentityRole>>();
 
             services
                 .ConfigureApplicationCookie(options => {
@@ -109,6 +109,9 @@ namespace MediaToolsetWebCoreMVC
                 services.AddSingleton<IEmailConfiguration>(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.EmailConfiguration);
             #endregion
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<AuthenticatedUserInfo>();
+            services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -137,6 +140,12 @@ namespace MediaToolsetWebCoreMVC
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
             app.UseAuthentication();
             app.UseAuthorization();

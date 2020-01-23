@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlexToolset", "PlexToolset\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaToolsetAPI", "MediaToolsetAPI\MediaToolsetAPI.csproj", "{7AFA4148-A593-4322-B6F7-6B55E7AC81A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaToolsetWebCoreMVC", "MediaToolsetWebCoreMVC\MediaToolsetWebCoreMVC.csproj", "{71AF28B7-016A-4087-ACC0-8786EE052F3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaToolsetWebCoreMVC", "MediaToolsetWebCoreMVC\MediaToolsetWebCoreMVC.csproj", "{71AF28B7-016A-4087-ACC0-8786EE052F3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteSortSyncService", "RemoteSortSyncService\RemoteSortSyncService.csproj", "{0202676C-4C8E-4F48-9037-C0E6AE27BA3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{71AF28B7-016A-4087-ACC0-8786EE052F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71AF28B7-016A-4087-ACC0-8786EE052F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71AF28B7-016A-4087-ACC0-8786EE052F3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0202676C-4C8E-4F48-9037-C0E6AE27BA3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0202676C-4C8E-4F48-9037-C0E6AE27BA3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0202676C-4C8E-4F48-9037-C0E6AE27BA3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0202676C-4C8E-4F48-9037-C0E6AE27BA3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

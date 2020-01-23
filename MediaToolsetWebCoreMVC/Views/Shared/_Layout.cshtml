@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MediaToolsetWebCoreMVC.Models.Identity
+@using MediaToolsetWebCoreMVC.Controllers
 
 @inject SignInManager<AuthenticatedUser> SignInManager
 @inject UserManager<AuthenticatedUser> UserManager
+@inject ListboxController ListboxDataService
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,87 +25,31 @@
     <header>
         @if (SignInManager.IsSignedIn(User))
         {
-            <ejs-menu id="menu" items="@ViewBag.NavigationMenuItems" width="800px"></ejs-menu>
+        <ejs-menu id="menu" items="@ListboxDataService.GetAuthorizedNavItems();" width="800px"></ejs-menu>
         }
 
-        <style>
-            .menu-control {
-                margin-top: 45px;
-                text-align: center;
-                align-content: center;
-            }
+    <style>
+        body {
+            text-align: center;
+        }
 
-            /* Common ul & li styles */
-            .e-bigger .e-menu-wrapper ul.e-ul,
-            .e-menu-wrapper ul.e-ul {
-                padding: 0;
-            }
+        /* Styles to achieve rounder corner in menu */
+        .e-menu-wrapper.e-rounded-menu:not(.e-menu-popup),
+        .e-menu-wrapper.e-rounded-menu .e-menu {
+            border-radius: 20px;
+        }
 
-                .e-bigger .e-menu-wrapper ul.e-ul .e-menu-item,
-                .e-menu-wrapper ul.e-ul .e-menu-item {
-                    display: flex;
-                    padding: 0 10px;
-                    outline-color: transparent;
-                }
-
-            /** Avatar customization */
-            .e-menu-wrapper ul .e-menu-item .e-avatar {
-                background-color: inherit;
-                font-size: 8px;
-                margin-right: 8px;
-                align-self: center;
-                width: auto;
-                overflow: visible;
-            }
-
-            .e-bigger .e-menu-wrapper ul .e-menu-item .e-avatar {
-                font-size: 10px;
-            }
-
-            /** Badge customization */
-            .e-menu-wrapper ul .e-menu-item .e-badge {
-                margin-left: 10px;
-                align-self: center;
-                overflow: visible;
-            }
-
-            /** Card customization */
-            .e-menu-wrapper ul.e-ul .e-menu-item .e-card {
-                width: 290px;
-                font-size: inherit;
-                background-color: inherit;
-                border-color: transparent;
-            }
-
-            .e-bigger .e-menu-wrapper ul.e-ul .e-menu-item .e-card {
-                width: 320px;
-            }
-
-            .e-menu-wrapper ul.e-ul .e-menu-item .e-card .e-card-content {
-                white-space: normal;
-                color: inherit;
-                padding-top: 0;
-                text-align: justify;
-                font-size: inherit;
-            }
-
-            .e-menu-wrapper ul.e-ul .e-menu-item#about {
-                height: auto;
-                padding: 0;
-            }
-
-                .e-menu-wrapper ul.e-ul .e-menu-item#about.e-focused {
-                    background-color: transparent;
-                    outline-color: transparent;
-                    pointer-events: none;
-                }
-        </style>
+        /* Increased the menu component left and right padding for better rounded corner UI */
+        .e-menu-wrapper.e-rounded-menu ul.e-menu {
+            padding: 0 14px;
+        }
+    </style>
         <partial name="_LoginPartial" />
     </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
-        </main>        
+        </main>
     </div>
 
     <footer class="border-top footer text-muted">

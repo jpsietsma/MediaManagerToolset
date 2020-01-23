@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MediaToolsetWebCoreMVC.Models;
+using Microsoft.AspNetCore.SignalR;
+using SignalRChat.Hubs;
 
 namespace MediaToolsetWebCoreMVC.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        IHubContext<ChatHub> ChatHubContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IHubContext<ChatHub> _chatHubContext)
         {
             _logger = logger;
+            ChatHubContext = _chatHubContext;
         }
 
         public IActionResult Index()

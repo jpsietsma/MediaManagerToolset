@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using MediaToolsetWebCoreMVC.Areas.Identity.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -15,49 +19,56 @@ namespace MediaToolsetWebCoreMVC.Controllers
         SignInManager<AuthenticatedUser> SignInManager;
         UserManager<AuthenticatedUser> UserManager;
         RoleManager<IdentityRole> RoleManager;
+        IHttpContextAccessor HttpContextAccessor;
+        AuthenticatedUserInfo UserInfo;
 
-        public ListboxController(SignInManager<AuthenticatedUser> _signinManager, UserManager<AuthenticatedUser> _userManager, RoleManager<IdentityRole> _roleManager)
+
+        public ListboxController(SignInManager<AuthenticatedUser> _signinManager, UserManager<AuthenticatedUser> _userManager, RoleManager<IdentityRole> _roleManager, IHttpContextAccessor _httpContextAccessor, AuthenticatedUserInfo _userInfo)
         {
             SignInManager = _signinManager;
             UserManager = _userManager;
             RoleManager = _roleManager;
+            HttpContextAccessor = _httpContextAccessor;
+            UserInfo = _userInfo;
         }
 
-        public string GetAuthorizedNavItems()
+        [Authorize]
+        public List<object> GetAuthorizedNavItems()
         {
             List<object> NavMenuItems = new List<object>();
 
-            NavMenuItems.Add(new
+            if (UserInfo.IsRoleMember("ContentViewer") || UserInfo.IsRoleMember("Administrator"))
             {
-                Category = "Television",
-                text = "Television",
-                items = new List<object>()
+                NavMenuItems.Add(new
+                {
+                    Category = "Television",
+                    text = "Television",
+                    items = new List<object>()
                 {
                     new
                     {
                         text = "Show Library",
                         url = "/Television/Library"
-                    },
+                    }                    
+                }
+                });
 
+                NavMenuItems.Add(new
+                {
+                    Category = "Movies",
+                    text = "Movies"
+                });
+            }            
+                        
+            if (UserInfo.IsRoleMember("ContentModerator") || UserInfo.IsRoleMember("Administrator"))
+            {
+                NavMenuItems.Add(
                     new
                     {
-                        text = "Admin Dashboard"
-                    }
-                }
-            });
-
-            NavMenuItems.Add(new
-            {
-                Category = "Movies",
-                text = "Movies"
-            });
-
-            NavMenuItems.Add(new
-            {
-                Category = "Sort",
-                text = "Sort Queue",
-                items = new List<object>()
-                {
+                        Category = "Sort",
+                        text = "Sort Queue",
+                        items = new List<object>()
+                    {
                     new
                     {
                         text = "Current Queue"
@@ -78,13 +89,13 @@ namespace MediaToolsetWebCoreMVC.Controllers
                         text = "Admin Dashboard"
                     }
                 }
-            });
+                });
 
-            NavMenuItems.Add(new
-            {
-                Category = "Media Lookup",
-                text = "Media Lookup",
-                items = new List<object>()
+                NavMenuItems.Add(new
+                {
+                    Category = "Media Lookup",
+                    text = "Media Lookup",
+                    items = new List<object>()
                 {
                     new
                     {
@@ -101,13 +112,13 @@ namespace MediaToolsetWebCoreMVC.Controllers
                         text = "IMDB"
                     }
                 }
-            });
+                });
 
-            NavMenuItems.Add(new
-            {
-                Category = "Media Acquisition",
-                text = "Media Acquisition",
-                items = new List<object>()
+                NavMenuItems.Add(new
+                {
+                    Category = "Media Acquisition",
+                    text = "Media Acquisition",
+                    items = new List<object>()
                 {
                     new
                     {
@@ -126,53 +137,55 @@ namespace MediaToolsetWebCoreMVC.Controllers
                         text = "Classification"
                     }
                 }
-            });
+                });
+                
+            }            
 
-            if (User.IsInRole("Administrator"))
+            if (UserInfo.IsRoleMember("Administrator"))
             {
                 NavMenuItems.Add(new
                 {
                     Category = "Administration",
                     text = "Administration",
                     items = new List<object>()
+                {
+                    new
                     {
-                        new
-                        {
-                            text = "Settings"
-                        },
+                        text = "Settings"
+                    },
 
-                        new
+                    new
+                    {
+                        text = "Classification"
+                    },
+                    new
+                    {
+                        Category = "Administration",
+                        text = "User Management",
+                        items = new List<object>()
                         {
-                            text = "Classification"
-                        },
-                        new
-                        {
-                            Category = "Administration",
-                            text = "User Management",
-                            items = new List<object>()
+                            new
                             {
-                                new
-                                {
-                                    text = "User Accounts"
-                                },
+                                text = "User Accounts"
+                            },
 
-                                new
-                                {
-                                    text = "Manage Roles",
-                                    url = "/Role"
-                                },
-                                new
-                                {
-                                    text = "Create Role",
-                                    url = "/Role/Create"
-                                }
+                            new
+                            {
+                                text = "Manage Roles",
+                                url = "/Role"
+                            },
+                            new
+                            {
+                                text = "Create Role",
+                                url = "/Role/Create"
                             }
                         }
                     }
+                }
                 });
-            }            
+            }
 
-            return JsonConvert.SerializeObject(NavMenuItems, Formatting.Indented);
+            return NavMenuItems;
         }
 
 
