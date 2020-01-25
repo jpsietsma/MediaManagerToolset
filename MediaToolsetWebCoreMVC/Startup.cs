@@ -29,9 +29,12 @@ namespace MediaToolsetWebCoreMVC
 {
     public class Startup
     {
+        private readonly ProgramConfiguration ProgramConfiguration;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            ProgramConfiguration = Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration;
         }
 
         public IConfiguration Configuration { get; }
@@ -41,7 +44,7 @@ namespace MediaToolsetWebCoreMVC
         {
             services.AddDbContext<IdentityDatabaseContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    ProgramConfiguration.DatabaseConfiguration.ConnectionString));
             services
                 .AddIdentity<AuthenticatedUser, IdentityRole>(options => {
 
@@ -67,7 +70,6 @@ namespace MediaToolsetWebCoreMVC
                     //Configure cookie options here such as login and logout urls
                     options.LoginPath = "/Identity/Account/Login";
                     options.LogoutPath = "/Identity/Account/Logout";
-
                 });
 
             services.AddTransient<IEmailSender, IdentityEmailSender>();
@@ -78,7 +80,7 @@ namespace MediaToolsetWebCoreMVC
 
                 services.AddScoped<IdentityDatabaseContext>();
 
-                services.AddSingleton(Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration);
+                services.AddSingleton(ProgramConfiguration);
                 services.AddSingleton(Configuration.Get<MvcProgramConfiguration>());
                 services.AddScoped<ListboxController>();
                 services.AddSignalR();
@@ -92,7 +94,7 @@ namespace MediaToolsetWebCoreMVC
                 });
 
                 services.AddHttpClient("TheMovieDBShowQuery", c => {
-                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&page=1");
+                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&page=1");
                 });
 
                 services.AddHttpClient("TvMazeLibraryScan", c => {
@@ -122,7 +124,7 @@ namespace MediaToolsetWebCoreMVC
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var useSyncWidgets = Configuration.Get<MvcProgramConfiguration>().ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(a => a.Name == "SyncFusionWidgets");
+            var useSyncWidgets = ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(a => a.Name == "SyncFusionWidgets");
             if (useSyncWidgets.Count() > 0)
             {
                 //Syncfusion widget license Registration           
