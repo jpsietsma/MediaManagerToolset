@@ -98,6 +98,10 @@ namespace MediaToolsetWebCoreMVC
                     c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&query=ShowQueryName&page=1");
                 });
 
+                services.AddHttpClient("TheMovieDBQueryById", c => {
+                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/find/Imdb?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&external_source=imdb_id");
+                });
+
                 services.AddHttpClient("TvMazeLibraryScan", c => {
                     c.BaseAddress = new Uri(@"http://api.tvmaze.com/singlesearch/shows?q=FBI&embed[]=episodes&embed[]=seasons");
                 });

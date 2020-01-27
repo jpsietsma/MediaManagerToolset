@@ -1,0 +1,28 @@
+﻿@model Entities.Data.TmDB.TheMovieDbShowResult
+@{
+    ViewData["Title"] = "Movie DB - Television Show Search";
+
+    <h1>The Movie DB - Show Result for: @Model.name</h1>
+    <table>
+        <tr>
+            <td>Show Id</td>
+            <td>Show Airing?</td>
+            <td>Show Name</td>
+            <td>Show Genre</td>
+            <td>Show Overview</td>
+        </tr>
+        <tr>
+            <td>@Model.id</td>
+            <td>@Model.in_production</td>
+            <td>@Model.name</td>
+            <td>
+                @if (Model.genres != null)
+                {
+                    Model.genres.FirstOrDefault();
+                }
+            </td>
+            <td>@Model.overview</td>
+        </tr>
+    </table>
+
+}

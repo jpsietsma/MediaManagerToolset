@@ -75,8 +75,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
         [Authorize]
         public async Task<IActionResult> MovieDbSearch()
         {
-            var result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowResult>("FBI");
-
+            var result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>("FBI");
 
             return View(result);
         }               

@@ -40,23 +40,25 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// <summary>
         /// Return the information of the search using a show name string
         /// </summary>
-        /// <typeparam name="T">Type to hold our return result information</typeparam>
+        /// <typeparam name="T">Raw API data return typ</typeparam>
+        /// <typeparam name="T1">Method data return type</typeparam>
         /// <param name="showName">Show name to query for information</param>
-        public async Task<T> GetShowResultAsync<T>(string showName) where T : class
+        public async Task<T1> GetShowResultAsync<T,T1>(string showName) where T : class
         {
-            dynamic showResult = default(T);
-            Result = showResult;
+            Result = default(T1);
             CurrentRequestClient = HttpClientFactory.CreateClient("TheMovieDBShowQuery");
 
             using (CurrentRequestClient)
             {
-                CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowQueryName", showName));
+                CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowQueryName", showName).Replace("imdb=ShowImDb&", ""));
+                RequestUrl = CurrentRequestClient.BaseAddress.ToString();
 
                 try
-                {
-                    using (var request = await CurrentRequestClient.GetAsync(CurrentRequestClient.BaseAddress))
+                {                    
+                    using (var clientRequest = await CurrentRequestClient.GetAsync(CurrentRequestClient.BaseAddress))
                     {
-                        Result = JsonConvert.DeserializeObject<T>(await request.Content.ReadAsStringAsync());
+                        Result = JsonConvert.DeserializeObject<T>(await clientRequest.Content.ReadAsStringAsync());
+                        Result = (Result.results as List<T1>).First();
                     }
                 }
                 catch (Exception ex)
@@ -77,14 +79,14 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// <param name="ImdbId">Integer Imdb ID to query for information</param>
         public async Task<T> GetShowResultAsync<T>(int ImdbId) where T : class
         {
-            dynamic showResult = default(T);
-            Result = showResult;
-            CurrentRequestClient = HttpClientFactory.CreateClient("TheMovieDBShowQuery");
+            Result = default(T);
+            CurrentRequestClient = HttpClientFactory.CreateClient("TheMovieDBQueryById");
 
             using (CurrentRequestClient)
             {
                 //Include our ImdbId in the base address, and remove default query info about show name from url
                 CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("Imdb", ImdbId.ToString()).Replace("query=ShowQueryName&", ""));
+                RequestUrl = CurrentRequestClient.BaseAddress.ToString();
 
                 try
                 {
@@ -111,10 +113,10 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// <returns></returns>
         public async Task<T> GetShowResultAsync<T>(params ObjectParameter[] _parameters) where T : class
         {
-            string showName = _parameters.Where(p => p.Name == "Query").FirstOrDefault().Value.ToString();
-            string imdbId = _parameters.Where(p => p.Name == "ImdbId").FirstOrDefault().Value.ToString();
-
             Result = default(T);
+
+            string showName = _parameters.Where(p => p.Name == "Query").FirstOrDefault().Value.ToString();
+            string imdbId = _parameters.Where(p => p.Name == "ImdbId").FirstOrDefault().Value.ToString();                      
 
             foreach (var parameter in _parameters)
             {
@@ -124,14 +126,14 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
                 if (parameter.Name == "ImdbId" && parameter.Value != null)
                 {
                     CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowImdDb", imdbId).Replace("query=ShowQueryName&", ""));
+                    RequestUrl = CurrentRequestClient.BaseAddress.ToString();
                 }
 
                 //If our parameters include a show name string to search, and if our ImdbId hasn't already been set, then include that in our base address
                 //Then remove the ImdbId query inform the from base url
                 if (parameter.Name == "Query" && parameter.Value != null && imdbId == null)
                 {
-                    CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowQueryName", showName).Replace("imdb=ShowImDb", ""));
-
+                    CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowQueryName", showName).Replace("imdb=ShowImDb&", ""));
                     RequestUrl = CurrentRequestClient.BaseAddress.ToString();
                 }
             }
