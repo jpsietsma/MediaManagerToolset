@@ -40,7 +40,7 @@ namespace MediaToolsetAPI.Controllers
         {
             DbContext = _context;
 
-            if (DbContext.TelevisionShowLibrary.Count() == 0)
+            if (DbContext.TelevisionShows.Count() == 0)
             {
                 ScanUpdateTelevisionLibraryDatabase(true);
             }            
@@ -82,7 +82,7 @@ namespace MediaToolsetAPI.Controllers
         {
             //foreach (string _showLibraryDriveRoot in AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders)
             //{
-                foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShowLibrary.ToList())
+                foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShows.ToList())
                 {
                     var vm = AutoMapper.Map<TelevisionShowViewModel>(_show);
                     _dataList.Add(vm);
@@ -99,9 +99,9 @@ namespace MediaToolsetAPI.Controllers
                 List<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow> newShows = new List<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow>();
 
                 //    Code will delete all existing entities from the database on a scan with forced replacement.
-                    if (DbContext.TelevisionShowLibrary.Count() > 0)
+                    if (DbContext.TelevisionShows.Count() > 0)
                     {
-                        DbContext.TelevisionShowLibrary.RemoveRange(DbContext.TelevisionShowLibrary.ToList());                        
+                        DbContext.TelevisionShows.RemoveRange(DbContext.TelevisionShows.ToList());                        
                     }
                               
 
@@ -122,7 +122,7 @@ namespace MediaToolsetAPI.Controllers
                     newShows.Add(AutoMapper.Map<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow>(vm));
                 }
 
-                DbContext.TelevisionShowLibrary.AddRange(newShows);
+                DbContext.TelevisionShows.AddRange(newShows);
                 DbContext.SaveChanges();                
 
             }

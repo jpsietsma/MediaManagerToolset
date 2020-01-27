@@ -1,4 +1,5 @@
 ﻿using Entities.Data.EF_Core.DatabaseEntities;
+using Entities.Logging;
 using Entities.Television;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,8 +15,10 @@ namespace Entities.Data.EF_Core
     public class DatabaseContext : DbContext
     {
         //DbSet property declarations
-        public virtual DbSet<DatabaseEntities.TelevisionShow> TelevisionShowLibrary { get; set; }
+        public virtual DbSet<DatabaseEntities.TelevisionShow> TelevisionShows { get; set; }
         public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
+        public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }
+
 
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -27,7 +30,7 @@ namespace Entities.Data.EF_Core
         {
             var showNameParameter = string.IsNullOrEmpty(showName) ? new ObjectParameter("ShowName", showName) : new ObjectParameter("ShowName", typeof(string));
 
-            var shows = this.TelevisionShowLibrary.FromSqlRaw("[dbo].[SearchShowsByName] {0}", showName).ToList();
+            var shows = this.TelevisionShows.FromSqlRaw("[dbo].[SearchShowsByName] {0}", showName).ToList();
             
             return shows;
         }
@@ -42,7 +45,7 @@ namespace Entities.Data.EF_Core
             var TvMazeIdParam = string.IsNullOrEmpty(_TvMazeId) ? new SqlParameter("@TvMazeId", default(string)) : new SqlParameter("@TvMazeId", _TvMazeId);
             var TheMovieDbIdParam = string.IsNullOrEmpty(_TheMovieDbId) ? new SqlParameter("@TheMovieDbId", default(string)) : new SqlParameter("@TheMovieDbId", _TheMovieDbId);
 
-            TelevisionShowLibrary.FromSqlRaw("[dbo].[AddMissingEpisode] @ShowId, @SeasonId, @EpisodeId, @EpisodeFilePath, @ImdbId, @TvMazeId, @TheMovieDbId", showIdParam, SeasonIdParam, EpisodeIdParam, FilePathParam, ImdbIdParam, TvMazeIdParam, TheMovieDbIdParam);
+            TelevisionShows.FromSqlRaw("[dbo].[AddMissingEpisode] @ShowId, @SeasonId, @EpisodeId, @EpisodeFilePath, @ImdbId, @TvMazeId, @TheMovieDbId", showIdParam, SeasonIdParam, EpisodeIdParam, FilePathParam, ImdbIdParam, TvMazeIdParam, TheMovieDbIdParam);
             SaveChanges();
         }
 
@@ -51,7 +54,7 @@ namespace Entities.Data.EF_Core
             var TelevisionShowIdParam = TelevisionShowId == default ? new SqlParameter("@TelevisionShowId", default(int)) : new SqlParameter("@TelevisionShowId", TelevisionShowId);
             var PriorityLevelIdParam = PriorityLevel == default ? new SqlParameter("@PriorityLevelId", default(int)) : new SqlParameter("@PriorityLevelId", PriorityLevel);
 
-            TelevisionShowLibrary.FromSqlRaw("[dbo].[AddPriorityShow] @TelevisionShowId, @PriorityLevelId", TelevisionShowIdParam, PriorityLevelIdParam);
+            TelevisionShows.FromSqlRaw("[dbo].[AddPriorityShow] @TelevisionShowId, @PriorityLevelId", TelevisionShowIdParam, PriorityLevelIdParam);
             SaveChanges();
         }
 
@@ -60,7 +63,7 @@ namespace Entities.Data.EF_Core
             var PriorityLevelNameParam = string.IsNullOrEmpty(PriorityLevelName) ? new SqlParameter("@PriorityLevelName", default(int)) : new SqlParameter("@TelevisionShowId", PriorityLevelName);
             var PriorityLevelCodeParam = PriorityLevelCode == default ? new SqlParameter("@PriorityLevelCode", default(int)) : new SqlParameter("@PriorityLevelCode", PriorityLevelCode);
 
-            TelevisionShowLibrary.FromSqlRaw("[dbo].[AddPriorityLevel] @PriorityLevelName, @PriorityLevelCode", PriorityLevelNameParam, PriorityLevelCodeParam);
+            TelevisionShows.FromSqlRaw("[dbo].[AddPriorityLevel] @PriorityLevelName, @PriorityLevelCode", PriorityLevelNameParam, PriorityLevelCodeParam);
             SaveChanges();
         }
     }

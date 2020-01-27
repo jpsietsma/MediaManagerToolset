@@ -39,10 +39,12 @@ namespace Entities.Configuration
                 _connStringBuilder.Append(DefaultLoginCredentials.First().username + ";");
 
                 _connStringBuilder.Append("Password=");
-                _connStringBuilder.Append(DefaultLoginCredentials.First().password + ";");
+                _connStringBuilder.Append(DefaultLoginCredentials.First().password + ";");                
             }
-                
-                return _connStringBuilder.ToString();
+
+            _connStringBuilder.Append("MultipleActiveResultSets=true;");
+
+            return _connStringBuilder.ToString();
         }
 
 

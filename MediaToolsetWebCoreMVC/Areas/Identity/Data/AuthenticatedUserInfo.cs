@@ -15,7 +15,6 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
         private readonly IHttpContextAccessor HttpContextAccessor;
         private readonly UserManager<AuthenticatedUser> UserManager;
         private readonly AuthenticatedUser AuthenticatedUser;
-        private readonly SignInManager<AuthenticatedUser> SignInManager;
         private readonly IdentityDatabaseContext DatabaseContext;
 
         public string Id { get; private set; }
@@ -23,14 +22,16 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
         public string EmailAddress { get; private set; }
         public string UserName { get; private set; }
         public string PhoneNumber { get; private set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+
         public DateTime? RegistrationDate { get; private set; }
         public List<AuthenticatedUserLoginPermission> LoginPermissions { get; private set; }
 
-        public AuthenticatedUserInfo(IHttpContextAccessor _httpContextAccessor, UserManager<AuthenticatedUser> _userManager, SignInManager<AuthenticatedUser> _signInManager, IdentityDatabaseContext _identityContext)
+        public AuthenticatedUserInfo(IHttpContextAccessor _httpContextAccessor, UserManager<AuthenticatedUser> _userManager, IdentityDatabaseContext _identityContext)
         {            
             HttpContextAccessor = _httpContextAccessor;
             UserManager = _userManager;
-            SignInManager = _signInManager;
             DatabaseContext = _identityContext;
 
             if (_httpContextAccessor.HttpContext.User.Claims.Count() > 0)
@@ -43,11 +44,13 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
         }               
 
         private void RetrieveUserDetails()
-        {
+        {            
             Id = AuthenticatedUser.Id;            
             EmailAddress = AuthenticatedUser.Email;
             UserName = AuthenticatedUser.UserName;
             PhoneNumber = AuthenticatedUser.PhoneNumber;
+            FirstName = AuthenticatedUser.FirstName;
+            LastName = AuthenticatedUser.LastName;
             RegistrationDate = AuthenticatedUser.RegistrationDate;
             UserRoles = UserManager.GetRolesAsync(AuthenticatedUser).Result.ToList();
             LoginPermissions = DatabaseContext.GetLoginPermissions(Id);

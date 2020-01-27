@@ -5,7 +5,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Configuration;
+using Entities.Data.TmDB;
 using MediaToolsetWebCoreMVC.Data;
+using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -18,12 +20,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
         ProgramConfiguration AppSettings;
         IHttpClientFactory HttpClientFactory;
         IMapper AutoMapper;
+        IMetaDataApiSvc MetaDataSvc;
 
-        public TelevisionController(MvcProgramConfiguration _settings, IdentityDatabaseContext _context, IMapper _mapper)
+        public TelevisionController(MvcProgramConfiguration _settings, IdentityDatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc)
         {
             AppSettings = _settings.ProgramConfiguration;
             DbContext = _context;
             AutoMapper = _mapper;
+            MetaDataSvc = _apiSvc;
         }
 
         public IActionResult Index()
@@ -68,21 +72,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
         }
 
 
-        // Library action method uses API which now uses this method as opposed to scanning directories directly
-        //public IActionResult LibraryFromDatabase()
-        //{
-        //    List<Entities.Television.ViewModels.TelevisionShowViewModel> data = new List<Entities.Television.ViewModels.TelevisionShowViewModel>();
+        [Authorize]
+        public async Task<IActionResult> MovieDbSearch()
+        {
+            var result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowResult>("FBI");
 
-        //    foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShowLibrary.ToList())
-        //    {
-        //        var x = AutoMapper.Map<Entities.Television.ViewModels.TelevisionShowViewModel>(_show);
-        //        data.Add(x);
-        //    }
 
-        //    ViewBag.DataSource = data;
-
-        //    return View("Library");
-        //}
+            return View(result);
+        }               
 
         public IActionResult ShowDetails(int id)
         {

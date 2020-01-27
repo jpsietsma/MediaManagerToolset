@@ -57,7 +57,7 @@ namespace MediaToolsetWebCoreMVC.Services.Logging
         {
             AdministratorLog adminLog = new AdministratorLog()
             {
-                UserId = UserInfo.Id,
+                UserName = UserInfo.UserName,
                 MessageDate = DateTime.Now,
                 MessageText = exception.Message,
                 MessageType = logLevel.ToString(),

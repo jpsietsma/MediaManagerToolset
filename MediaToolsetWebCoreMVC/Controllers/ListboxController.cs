@@ -216,7 +216,8 @@ namespace MediaToolsetWebCoreMVC.Controllers
                 {
                     new
                     {
-                        text = "Profile"
+                        text = "Profile",
+                        url = "/User/Profile"
                     },
                     new
                     {
@@ -233,12 +234,12 @@ namespace MediaToolsetWebCoreMVC.Controllers
                     new
                     {
                         text = "Login Permissions",
-                        url = "/Identity/Account/Manage/ManageLoginPermissions"
+                        url = "/User/LoginPermissions"
                     },
                     new
                     {
                         text = "Logout",
-                        url = "/Identity/Account/Logout"
+                        url = "/User/Logout"
                     }
                 }
             });

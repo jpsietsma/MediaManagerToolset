@@ -13,7 +13,7 @@ namespace Entities.Logging
         public string MessageText { get; set; }
 
         [Display(Name = "Action User")]
-        public string UserId { get; set; }
+        public string UserName { get; set; }
 
         [Display(Name = "Action Page")]
         public string MessagePage { get; set; }

@@ -12,6 +12,7 @@ using MediaToolsetWebCoreMVC.Areas.Identity.Services;
 using MediaToolsetWebCoreMVC.Controllers;
 using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
+using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -69,7 +70,7 @@ namespace MediaToolsetWebCoreMVC
 
                     //Configure cookie options here such as login and logout urls
                     options.LoginPath = "/Identity/Account/Login";
-                    options.LogoutPath = "/Identity/Account/Logout";
+                    options.LogoutPath = "/Account/Logout";
                 });
 
             services.AddTransient<IEmailSender, IdentityEmailSender>();
@@ -94,7 +95,7 @@ namespace MediaToolsetWebCoreMVC
                 });
 
                 services.AddHttpClient("TheMovieDBShowQuery", c => {
-                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&page=1");
+                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&query=ShowQueryName&page=1");
                 });
 
                 services.AddHttpClient("TvMazeLibraryScan", c => {
@@ -116,6 +117,8 @@ namespace MediaToolsetWebCoreMVC
             services.AddScoped<AuthenticatedUserInfo>();
             services.AddScoped<UserController>();
             services.AddScoped<AdministratorController>();
+
+            services.AddScoped<IMetaDataApiSvc, MetaDataApiSvc>();
             services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();

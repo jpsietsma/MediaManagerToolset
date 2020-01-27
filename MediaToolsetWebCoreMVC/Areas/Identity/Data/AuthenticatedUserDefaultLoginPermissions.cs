@@ -16,7 +16,6 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
             //All users can log in by default through the web interface
             Permissions.Add(new AuthenticatedUserLoginPermission
             {
-                Id = 0,
                 Name = "AllowWebLogin",
                 HasPermission = true
             });
@@ -24,7 +23,6 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
             //All users can log in by default through the desktop application
             Permissions.Add(new AuthenticatedUserLoginPermission
             {
-                Id = 1,
                 Name = "AllowDesktopLogin",
                 HasPermission = true
             });
@@ -32,7 +30,6 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
             //All users are denied login by default to the WebAPI interface as this is for developers
             Permissions.Add(new AuthenticatedUserLoginPermission
             {
-                Id = 2,
                 Name = "AllowWebApiLogin",
                 HasPermission = false
             });

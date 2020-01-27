@@ -13,7 +13,7 @@
                 @Html.DisplayNameFor(model => model.MessageText)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                @Html.DisplayNameFor(model => model.UserName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MessagePage)
@@ -28,27 +28,79 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MessageText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MessagePage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MessageType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MessageDate)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessageText)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessagePage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessageType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MessageDate)
+                </td>
+                <td>
+                    <a href="javascript:void(0);" class="anchorDetail" data-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div id='LogDetailsModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='LogDetailsContent'></div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+
+    var TeamDetailPostBackURL = '/Administrator/LogDetails';
+    $(function () {
+        $(".anchorDetail").click(function () {
+            debugger;
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                type: "GET",
+                url: TeamDetailPostBackURL,
+                contentType: "application/json; charset=utf-8",
+                data: { "Id": id },
+                datatype: "json",
+                success: function (data) {
+                    debugger;
+                    $('#LogDetailsContent').html(data);
+                    $('#LogDetailsModal').modal(options);
+                    $('#LogDetailsModal').modal('show');
+
+                },
+                error: function () {
+                    alert("Dynamic content load failed.");
+                }
+            });
+        });
+
+        $("#closbtn").click(function () {
+            $('#LogDetailsModal').modal('hide');
+        });
+    });
+
+    </script>
+
+}  
