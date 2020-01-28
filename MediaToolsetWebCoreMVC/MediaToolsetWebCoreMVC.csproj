@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Sort\**" />
+    <Content Remove="Views\Sort\**" />
+    <EmbeddedResource Remove="Views\Sort\**" />
+    <None Remove="Views\Sort\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="MailKit" Version="2.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
@@ -21,10 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Sort\" />
   </ItemGroup>
 
 

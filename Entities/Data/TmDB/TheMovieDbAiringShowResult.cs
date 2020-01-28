@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities.Data.TmDB
 {
-    public class TheMovieDbAiringShowResult
+    public class TheMovieDbAiringShowResult : IApiCallResult
     {
         public string original_name { get; set; }
         public List<int> genre_ids { get; set; }
@@ -19,5 +19,10 @@ namespace Entities.Data.TmDB
         public double vote_average { get; set; }
         public string overview { get; set; }
         public string poster_path { get; set; }
+
+        public dynamic GetResult<T>() where T : class
+        {
+            return this;
+        }
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities.Data.TmDB
 {
-    public class TheMovieDbShowResult
+    public class TheMovieDbShowResult : IApiCallResult
     {
         public string backdrop_path { get; set; }
         public List<object> created_by { get; set; }
@@ -34,5 +34,12 @@ namespace Entities.Data.TmDB
         public string type { get; set; }
         public double vote_average { get; set; }
         public int vote_count { get; set; }
+
+        public dynamic GetResult<T>()
+            where T: class
+        {
+            return this;
+        }
+
     }
 }

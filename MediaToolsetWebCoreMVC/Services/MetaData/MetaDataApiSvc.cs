@@ -43,7 +43,9 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// <typeparam name="T">Raw API data return typ</typeparam>
         /// <typeparam name="T1">Method data return type</typeparam>
         /// <param name="showName">Show name to query for information</param>
-        public async Task<T1> GetShowResultAsync<T,T1>(string showName) where T : class
+        public async Task<T1> GetShowResultAsync<T,T1>(string showName)
+            where T : class
+            where T1 : IApiCallResult
         {
             Result = default(T1);
             CurrentRequestClient = HttpClientFactory.CreateClient("TheMovieDBShowQuery");
@@ -77,7 +79,9 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// </summary>
         /// <typeparam name="T">Type to hold our return result information</typeparam>
         /// <param name="ImdbId">Integer Imdb ID to query for information</param>
-        public async Task<T> GetShowResultAsync<T>(int ImdbId) where T : class
+        public async Task<T1> GetShowResultAsync<T, T1>(int ImdbId)
+            where T : class
+            where T1 : IApiCallResult
         {
             Result = default(T);
             CurrentRequestClient = HttpClientFactory.CreateClient("TheMovieDBQueryById");
@@ -111,61 +115,103 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// <typeparam name="T">Type to hold our return result information</typeparam>
         /// <param name="_parameters">Array of object parameters to pass into the query for information</param>
         /// <returns></returns>
-        public async Task<T> GetShowResultAsync<T>(params ObjectParameter[] _parameters) where T : class
+        public async Task<T1> GetShowResultAsync<T, T1>(params ObjectParameter[] _parameters) 
+            where T : class 
+            where T1 : IApiCallResult
         {
             Result = default(T);
+            CurrentRequestClient = HttpClientFactory.CreateClient("TheMovieDBShowQuery");
 
             string showName = _parameters.Where(p => p.Name == "Query").FirstOrDefault().Value.ToString();
-            string imdbId = _parameters.Where(p => p.Name == "ImdbId").FirstOrDefault().Value.ToString();                      
+            string imdbId = _parameters.Where(p => p.Name == "ImdbId").FirstOrDefault().Value.ToString();
 
-            foreach (var parameter in _parameters)
+            //check to make sure either show name or imdb is passed as parameter
+            if (showName != null || imdbId != null)
             {
-
-                //If our parameters include an ImdbId then include that in our base address in our web client for the query
-                //Then remove the show name query info from the base url
-                if (parameter.Name == "ImdbId" && parameter.Value != null)
+                foreach (var parameter in _parameters)
                 {
-                    CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowImdDb", imdbId).Replace("query=ShowQueryName&", ""));
-                    RequestUrl = CurrentRequestClient.BaseAddress.ToString();
+
+                    //If our parameters include an ImdbId then include that in our base address in our web client for the query
+                    //Then remove the show name query info from the base url
+                    if (parameter.Name == "ImdbId" && parameter.Value != null)
+                    {
+                        CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowImdDb", imdbId).Replace("query=ShowQueryName&", ""));
+                        RequestUrl = CurrentRequestClient.BaseAddress.ToString();
+                    }
+
+                    //If our parameters include a show name string to search, and if our ImdbId hasn't already been set as providing this takes priority as it's 
+                    //a more exact search, then include that in our base address
+                    //Then remove the ImdbId query inform the from base url
+                    if (parameter.Name == "Query" && parameter.Value != null && imdbId == null)
+                    {
+                        CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowQueryName", showName).Replace("imdb=ShowImDb&", ""));
+                        RequestUrl = CurrentRequestClient.BaseAddress.ToString();
+                    }
                 }
 
-                //If our parameters include a show name string to search, and if our ImdbId hasn't already been set, then include that in our base address
-                //Then remove the ImdbId query inform the from base url
-                if (parameter.Name == "Query" && parameter.Value != null && imdbId == null)
+                using (var client = HttpClientFactory.CreateClient("TheMovieDBShowQuery"))
                 {
-                    CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowQueryName", showName).Replace("imdb=ShowImDb&", ""));
-                    RequestUrl = CurrentRequestClient.BaseAddress.ToString();
+                    client.BaseAddress = new Uri(client.BaseAddress.ToString().Replace("ShowQueryName", showName));
+
+                    try
+                    {
+                        using (var request = await client.GetAsync(client.BaseAddress))
+                        {
+                            Result = JsonConvert.DeserializeObject<T>(await request.Content.ReadAsStringAsync());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        string searchMethod = showName ?? imdbId;
+                        string errorMessage;
+
+                        if (searchMethod == null)
+                        {
+                            errorMessage = " didn't provide show name or Imdb ID for query";
+
+                            //Logger.LogInformation(new EventId(5000, "Error making API Call"), ex, errorMessage);
+                        }
+
+                    }
+
                 }
-            }
+            }            
+
+            //Logger.LogInformation(new EventId(6000, "Successful API call"), null, RequestUser.UserName + " successfully searched for: " + showName);
+            return Result;
+        }
+
+        /// <summary>
+        /// Return all results of the search using a string show name 
+        /// </summary>
+        /// <typeparam name="T">Type of API call return</typeparam>
+        /// <typeparam name="T1">Type of return result information</typeparam>
+        /// <param name="showName">Name of the show to search</param>
+        /// <returns></returns>
+        public async Task<T1> GetManyShowResultsAsync<T, T1>(string showName) 
+            where T: IApiCallMultipleResultset
+            where T1: List<IApiCallResult>
+        {
+            Result = new List<T1>();
 
             using (var client = HttpClientFactory.CreateClient("TheMovieDBShowQuery"))
             {
-                client.BaseAddress = new Uri(client.BaseAddress.ToString().Replace("ShowQueryName", showName));
+                client.BaseAddress = new Uri(client.BaseAddress.ToString().Replace("ShowQueryName", showName).Replace("imdb=ShowImDb&", ""));
 
                 try
                 {
                     using (var request = await client.GetAsync(client.BaseAddress))
                     {
-                        Result = JsonConvert.DeserializeObject<T>(await request.Content.ReadAsStringAsync());
+                        Result = JsonConvert.DeserializeObject<T>(await request.Content.ReadAsStringAsync()).GetResults();
                     }
                 }
                 catch (Exception ex)
-                {
-                    string searchMethod = showName ?? imdbId;
-                    string errorMessage;
-
-                    if (searchMethod == null)
-                    {
-                        errorMessage = " didn't provide show name or Imdb ID for query";
-
-                        //Logger.LogInformation(new EventId(5000, "Error making API Call"), ex, errorMessage);
-                    }
-
+                {                                   
+                    //Logger.LogInformation(new EventId(5000, "Error making API Call"), ex, errorMessage);                    
                 }
 
             }
 
-            //Logger.LogInformation(new EventId(6000, "Successful API call"), null, RequestUser.UserName + " successfully searched for: " + showName);
             return Result;
         }
 

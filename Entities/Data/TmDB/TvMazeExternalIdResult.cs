@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Entities.Data.TvMaze
 {
-    public class TvMazeExternalIdResults
+    public class TvMazeExternalIdResult
     {
         public int id { get; set; }
         public string imdb_id { get; set; }
