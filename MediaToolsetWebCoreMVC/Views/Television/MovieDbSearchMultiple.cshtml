@@ -1,0 +1,43 @@
+﻿@model System.Collections.Generic.List<Entities.Data.TmDB.TheMovieDbShowResult>
+@{
+    ViewData["Title"] = "Movie DB - Television Show Search";
+
+    <h1>The Movie DB - Television Results: </h1>
+    <br />
+    <h3>@ViewBag.ShowQuery</h3>
+
+    <ejs-grid id="Grid" allowSelection="true" dataSource="@ViewBag.DataSource" allowSorting="true" allowPaging="true" width="100%" height="650" detailTemplate="#detailtemplate" gridLines="Both" load="loadShowResultsGrid">
+
+        <e-grid-columns>
+            <e-grid-column field="id" headerText="Show ID" textAlign="Center" width="80"></e-grid-column>
+            <e-grid-column field="name" headerText="Show Name" textAlign="Left" width="100"></e-grid-column>
+            <e-grid-column field="genre" headerText="Genre" textAlign="Left" width="75"></e-grid-column>
+            <e-grid-column field="overview" headerText="Overview" textAlign="Left" width="200"></e-grid-column>
+        </e-grid-columns>
+
+    </ejs-grid>
+
+    <script type="text/x-template" id="detailtemplate">
+        <table style="width: 100%; height: 300px; background-color: #c2baba">
+            <tr>
+                <td>
+                    ${overview}
+                </td>
+            </tr>
+
+        </table>
+    </script>
+
+    <script>
+    function loadShowResultsGrid() {
+        var grid = document.getElementById('Grid').ej2_instances[0];
+        var rowHeight = grid.getRowHeight();  //height of the each row
+        var gridHeight = grid.height;  //grid height
+        var pageSize = grid.pageSettings.pageSize;   //initial page size
+        var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
+        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+
+    }
+
+    </script>
+}

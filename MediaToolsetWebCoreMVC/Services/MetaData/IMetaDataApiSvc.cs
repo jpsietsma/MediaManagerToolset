@@ -1,4 +1,5 @@
 ﻿using Entities.Data.TmDB;
+using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -20,5 +21,9 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         Task<T1> GetShowResultAsync<T, T1>(string showName)
             where T : class
             where T1: IApiCallResult;
+
+        Task<List<T1>> GetManyShowResultsAsync<T, T1>(string showName)
+           where T : IApiCallMultipleResultset
+           where T1 : IApiCallResult;
     }
 }

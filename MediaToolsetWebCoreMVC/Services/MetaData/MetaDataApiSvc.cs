@@ -188,9 +188,9 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// <typeparam name="T1">Type of return result information</typeparam>
         /// <param name="showName">Name of the show to search</param>
         /// <returns></returns>
-        public async Task<T1> GetManyShowResultsAsync<T, T1>(string showName) 
+        public async Task<List<T1>> GetManyShowResultsAsync<T, T1>(string showName) 
             where T: IApiCallMultipleResultset
-            where T1: List<IApiCallResult>
+            where T1: IApiCallResult
         {
             Result = new List<T1>();
 
@@ -202,7 +202,10 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
                 {
                     using (var request = await client.GetAsync(client.BaseAddress))
                     {
-                        Result = JsonConvert.DeserializeObject<T>(await request.Content.ReadAsStringAsync()).GetResults();
+                        var requ = (await request.Content.ReadAsStringAsync());
+                        var res = JsonConvert.DeserializeObject<T>(await request.Content.ReadAsStringAsync());//.GetResults().Tolist();
+
+                        Result = res.GetResults();
                     }
                 }
                 catch (Exception ex)
@@ -211,7 +214,7 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
                 }
 
             }
-
+                        
             return Result;
         }
 
