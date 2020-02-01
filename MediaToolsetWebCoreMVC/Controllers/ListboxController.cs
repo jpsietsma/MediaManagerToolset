@@ -37,20 +37,20 @@ namespace MediaToolsetWebCoreMVC.Controllers
         {
             List<object> NavMenuItems = new List<object>();
 
-            if (UserInfo.IsRoleMember("ContentViewer") || UserInfo.IsRoleMember("Administrator"))
+            if (UserInfo.IsRoleMember("ContentViewer") || UserInfo.IsRoleMember("Administrator") || UserInfo.IsRoleMember("SuperAdmin"))
             {
                 NavMenuItems.Add(new
                 {
                     Category = "Television",
                     text = "Television",
                     items = new List<object>()
-                {
-                    new
                     {
-                        text = "Show Library",
-                        url = "/Television/Library"
-                    }                    
-                }
+                        new
+                        {
+                            text = "Show Library",
+                            url = "/Television/Library"
+                        }                    
+                    }
                 });
 
                 NavMenuItems.Add(new
@@ -60,7 +60,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
                 });
             }            
                         
-            if (UserInfo.IsRoleMember("ContentModerator") || UserInfo.IsRoleMember("Administrator"))
+            if (UserInfo.IsRoleMember("ContentModerator") || UserInfo.IsRoleMember("Administrator") || UserInfo.IsRoleMember("SuperAdmin"))
             {
                 NavMenuItems.Add(
                     new
@@ -68,27 +68,27 @@ namespace MediaToolsetWebCoreMVC.Controllers
                         Category = "Sort",
                         text = "Sort Queue",
                         items = new List<object>()
-                    {
-                    new
-                    {
-                        text = "Current Queue"
-                    },
+                        {
+                        new
+                        {
+                            text = "Current Queue"
+                        },
 
-                    new
-                    {
-                        text = "ReScan Contents"
-                    },
+                        new
+                        {
+                            text = "ReScan Contents"
+                        },
 
-                    new
-                    {
-                        text = "Classify Contents"
-                    },
+                        new
+                        {
+                            text = "Classify Contents"
+                        },
 
-                    new
-                    {
-                        text = "Admin Dashboard"
+                        new
+                        {
+                            text = "Admin Dashboard"
+                        }
                     }
-                }
                 });
 
                 NavMenuItems.Add(new
@@ -96,22 +96,50 @@ namespace MediaToolsetWebCoreMVC.Controllers
                     Category = "Media Lookup",
                     text = "Media Lookup",
                     items = new List<object>()
-                {
-                    new
                     {
-                        text = "Tv Maze"
-                    },
+                        new
+                        {
+                            text = "Tv Maze"
+                        },
 
-                    new
-                    {
-                        text = "The Movie DB"
-                    },
+                        new
+                        {
+                            text = "The Movie DB",
+                            items = new List<object>()
+                            {
+                                new
+                                {
+                                    text = "Television",
+                                    items = new List<object>()
+                                    {
+                                        new
+                                        {
+                                            text = "Find Television Shows",
+                                            url = "/Television/MovieDbSearchMultiple"
+                                        }
+                                    }
+                                },
+                                
+                                new
+                                {
+                                    text = "Movies",
+                                    items = new List<object>()
+                                    {
+                                        new
+                                        {
+                                            text = "Find Movies",
+                                            url = "/Movies/MovieDbSearchMultiple"
+                                        }
+                                    }
+                                }
+                            }
+                        },
 
-                    new
-                    {
-                        text = "IMDB"
+                        new
+                        {
+                            text = "IMDB"
+                        }
                     }
-                }
                 });
 
                 NavMenuItems.Add(new
@@ -119,29 +147,29 @@ namespace MediaToolsetWebCoreMVC.Controllers
                     Category = "Media Acquisition",
                     text = "Media Acquisition",
                     items = new List<object>()
-                {
-                    new
                     {
-                        text = "EzTV",
-                        items = new List<object>()
+                        new
                         {
-                            new
+                            text = "EzTV",
+                            items = new List<object>()
                             {
-                                text = "Add Download"
+                                new
+                                {
+                                    text = "Add Download"
+                                }
                             }
-                        }
-                    },
+                        },
 
-                    new
-                    {
-                        text = "Classification"
+                        new
+                        {
+                            text = "Classification"
+                        }
                     }
-                }
                 });
                 
             }            
 
-            if (UserInfo.IsRoleMember("Administrator"))
+            if (UserInfo.IsRoleMember("Administrator") || UserInfo.IsRoleMember("SuperAdmin"))
             {
                 NavMenuItems.Add(new
                 {

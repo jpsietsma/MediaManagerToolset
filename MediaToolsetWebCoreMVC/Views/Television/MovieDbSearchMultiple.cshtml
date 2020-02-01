@@ -1,43 +1,102 @@
 ﻿@model System.Collections.Generic.List<Entities.Data.TmDB.TheMovieDbShowResult>
 @{
+    IDictionary<string, object> submit = new Dictionary<string, object>();
+    submit.Add("type", "submit");
+ }
     ViewData["Title"] = "Movie DB - Television Show Search";
 
-    <h1>The Movie DB - Television Results: </h1>
-    <br />
-    <h3>@ViewBag.ShowQuery</h3>
+    <h1>TheMovieDB - Television Show Search</h1>
 
-    <ejs-grid id="Grid" allowSelection="true" dataSource="@ViewBag.DataSource" allowSorting="true" allowPaging="true" width="100%" height="650" detailTemplate="#detailtemplate" gridLines="Both" load="loadShowResultsGrid">
+    @if (ViewBag.ShowQuery != null)
+    {
+    <h3>@ViewBag.ShowQuery</h3>
+    <ejs-grid id="Grid"
+              allowReordering="true"
+              allowSelection="true"
+              allowResizing="true"
+              dataSource="@ViewBag.DataSource"
+              allowSorting="true"
+              allowPaging="true"
+              width="100%"
+              height="650"
+              detailTemplate="#detailtemplate"
+              gridLines="Both"
+              allowTextWrap="true"
+              enableAltRow="true"
+              load="loadShowResultsGrid">
 
         <e-grid-columns>
-            <e-grid-column field="id" headerText="Show ID" textAlign="Center" width="80"></e-grid-column>
-            <e-grid-column field="name" headerText="Show Name" textAlign="Left" width="100"></e-grid-column>
-            <e-grid-column field="genre" headerText="Genre" textAlign="Left" width="75"></e-grid-column>
-            <e-grid-column field="overview" headerText="Overview" textAlign="Left" width="200"></e-grid-column>
+            <e-grid-column field="name" headerTemplate="#header_name_template" headerTextAlign="Center" textAlign="Left" width="100" allowResizing="false"></e-grid-column>
+            <e-grid-column field="id" headerTemplate="#header_id_template" textAlign="Center" width="40" allowResizing="false" allowSorting="false" allowReordering="false" />
+            <e-grid-column field="overview" headerTemplate="#header_overview_template" headerTextAlign="Center" textAlign="Left" width="250" allowSorting="false" />
+            <e-grid-column allowSorting="false" allowEditing="false" allowFiltering="false" allowReordering="false" allowResizing="false" allowSearching="false" textAlign="Center" width="">
+
+            </e-grid-column>
         </e-grid-columns>
 
     </ejs-grid>
+    }
+    else
+    {
+    <div class="form-group">
+        <ejs-textbox width="120" />
+        @using (Html.BeginForm("MovieDbSearchMultiple", "Home", FormMethod.Post))
+        {
+        <ejs-button class='e-btn e-primary' action="Television/MovieDbSearchMultiple" id="searchButton" htmlAttributes=submit>
+            <e-content-template>
+                Search
+            </e-content-template>
+        </ejs-button>
+        }
+    </div>
+    }
+
+
+    <script type="text/x-template" id="header_id_template">
+        <span style="font-size: 15px; font-weight: bold;">
+            MovieDB ID
+        </span>
+    </script>
+    <script type="text/x-template" id="header_name_template">
+        <span style="font-size: 15px; font-weight: bold;">
+            Television Show Name
+        </span>
+    </script>
+    <script type="text/x-template" id="header_overview_template">
+        <span style="font-size: 15px; font-weight: bold;">
+            Show Overview
+        </span>
+    </script>
 
     <script type="text/x-template" id="detailtemplate">
-        <table style="width: 100%; height: 300px; background-color: #c2baba">
+        <table style="width: 100%; height: 150px; background-color: #DDDDDD">
             <tr>
                 <td>
-                    ${overview}
+                    <b>Genre Classification:</b> ${genre}
+                </td>
+                <td>
+                    <b>Season Count: </b>
                 </td>
             </tr>
-
+            <tr>
+                <td>
+                    <b>Show Runtime: </b>
+                </td>
+                <td>
+                    <b>Episode Count: </b>
+                </td>
+            </tr>
         </table>
     </script>
 
     <script>
-    function loadShowResultsGrid() {
-        var grid = document.getElementById('Grid').ej2_instances[0];
-        var rowHeight = grid.getRowHeight();  //height of the each row
-        var gridHeight = grid.height;  //grid height
-        var pageSize = grid.pageSettings.pageSize;   //initial page size
-        var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
-        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
-
-    }
-
+        function loadShowResultsGrid() {
+            var grid = document.getElementById('Grid').ej2_instances[0];
+            var rowHeight = grid.getRowHeight();
+            var gridHeight = grid.height;
+            var pageSize = 10;
+            var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight;
+            grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+        }
     </script>
 }

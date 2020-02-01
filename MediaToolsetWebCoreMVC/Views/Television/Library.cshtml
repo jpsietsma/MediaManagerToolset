@@ -4,15 +4,15 @@
     ViewData["Title"] = "Television Library";
 
     List<object> toolbarItems = new List<object>();
-    toolbarItems.Add("Edit");
-    toolbarItems.Add("Delete");
-    toolbarItems.Add("Update");
+    //toolbarItems.Add("Edit");
+    //toolbarItems.Add("Delete");
+    //toolbarItems.Add("Update");
     toolbarItems.Add("ExcelExport");
     toolbarItems.Add("Search");
 }
 
 <script>
-    function loadShow() {
+    function loadGrid() {
         var grid = document.getElementById('Grid').ej2_instances[0];
         var rowHeight = grid.getRowHeight();  //height of the each row
         var gridHeight = grid.height;  //grid height
@@ -20,76 +20,95 @@
         var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
         grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
 
+        //Create our Seasons grid in detailTemplate
+        this.childGrid = {
+            dataSource: null,
+            allowPaging: true,
+            pageSettings: { pageSize: 10 },
+            columns: [
+                { field: 'SeasonName', headerTextAlign: "Center", headerText: 'Season', textAlign: 'Left', width: 120 },
+                { field: 'EpisodeCount', headerTextAlign: "Center", headerText: 'Episode Count', width: 150 }
+            ],
+            created: createSeasonsGrid
+        };
+
+        //Create our Episodes grid in detailTemplate
+        this.childGrid.childGrid = {
+            dataSource: null,
+            allowPaging: true,
+            pageSettings: { pageSize: 10 },
+            columns: [
+                { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: 'Ep. #', width: 150 },
+                { field: 'EpisodeName', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 },
+                { field: 'EpisodeRuntime', headerTextAlign: "Center", headerText: 'Runtime (minutes)', width: 150 },
+                { field: 'EpisodeOverview', headerTextAlign: "Center", headerText: 'Overview', width: 150 }
+            ],
+            created: createEpisodesGrid
+        };
     }
 
+</script>
+<script>
+    function createSeasonsGrid() {
+
+        // render seasons grid data
+        this.dataSource = this.parentDetails.parentRowData.Seasons;
+        this.query = new ej.data.Query();
+    }
+
+    function createEpisodesGrid() {
+
+        // render episodes grid data
+        this.dataSource = this.parentDetails.parentRowData.Episodes;
+        this.query = new ej.data.Query();
+    }
 </script>
 
 <h1>Television Show Library</h1>
 
-<ejs-grid id="Grid" allowExcelExport="true" allowSelection="true" toolbar=toolbarItems dataSource="@ViewBag.DataSource" allowSorting="true" allowPaging="true" width="100%" height="750" detailTemplate="#detailtemplate" gridLines="Both" load="loadShow">
+<ejs-grid id="Grid" 
+          allowExcelExport="true" 
+          allowSelection="true" 
+          toolbar=toolbarItems 
+          dataSource="@ViewBag.DataSource" 
+          allowSorting="true" 
+          allowPaging="true" 
+          width="100%" 
+          height="750" 
+          gridLines="Both" 
+          load="loadGrid">
 
     <e-grid-columns>
-        <e-grid-column field="Id" headerText="Show ID" textAlign="Center" width="80"></e-grid-column>
-        <e-grid-column field="ShowName" headerText="Television Show Name" textAlign="Left" width="150"></e-grid-column>
-        <e-grid-column field="ShowPath" headerText="Library Path" textAlign="Left" width="200"></e-grid-column>
-        <e-grid-column field="ShowGenre" headerText="Show Genre" textAlign="Left" width="80"></e-grid-column>
-        @*<e-grid-column field="imdbId" headerText="IMDB Show ID" textAlign="Left" width="80"></e-grid-column>
-            <e-grid-column field="theMovieDbId" headerText="TheMovieDb ID" textAlign="Left" width="80"></e-grid-column>
-            <e-grid-column field="PosterImage" headerText="Show Poster Image" textAlign="Left" width="250"></e-grid-column>*@
+        <e-grid-column field="Id" headerTemplate="#header_id_template" headerTextAlign="Center" width="80" />
+        <e-grid-column field="ShowName" headerTemplate="#header_name_template" headerTextAlign="Center" width="150" />
+        <e-grid-column field="ShowPath" headerTemplate="#header_showPath_template" headerTextAlign="Center" width="200" />
+        <e-grid-column field="ShowGenre" headerTemplate="#header_genre_template" headerTextAlign="Center" width="80" />
     </e-grid-columns>
 
 </ejs-grid>
 
-<script type="text/x-template" id="detailtemplate">
-    <table style="width: 100%; height: 300px; background-color: #c2baba">
-        <tr>
-            <td>
-            </td>
-        </tr>
-
-    </table>
+<script type="text/x-template" id="header_id_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        Show ID
+    </span>
 </script>
-
-@*<script type="text/x-template" id="seasondetailtemplate">
-        <table style="width: 100%; height: 300px; background-color: #c2baba">
-            <tr>
-                <td>
-                    <ejs-grid id="EpisodeGrid" dataSource="${Episodes}" allowSorting="true" allowPaging="true" width="100%" height="100%" detailTemplate="#episodedetailtemplate" gridLines="Both" load="load">
-
-                        <e-grid-columns>
-                            <e-grid-column field="Id" headerText="Show ID" textAlign="Center" width="80"></e-grid-column>
-                            <e-grid-column field="EpisodeName" headerText="Season" textAlign="Left" width="150"></e-grid-column>
-                            <e-grid-column field="EpisodeNumber" headerText="Episodes Available" textAlign="Left" width="80"></e-grid-column>
-                            <e-grid-column field="SeasonNumber" headerText="IMDB Season ID" textAlign="Left" width="80"></e-grid-column>
-                            <e-grid-column field="theMovieDbId" headerText="TheMovieDb Season ID" textAlign="Left" width="80"></e-grid-column>
-                        </e-grid-columns>
-
-                    </ejs-grid>
-                </td>
-            </tr>
-
-        </table>
-    </script>
-
-    <script type="text/x-template" id="episodedetailtemplate">
-        <table style="width: 100%; height: 300px; background-color: #c2baba">
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                                Id: ${Id}
-                            </td>
-                            <td>
-                                Episode Number: ${EpisodeNumber}
-                            </td>
-                            <td>
-                                Episode Name: ${EpisodeName}
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-        </table>
-    </script>*@
+<script type="text/x-template" id="header_name_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        Television Show Name
+    </span>
+</script>
+<script type="text/x-template" id="header_overview_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        Show Overview
+    </span>
+</script>
+<script type="text/x-template" id="header_genre_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        Show Genre
+    </span>
+</script>
+<script type="text/x-template" id="header_showPath_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        Show Path
+    </span>
+</script>

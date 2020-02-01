@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Configuration;
 using Entities.Data.TmDB;
+using Entities.Television.ViewModels;
 using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Authorization;
@@ -36,35 +37,148 @@ namespace MediaToolsetWebCoreMVC.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Library([FromServices] IHttpClientFactory _clientFactory, HttpRequestMessage _requestMessage)
+        public async Task<IActionResult> Library([FromServices] IHttpClientFactory _clientFactory, [FromServices] HttpRequestMessage _requestMessage)
         {
             HttpClientFactory = _clientFactory;
+            List<TelevisionSeasonViewModel> seasons = new List<TelevisionSeasonViewModel>();
 
             ViewData["Title"] = "Television Shows";
-            List<Entities.Television.ViewModels.TelevisionShowViewModel> _libraryContents = new List<Entities.Television.ViewModels.TelevisionShowViewModel>();
+            List<TelevisionShowViewModel> _libraryContents = new List<TelevisionShowViewModel>();
 
             //Get our television show library contents using a named httpclient from our injected factory
             var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
 
-            var libscanClient = HttpClientFactory.CreateClient("TvMazeLibraryScan");
-
-            var request = _requestMessage;
-            request.RequestUri = client.BaseAddress;
-
-            //GET Method  
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            using (var request = _requestMessage)
             {
-                _libraryContents = JsonConvert.DeserializeObject<List<Entities.Television.ViewModels.TelevisionShowViewModel>>(await response.Content.ReadAsStringAsync()).OrderBy(p => p.ShowName).ToList();
+                request.RequestUri = client.BaseAddress;
 
-                foreach (Entities.Television.ViewModels.TelevisionShowViewModel Show in _libraryContents)
+                //GET Method  
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    Show.ShowPath = Show.ShowPath.Replace(@"\\JimmyBeast-sdn\", "");
-                    Show.PosterImage = Show.PosterImage;
-                    //Show.Seasons.Add(new Entities.Television.ViewModels.TelevisionSeasonViewModel());
+                    _libraryContents = JsonConvert.DeserializeObject<List<TelevisionShowViewModel>>(await response.Content.ReadAsStringAsync()).OrderBy(p => p.ShowName).ToList();
+
+                    foreach (TelevisionShowViewModel Show in _libraryContents)
+                    {
+                        seasons = new List<TelevisionSeasonViewModel>();
+
+                        Show.ShowPath = Show.ShowPath.Replace(@"\\\\JIMMYBEAST-SDN\\", "");
+                        Show.PosterImage = Show.PosterImage;
+
+                        TelevisionSeasonViewModel vm = new TelevisionSeasonViewModel
+                        {
+                            Id = 12,
+                            SeasonName = "Season 1",
+                            SeasonNumber = "1",
+                            Episodes = new List<TelevisionEpisodeViewModel>()
+                        {
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 1,
+                                EpisodeNumber = "01",
+                                EpisodeName = "Test Episode 1",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E01.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 2,
+                                EpisodeNumber = "02",
+                                EpisodeName = "Test Episode 2",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E02.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 3,
+                                EpisodeNumber = "03",
+                                EpisodeName = "Test Episode 3",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E03.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 4,
+                                EpisodeNumber = "04",
+                                EpisodeName = "Test Episode 4",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E04.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 5,
+                                EpisodeNumber = "05",
+                                EpisodeName = "Test Episode 5",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E05.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 6,
+                                EpisodeNumber = "06",
+                                EpisodeName = "Test Episode 6",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E06.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 7,
+                                EpisodeNumber = "07",
+                                EpisodeName = "Test Episode 7",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E07.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 8,
+                                EpisodeNumber = "08",
+                                EpisodeName = "Test Episode 8",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E08.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 9,
+                                EpisodeNumber = "09",
+                                EpisodeName = "Test Episode 9",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E09.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 10,
+                                EpisodeNumber = "10",
+                                EpisodeName = "Test Episode 10",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E010.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 11,
+                                EpisodeNumber = "11",
+                                EpisodeName = "Test Episode 11",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E011.mkv"
+                            },
+                            new TelevisionEpisodeViewModel
+                            {
+                                Id = 12,
+                                EpisodeNumber = "12",
+                                EpisodeName = "Test Episode 12",
+                                EpisodeRuntime = "32",
+                                EpisodeFilePath = @$"\\JimmyBeast-sdn\e\TV Shows\ {Show.ShowName}\Season 1\{Show.ShowName.Replace(' ', '.')}.S01E012.mkv"
+                            }
+                        }
+                        };
+
+                        seasons.Add(vm);
+                        Show.Seasons = seasons;
+                    }
                 }
             }
+            
+            
 
             ViewBag.DataSource = _libraryContents;
 
@@ -93,10 +207,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         public IActionResult ShowDetails(int id)
         {
+            //using API:
+            //https://api.themoviedb.org/3/tv/3670?api_key=c0604d69b7df230f03504bdc8475887a&language=en-US
+            
+            
+            //using EF core local sql server
             Entities.Data.EF_Core.DatabaseEntities.TelevisionShow Show = DbContext.TelevisionShowLibrary.Where(x => x.Id == id).FirstOrDefault();
 
             return View(Show);
-        }
-
+        }                
     }
 }

@@ -25,7 +25,9 @@ namespace Entities.Television.ViewModels
         public int TheMovieDbId { get; set; }
 
         [Display(Name = "Episodes Available")]
-        public string EpisodeCount { get; set; }
+        public string EpisodeCount { get { return Episodes.Count.ToString(); } }
+
+        public List<TelevisionEpisodeViewModel> Episodes { get; set; } = new List<TelevisionEpisodeViewModel>();
 
     }
 }
