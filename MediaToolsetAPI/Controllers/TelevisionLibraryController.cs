@@ -80,16 +80,14 @@ namespace MediaToolsetAPI.Controllers
 
         public void PopulateDataList()
         {
-            //foreach (string _showLibraryDriveRoot in AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders)
-            //{
-                foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShows.ToList())
-                {
-                    var vm = AutoMapper.Map<TelevisionShowViewModel>(_show);
-                    _dataList.Add(vm);
-                }                
-            //}                        
-        }
+            foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in DbContext.TelevisionShows.ToList())
+            {
+                var vm = AutoMapper.Map<TelevisionShowViewModel>(_show);
 
+                _dataList.Add(vm);
+            }                                       
+        }
+               
         public void ScanUpdateTelevisionLibraryDatabase(bool _replaceAll = false)
         {      
             

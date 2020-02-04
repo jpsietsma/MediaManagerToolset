@@ -30,7 +30,14 @@ namespace Entities.Television.ViewModels
         [Display(Name = "Poster URL")]
         public string PosterImage { get; set; }
 
-        public List<TelevisionSeasonViewModel> Seasons { get; set; } = new List<TelevisionSeasonViewModel>();
+        public List<TelevisionSeason> TelevisionSeasons { get; set; }
+        public List<TelevisionEpisode> TelevisionEpisodes { get; set; }
+
+        public TelevisionShowViewModel()
+        {
+            TelevisionSeasons = new List<TelevisionSeason>();
+            TelevisionEpisodes = new List<TelevisionEpisode>();
+        }
 
     }
 }

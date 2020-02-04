@@ -16,9 +16,11 @@ namespace MediaToolsetWebCoreMVC.Data
 {
     public class IdentityDatabaseContext : IdentityDbContext<AuthenticatedUser>
     {
-        public virtual DbSet<TelevisionShow> TelevisionShowLibrary { get; set; }
+        public virtual DbSet<TelevisionShow> TelevisionShows { get; set; }
         public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
         public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }
+        public virtual DbSet<TelevisionSeason> TelevisionSeasons { get; set; }
+        public virtual DbSet<TelevisionEpisode> TelevisionEpisodes { get; set; }
         public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }
 
         public IdentityDatabaseContext(DbContextOptions<IdentityDatabaseContext> options)
@@ -30,7 +32,7 @@ namespace MediaToolsetWebCoreMVC.Data
         {
             var showNameParameter = string.IsNullOrEmpty(showName) ? new ObjectParameter("ShowName", showName) : new ObjectParameter("ShowName", typeof(string));
 
-            var shows = this.TelevisionShowLibrary.FromSqlRaw("[dbo].[SearchShowsByName] {0}", showName).ToList();
+            var shows = this.TelevisionShows.FromSqlRaw("[dbo].[SearchShowsByName] {0}", showName).ToList();
 
             return shows;
         }
@@ -50,7 +52,7 @@ namespace MediaToolsetWebCoreMVC.Data
             var TvMazeIdParam = string.IsNullOrEmpty(_TvMazeId) ? new SqlParameter("@TvMazeId", default(string)) : new SqlParameter("@TvMazeId", _TvMazeId);
             var TheMovieDbIdParam = string.IsNullOrEmpty(_TheMovieDbId) ? new SqlParameter("@TheMovieDbId", default(string)) : new SqlParameter("@TheMovieDbId", _TheMovieDbId);
 
-            TelevisionShowLibrary.FromSqlRaw("[dbo].[AddMissingEpisode] @ShowId, @SeasonId, @EpisodeId, @EpisodeFilePath, @ImdbId, @TvMazeId, @TheMovieDbId", showIdParam, SeasonIdParam, EpisodeIdParam, FilePathParam, ImdbIdParam, TvMazeIdParam, TheMovieDbIdParam);
+            TelevisionShows.FromSqlRaw("[dbo].[AddMissingEpisode] @ShowId, @SeasonId, @EpisodeId, @EpisodeFilePath, @ImdbId, @TvMazeId, @TheMovieDbId", showIdParam, SeasonIdParam, EpisodeIdParam, FilePathParam, ImdbIdParam, TvMazeIdParam, TheMovieDbIdParam);
             SaveChanges();
         }
 
@@ -59,7 +61,7 @@ namespace MediaToolsetWebCoreMVC.Data
             var TelevisionShowIdParam = TelevisionShowId == default ? new SqlParameter("@TelevisionShowId", default(int)) : new SqlParameter("@TelevisionShowId", TelevisionShowId);
             var PriorityLevelIdParam = PriorityLevel == default ? new SqlParameter("@PriorityLevelId", default(int)) : new SqlParameter("@PriorityLevelId", PriorityLevel);
 
-            TelevisionShowLibrary.FromSqlRaw("[dbo].[AddPriorityShow] @TelevisionShowId, @PriorityLevelId", TelevisionShowIdParam, PriorityLevelIdParam);
+            TelevisionShows.FromSqlRaw("[dbo].[AddPriorityShow] @TelevisionShowId, @PriorityLevelId", TelevisionShowIdParam, PriorityLevelIdParam);
             SaveChanges();
         }
 
@@ -68,7 +70,7 @@ namespace MediaToolsetWebCoreMVC.Data
             var PriorityLevelNameParam = string.IsNullOrEmpty(PriorityLevelName) ? new SqlParameter("@PriorityLevelName", default(int)) : new SqlParameter("@TelevisionShowId", PriorityLevelName);
             var PriorityLevelCodeParam = PriorityLevelCode == default ? new SqlParameter("@PriorityLevelCode", default(int)) : new SqlParameter("@PriorityLevelCode", PriorityLevelCode);
 
-            TelevisionShowLibrary.FromSqlRaw("[dbo].[AddPriorityLevel] @PriorityLevelName, @PriorityLevelCode", PriorityLevelNameParam, PriorityLevelCodeParam);
+            TelevisionShows.FromSqlRaw("[dbo].[AddPriorityLevel] @PriorityLevelName, @PriorityLevelCode", PriorityLevelNameParam, PriorityLevelCodeParam);
             SaveChanges();
         }
 
@@ -81,10 +83,9 @@ namespace MediaToolsetWebCoreMVC.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //model building
+            
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
         }
     }
 }

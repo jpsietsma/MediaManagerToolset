@@ -4,12 +4,20 @@
     ViewData["Title"] = "Television Library";
 
     List<object> toolbarItems = new List<object>();
+
     //toolbarItems.Add("Edit");
     //toolbarItems.Add("Delete");
     //toolbarItems.Add("Update");
+
     toolbarItems.Add("ExcelExport");
     toolbarItems.Add("Search");
 }
+
+<style>
+    #hideColumns{
+        display: none;
+    }
+</style>
 
 <script>
     function loadGrid() {
@@ -18,21 +26,25 @@
         var gridHeight = grid.height;  //grid height
         var pageSize = grid.pageSettings.pageSize;   //initial page size
         var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
-        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
+        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);         
 
-        //Create our Seasons grid in detailTemplate
+        //Create our Seasons child grid for each show 
         this.childGrid = {
             dataSource: null,
-            allowPaging: true,
-            pageSettings: { pageSize: 10 },
+            allowPaging: false,             
+            dataBound: function (args) {
+                //hide Grid header 
+                this.getHeaderTable().remove();
+                //add border to the content at the top 
+                this.getContent().css("border-top", "1px solid #c8c8c8");
+            },
             columns: [
-                { field: 'SeasonName', headerTextAlign: "Center", headerText: 'Season', textAlign: 'Left', width: 120 },
-                { field: 'EpisodeCount', headerTextAlign: "Center", headerText: 'Episode Count', width: 150 }
+                { field: 'SeasonName', textAlign: 'Left', width: 120 }
             ],
             created: createSeasonsGrid
         };
 
-        //Create our Episodes grid in detailTemplate
+        //Create our Episodes child grid for each season within each show
         this.childGrid.childGrid = {
             dataSource: null,
             allowPaging: true,
@@ -54,6 +66,9 @@
         // render seasons grid data
         this.dataSource = this.parentDetails.parentRowData.Seasons;
         this.query = new ej.data.Query();
+
+        this.Locale["en-US"]["EmptyRecord"] = "No seasons available";
+              
     }
 
     function createEpisodesGrid() {
@@ -62,6 +77,7 @@
         this.dataSource = this.parentDetails.parentRowData.Episodes;
         this.query = new ej.data.Query();
     }
+
 </script>
 
 <h1>Television Show Library</h1>
