@@ -16,9 +16,9 @@ namespace Entities.Data.EF_Core.DatabaseEntities
         public string TheMovieDbId { get; set; }
         
         public int TelevisionShowId { get; set; }
-        public TelevisionShow TelevisionShow { get; set; }
+        //public TelevisionShow TelevisionShow { get; set; }
 
-        public List<TelevisionEpisode> TelevisionEpisodes { get; set; }        
+        public virtual List<TelevisionEpisode> TelevisionEpisodes { get; set; }        
 
         public TelevisionSeason()
         {

@@ -16,11 +16,12 @@ namespace MediaToolsetWebCoreMVC.Data
 {
     public class IdentityDatabaseContext : IdentityDbContext<AuthenticatedUser>
     {
-        public virtual DbSet<TelevisionShow> TelevisionShows { get; set; }
-        public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
-        public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }
-        public virtual DbSet<TelevisionSeason> TelevisionSeasons { get; set; }
         public virtual DbSet<TelevisionEpisode> TelevisionEpisodes { get; set; }
+        public virtual DbSet<TelevisionSeason> TelevisionSeasons { get; set; }
+        public virtual DbSet<TelevisionShow> TelevisionShows { get; set; }
+        public virtual DbSet<TelevisionShow> PriorityShows { get; set; }
+        public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }            
+        public virtual DbSet<TelevisionShowAiringSchedule> TelevisionShowAiringSchedules { get; set; }
         public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }
 
         public IdentityDatabaseContext(DbContextOptions<IdentityDatabaseContext> options)
@@ -84,7 +85,7 @@ namespace MediaToolsetWebCoreMVC.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //model building
-            
+
             base.OnModelCreating(builder);
         }
     }

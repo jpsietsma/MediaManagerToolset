@@ -16,14 +16,14 @@ namespace Entities.Data.EF_Core.DatabaseEntities
         public string imdbId { get; set; }
         public string theMovieDbId { get; set; }
         public string PosterImage { get; set; }
-                
+
+        public TelevisionShowAiringSchedule TelevisionShowAiringSchedule { get; set; }
+
         public List<TelevisionSeason> TelevisionSeasons { get; set; }
-        public List<TelevisionEpisode> TelevisionEpisodes { get; set; }
 
         public TelevisionShow()
         {
-            TelevisionSeasons = new List<TelevisionSeason>();
-            TelevisionEpisodes = new List<TelevisionEpisode>();
+
         }
 
     }

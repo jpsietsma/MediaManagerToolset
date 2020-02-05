@@ -14,11 +14,8 @@ namespace Entities.Data.EF_Core.DatabaseEntities
         public string TvMazeId { get; set; }
         public string TheMovieDbId { get; set; }
 
-        public int TelevisionShowId { get; set; }
-        public TelevisionShow TelevisionShow { get; set; }
-
         public int TelevisionSeasonId { get; set; }              
-        public TelevisionSeason TelevisionSeason { get; set; }
+        //public TelevisionSeason TelevisionSeason { get; set; }
 
         public TelevisionEpisode()
         {

@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Entities.Data.EF_Core.DatabaseEntities
 {
-    public class PriorityShow
+    public class PriorityLevel
     {
         public int Id { get; set; }
-        public int TelevisionShowId { get; set; }
-        public PriorityLevel PriorityLevel { get; set; }
+        public string Prioritylevel { get; set; }
+        public int PriorityLevelCode { get; set; }
     }
 }

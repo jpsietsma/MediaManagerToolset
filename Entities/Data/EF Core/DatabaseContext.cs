@@ -15,11 +15,10 @@ namespace Entities.Data.EF_Core
     public class DatabaseContext : DbContext
     {
         //DbSet property declarations
-        public virtual DbSet<DatabaseEntities.TelevisionShow> TelevisionShows { get; set; }
-        public virtual DbSet<DatabaseEntities.TelevisionSeason> TelevisionSeasons { get; set; }
         public virtual DbSet<DatabaseEntities.TelevisionEpisode> TelevisionEpisodes { get; set; }
-
-        public virtual DbSet<MissingTelevisionEpisode> MissingTelevisionEpisodes { get; set; }
+        public virtual DbSet<DatabaseEntities.TelevisionSeason> TelevisionSeasons { get; set; }
+        public virtual DbSet<DatabaseEntities.TelevisionShow> TelevisionShows { get; set; }
+        public virtual DbSet<TelevisionShowAiringSchedule> TelevisionShowAiringSchedules { get; set; }
         public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }
 
 
