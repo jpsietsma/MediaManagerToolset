@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Configuration;
 using Entities.Data.EF_Core;
 using Entities.Data.EF_Core.DatabaseEntities;
-using Entities.Television;
 using Entities.Television.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -20,7 +17,7 @@ namespace MediaToolsetAPI.Controllers
     [ApiController]
     public class TelevisionLibraryController : ControllerBase
     {
-        List<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow> _dataList;
+        List<TelevisionShow> _dataList;
         ProgramConfiguration AppSettings;
         DatabaseContext DbContext;
         IMapper AutoMapper;
@@ -32,12 +29,12 @@ namespace MediaToolsetAPI.Controllers
             DbContext = _context;
             AutoMapper = _mapper;
 
-            _dataList = new List<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow>();
+            _dataList = new List<TelevisionShow>();
         }
 
-        // GET: api/TelevisionLibrary
+        // GET: TV/TelevisionLibrary
         [HttpGet]
-        public List<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow> Get()
+        public List<TelevisionShow> Get()
         {
             if (DbContext.TelevisionShows.Count() == 0)
             {
@@ -49,17 +46,10 @@ namespace MediaToolsetAPI.Controllers
             var data = _dataList;
             data = data.OrderBy(x => x.ShowName).ToList();
 
-            return data;
-
-            //             maybe try this?
-            //
-            //    JsonSerializerSettings config = new JsonSerializerSettings { ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore };
-            //   this.json = JsonConvert.SerializeObject(YourObject, Formatting.Indented, config);
-            //
-            //
+            return data;                        
         }
 
-        // GET: api/TelevisionLibrary/5
+        // GET: TV/TelevisionLibrary/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
@@ -80,28 +70,19 @@ namespace MediaToolsetAPI.Controllers
             else
             {
                 return "null";
-            }
-
-            //TelevisionShowViewModel vm = _dataList.Where(x => x.Id == id).FirstOrDefault();
-            //return JsonConvert.SerializeObject(vm);
+            }           
         }
       
 
         public void PopulateDataList()
         {
-            var shows = DbContext.TelevisionShows.ToList();
+            var shows = DbContext.TelevisionShows
+                .Include(seasons => seasons.TelevisionSeasons)
+                    .ThenInclude(episodes => episodes.TelevisionEpisodes)
+                .ToList();
 
-            foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionShow _show in shows)
-            {
-                var seasons = DbContext.TelevisionSeasons.Where(s => s.TelevisionShowId == _show.Id).ToList();
-                _show.TelevisionShowAiringSchedule = DbContext.TelevisionShowAiringSchedules.Where(s => s.TelevisionShowId == _show.Id).FirstOrDefault();
-
-                foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason _season in seasons)
-                {
-                    _season.TelevisionEpisodes = DbContext.TelevisionEpisodes.Where(e => e.TelevisionSeasonId == _season.Id).ToList();
-                }
-
-                _show.TelevisionSeasons = seasons;
+            foreach (TelevisionShow _show in shows)
+            {                
                 _dataList.Add(_show);
             }                                       
         }
@@ -112,7 +93,7 @@ namespace MediaToolsetAPI.Controllers
             if (_replaceAll)
             {
                 List<TelevisionShowViewModel> modelList = new List<TelevisionShowViewModel>();
-                List<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow> newShows = new List<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow>();
+                List<TelevisionShow> newShows = new List<TelevisionShow>();
 
                 //    Code will delete all existing entities from the database on a scan with forced replacement.
                     if (DbContext.TelevisionShows.Count() > 0)
@@ -127,7 +108,7 @@ namespace MediaToolsetAPI.Controllers
                     {
                         modelList.Add(
                             AutoMapper.Map<TelevisionShowViewModel>(
-                                new TelevisionLibraryScannedDirectory(_showDirectory)
+                                new Entities.Television.TelevisionLibraryScannedDirectory(_showDirectory)
                                 )
                             );
                     }                    
@@ -135,7 +116,7 @@ namespace MediaToolsetAPI.Controllers
 
                 foreach (TelevisionShowViewModel vm in modelList)
                 {
-                    newShows.Add(AutoMapper.Map<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow>(vm));
+                    newShows.Add(AutoMapper.Map<TelevisionShow>(vm));
                 }
 
                 DbContext.TelevisionShows.AddRange(newShows);

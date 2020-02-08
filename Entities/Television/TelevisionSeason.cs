@@ -14,11 +14,9 @@ namespace Entities.Television
         public string DirectoryPath { get; set; }
         public List<TelevisionEpisode> Episodes { get; set; }
 
-        public TelevisionSeason(string _path)
+        public TelevisionSeason()
         {
-            Episodes = new List<TelevisionEpisode>();
 
-            DirectoryPath = _path;
         }
     }
 }

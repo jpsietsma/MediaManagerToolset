@@ -17,13 +17,13 @@ namespace Entities.Data.EF_Core.DatabaseEntities
         public string theMovieDbId { get; set; }
         public string PosterImage { get; set; }
 
-        public TelevisionShowAiringSchedule TelevisionShowAiringSchedule { get; set; }
+        //public TelevisionShowAiringSchedule? TelevisionShowAiringSchedule { get; set; }
 
         public List<TelevisionSeason> TelevisionSeasons { get; set; }
 
         public TelevisionShow()
         {
-
+            TelevisionSeasons = new List<TelevisionSeason>();
         }
 
     }

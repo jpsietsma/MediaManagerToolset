@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Entities.Television.ViewModels.TelevisionShowViewModel>
+﻿@model IEnumerable<Entities.Data.EF_Core.DatabaseEntities.TelevisionShow>
 
 @{
     ViewData["Title"] = "Television Library";
@@ -28,7 +28,7 @@
         var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
         grid.pageSettings.pageSize = pageSize + Math.round(pageResize);         
 
-        //Create our Seasons child grid for each show 
+        ////Create our Seasons child grid for each show 
         this.childGrid = {
             dataSource: null,
             allowPaging: false,             
@@ -39,24 +39,22 @@
                 this.getContent().css("border-top", "1px solid #c8c8c8");
             },
             columns: [
-                { field: 'SeasonName', textAlign: 'Left', width: 120 }
+                { field: 'SeasonName', textAlign: 'Left', width: 60 }
             ],
             created: createSeasonsGrid
         };
 
-        //Create our Episodes child grid for each season within each show
-        this.childGrid.childGrid = {
-            dataSource: null,
-            allowPaging: true,
-            pageSettings: { pageSize: 10 },
-            columns: [
-                { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: 'Ep. #', width: 150 },
-                { field: 'EpisodeName', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 },
-                { field: 'EpisodeRuntime', headerTextAlign: "Center", headerText: 'Runtime (minutes)', width: 150 },
-                { field: 'EpisodeOverview', headerTextAlign: "Center", headerText: 'Overview', width: 150 }
-            ],
-            created: createEpisodesGrid
-        };
+        ////Create our Episodes child grid for each season within each show
+        //this.childGrid.childGrid = {
+        //    dataSource: null,
+        //    allowPaging: true,
+        //    pageSettings: { pageSize: 10 },
+        //    columns: [
+        //        { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: 'Ep. #', width: 150 },
+        //        { field: 'EpisodePath', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 }                
+        //    ],
+        //    created: createEpisodesGrid
+        //};
     }
 
 </script>
@@ -64,17 +62,26 @@
     function createSeasonsGrid() {
 
         // render seasons grid data
-        this.dataSource = this.parentDetails.parentRowData.Seasons;
+        this.dataSource = this.parentDetails.parentRowData.TelevisionSeasons;
         this.query = new ej.data.Query();
 
-        this.Locale["en-US"]["EmptyRecord"] = "No seasons available";
-              
+        //Create our Episodes child grid for each season within each show
+        this.childGrid = {
+            dataSource: null,
+            allowPaging: true,
+            pageSettings: { pageSize: 10 },
+            columns: [
+                { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: 'Ep. #', width: 150 },
+                { field: 'EpisodePath', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 }                
+            ],
+            created: createEpisodesGrid
+        };
     }
 
     function createEpisodesGrid() {
 
         // render episodes grid data
-        this.dataSource = this.parentDetails.parentRowData.Episodes;
+        this.dataSource = this.parentDetails.parentRowData.TelevisionEpisodes;
         this.query = new ej.data.Query();
     }
 

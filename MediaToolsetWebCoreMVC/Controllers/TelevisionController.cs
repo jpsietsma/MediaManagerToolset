@@ -41,10 +41,8 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         public async Task<IActionResult> Library()
         {
-            List<TelevisionSeasonViewModel> seasons = new List<TelevisionSeasonViewModel>();
-
             ViewData["Title"] = "Television Shows";
-            List<TelevisionShowViewModel> _libraryContents = new List<TelevisionShowViewModel>();
+            List<TelevisionShow> _libraryContents = new List<TelevisionShow>();
 
             //Get our television show library contents using a named httpclient from our injected factory
             var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
@@ -60,15 +58,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
                 {
                     var content = await response.Content.ReadAsStringAsync();
 
-                    _libraryContents = JsonConvert.DeserializeObject<List<TelevisionShowViewModel>>(content).OrderBy(p => p.ShowName).ToList();
+                    _libraryContents = JsonConvert.DeserializeObject<List<TelevisionShow>>(content).ToList();
 
-                    foreach (TelevisionShowViewModel Show in _libraryContents)
+                    foreach (TelevisionShow Show in _libraryContents)
                     {
-                        Show.ShowPath = Show.ShowPath.Replace(@"\\JIMMYBEAST-SDN\", "");
-                        Show.PosterImage = Show.PosterImage;
+                        Show.ShowPath = FormatShowPath(Show.ShowPath);
                     }
 
-                    ViewBag.DataSource = _libraryContents;                    
+                    ViewBag.DataSource = _libraryContents.OrderBy(o => o.Id);                    
                 }
             }
             return View(_libraryContents);
@@ -102,5 +99,16 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
             return View(Show);
         }                
+
+        private string FormatShowPath(string showPath)
+        {
+            string final = showPath;
+
+            final = final.Replace(@"\\JIMMYBEAST-SDN\", "");
+            final = final.Replace(final[0], char.Parse(final[0].ToString().ToUpper()));
+            final = final.Insert(1, @":");
+
+            return final;
+        }
     }
 }

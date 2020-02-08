@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Data.EF_Core.DatabaseEntities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -25,18 +26,16 @@ namespace Entities.Television.ViewModels
         public string ShowGenre { get; set; }
 
         [Display(Name = "TheMovieDb Show ID")]
-        public int TheMovieDbId { get; set; }
+        public string TheMovieDbId { get; set; }
 
         [Display(Name = "Poster URL")]
         public string PosterImage { get; set; }
 
-        public List<TelevisionSeason> TelevisionSeasons { get; set; }
-        public List<TelevisionEpisode> TelevisionEpisodes { get; set; }
+        public List<Data.EF_Core.DatabaseEntities.TelevisionSeason> TelevisionSeasons { get; set; }
 
         public TelevisionShowViewModel()
         {
-            TelevisionSeasons = new List<TelevisionSeason>();
-            TelevisionEpisodes = new List<TelevisionEpisode>();
+
         }
 
     }
