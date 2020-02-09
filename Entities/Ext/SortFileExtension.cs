@@ -1,4 +1,5 @@
 ﻿using Entities.Abstract;
+using Entities.Data.EF_Core.DatabaseEntities;
 using Entities.Sort;
 using Entities.Television;
 using System;
@@ -148,13 +149,13 @@ namespace Entities.Ext
 
                 TelevisionEpisode _episode = new TelevisionEpisode
                 {
-                    ShowName = match.Groups[1].Value.Replace(".", " "),
-                    SeasonNumber = match.Groups[2].Value,
-                    EpisodeNumber = match.Groups[3].Value,
-                    FileName = _sortFile.FileName,
-                    FilePath = _sortFile.FilePath,
-                    FileSize = _sortFile.FileSize,
-                    PriorityLevel = _sortFile.PriorityLevel
+                    //ShowName = match.Groups[1].Value.Replace(".", " "),
+                    //SeasonNumber = match.Groups[2].Value,
+                    //EpisodeNumber = match.Groups[3].Value,
+                    //FileName = _sortFile.FileName,
+                    //FilePath = _sortFile.FilePath,
+                    //FileSize = _sortFile.FileSize,
+                    //PriorityLevel = _sortFile.PriorityLevel
 
                 };
 

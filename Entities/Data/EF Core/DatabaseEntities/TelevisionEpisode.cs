@@ -9,6 +9,9 @@ namespace Entities.Data.EF_Core.DatabaseEntities
     {
         public int Id { get; set; }
         public string EpisodeNumber { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string EpisodeName { get; set; }
         public string EpisodePath { get; set; }
         public string ImdbId { get; set; }
         public string TvMazeId { get; set; }

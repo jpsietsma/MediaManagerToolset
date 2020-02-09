@@ -19,6 +19,7 @@ namespace MediaToolsetWebCoreMVC.Data
         public virtual DbSet<TelevisionEpisode> TelevisionEpisodes { get; set; }
         public virtual DbSet<TelevisionSeason> TelevisionSeasons { get; set; }
         public virtual DbSet<TelevisionShow> TelevisionShows { get; set; }
+        public virtual DbSet<SortFile> SortFiles { get; set; }
         public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }            
         public virtual DbSet<TelevisionShowAiringSchedule> TelevisionShowAiringSchedules { get; set; }
         public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }

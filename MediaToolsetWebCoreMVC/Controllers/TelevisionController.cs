@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Configuration;
@@ -42,33 +44,8 @@ namespace MediaToolsetWebCoreMVC.Controllers
         public async Task<IActionResult> Library()
         {
             ViewData["Title"] = "Television Shows";
-            List<TelevisionShow> _libraryContents = new List<TelevisionShow>();
 
-            //Get our television show library contents using a named httpclient from our injected factory
-            var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
-
-            using (var request = new HttpRequestMessage() { Method = HttpMethod.Get })
-            {
-                request.Headers.Add("Accept", "application/json");
-                request.RequestUri = client.BaseAddress;
-  
-                var response = await client.SendAsync(request);                
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var content = await response.Content.ReadAsStringAsync();
-
-                    _libraryContents = JsonConvert.DeserializeObject<List<TelevisionShow>>(content).ToList();
-
-                    foreach (TelevisionShow Show in _libraryContents)
-                    {
-                        Show.ShowPath = FormatShowPath(Show.ShowPath);
-                    }
-
-                    ViewBag.DataSource = _libraryContents.OrderBy(o => o.Id);                    
-                }
-            }
-            return View(_libraryContents);
+            return View(await GetLibraryContents());
         }
 
         public async Task<IActionResult> MovieDbSearch(string id)
@@ -90,25 +67,142 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         public IActionResult ShowDetails(int id)
         {
-            //using API:
+            //using remote REST API:
             //https://api.themoviedb.org/3/tv/3670?api_key=c0604d69b7df230f03504bdc8475887a&language=en-US
             
             
-            //using EF core local sql server
-            Entities.Data.EF_Core.DatabaseEntities.TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == id).FirstOrDefault();
+            //using EF core sql server
+            TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == id).FirstOrDefault();
 
             return View(Show);
         }                
+
+        public async Task<IActionResult> RescanLibrary()
+        {
+            //Clean out the existing shows in database
+            DbContext.TelevisionShows.RemoveRange(DbContext.TelevisionShows.ToList());
+            await DbContext.SaveChangesAsync();
+
+            var dirs = AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders;
+            var shows = new List<TelevisionShow>();
+
+            //Rescan our directories for shows 
+            foreach (var dir in dirs)
+            {
+                //then create them as TelevisionShow objects
+                foreach (var show in Directory.GetDirectories(dir))
+                {
+                    TelevisionShow newShow = new TelevisionShow
+                    {
+                        ShowName = show.Split('\\').Last(),
+                        ShowPath = show
+                    };
+
+                    newShow.TelevisionSeasons = new List<TelevisionSeason>();
+
+                    //then create each season as a TelevisionSeason object
+                    foreach (var season in Directory.GetDirectories(show))
+                    {
+                        TelevisionSeason newSeason = new TelevisionSeason
+                        {
+                            SeasonNumber = season.Split('\\').Last().Replace("Season ", ""), 
+                            SeasonPath = season,
+                            TelevisionShowId = newShow.Id
+                        };
+                        
+                        newSeason.TelevisionEpisodes = new List<TelevisionEpisode>();
+
+                        //then create each episode as a TelevisionEpisode object
+                        foreach (var episode in Directory.GetFiles(season))
+                        {
+                            Regex epNum = new Regex(@"E\d\d");
+
+                            TelevisionEpisode newEpisode = new TelevisionEpisode
+                            {
+                                EpisodePath = episode,
+                                EpisodeNumber = epNum.Match(episode.Split('\\').Last()).Value.Replace("E", "").Replace(0.ToString(), ""),
+                                TelevisionSeasonId = newSeason.Id
+                            };
+
+                            newSeason.TelevisionEpisodes.Add(newEpisode);
+                        }
+
+                        newShow.TelevisionSeasons.Add(newSeason);
+                    }
+
+                    shows.Add(newShow);
+                }               
+            }
+
+            //Add our new objects to the database and try to save them
+                try
+                {                    
+                    await DbContext.AddRangeAsync(shows);
+                    await DbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null)
+                    {
+                        throw new Exception(ex.InnerException.Message);
+                    }
+
+                    throw new Exception(ex.Message);
+                }                      
+
+            return View("Library", await GetLibraryContents());
+        }
 
         private string FormatShowPath(string showPath)
         {
             string final = showPath;
 
-            final = final.Replace(@"\\JIMMYBEAST-SDN\", "");
-            final = final.Replace(final[0], char.Parse(final[0].ToString().ToUpper()));
+            final = final.Replace(@"\\JIMMYBEAST-SDN\", "");            
             final = final.Insert(1, @":");
+            final = UppercaseFirst(final);
 
             return final;
+        }
+
+        private string UppercaseFirst(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+            char[] a = s.ToCharArray();
+            a[0] = char.ToUpper(a[0]);
+            return new string(a);
+        }
+                       
+        private async Task<List<TelevisionShow>> GetLibraryContents()
+        {
+            List<TelevisionShow> _libraryContents = new List<TelevisionShow>();
+
+            //Get our television show library contents using a named httpclient from our injected factory
+            var client = HttpClientFactory.CreateClient("SDNTelevisionLibraryQuery");
+
+            using (var request = new HttpRequestMessage() { Method = HttpMethod.Get })
+            {
+                request.Headers.Add("Accept", "application/json");
+                request.RequestUri = client.BaseAddress;
+
+                var response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+
+                    _libraryContents = JsonConvert.DeserializeObject<List<TelevisionShow>>(content).ToList();
+
+                    foreach (TelevisionShow Show in _libraryContents)
+                    {
+                        Show.ShowPath = FormatShowPath(Show.ShowPath);
+                    }                    
+                }
+            }
+
+            return _libraryContents.OrderBy(o => o.Id).ToList();
         }
     }
 }

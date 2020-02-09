@@ -49,7 +49,12 @@ namespace MediaToolsetWebCoreMVC.Controllers
                         {
                             text = "Show Library",
                             url = "/Television/Library"
-                        }                    
+                        },
+                        new
+                        {
+                            text = "Rescan Library",
+                            url = "/Television/RescanLibrary"
+                        }
                     }
                 });
 
@@ -71,12 +76,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
                         {
                         new
                         {
-                            text = "Current Queue"
+                            text = "Current Queue",
+                            url = "/Sort"
                         },
 
                         new
                         {
-                            text = "ReScan Contents"
+                            text = "ReScan Contents",
+                            url = "/Sort/RescanContents"
                         },
 
                         new

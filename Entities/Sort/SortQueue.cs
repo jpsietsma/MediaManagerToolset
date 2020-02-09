@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Entities.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Entities.Data.EF_Core;
+using Entities.Data.EF_Core.DatabaseEntities;
 
 namespace Entities.Sort
 {
@@ -69,75 +70,75 @@ namespace Entities.Sort
         private void ScanPopulateQueues()
         {
 
-            if (!string.IsNullOrEmpty(SortPath))
-            {
-                List<FileInfo> _completedDirectoryFiles = new List<FileInfo>();
-                List<FileInfo> _downloadingDirectoryFiles = new List<FileInfo>();
+            //if (!string.IsNullOrEmpty(SortPath))
+            //{
+            //    List<FileInfo> _completedDirectoryFiles = new List<FileInfo>();
+            //    List<FileInfo> _downloadingDirectoryFiles = new List<FileInfo>();
 
-                //Scan for completed files in queue
-                foreach (string _file in Directory.GetFiles(SortPath))
-                {
-                    _completedDirectoryFiles.Add(new FileInfo(_file));
-                }
+            //    //Scan for completed files in queue
+            //    foreach (string _file in Directory.GetFiles(SortPath))
+            //    {
+            //        _completedDirectoryFiles.Add(new FileInfo(_file));
+            //    }
 
-                //populate CompletedDownloads property if any results
-                if (_completedDirectoryFiles.Count > 0)
-                {
-                    ObservableCollection<IMediaFile> _mediaFiles = new ObservableCollection<IMediaFile>();
+            //    //populate CompletedDownloads property if any results
+            //    if (_completedDirectoryFiles.Count > 0)
+            //    {
+            //        ObservableCollection<IMediaFile> _mediaFiles = new ObservableCollection<IMediaFile>();
 
-                    foreach (FileInfo _info in _completedDirectoryFiles)
-                    {
-                        SortFile _file = new SortFile(_info.FullName);
+            //        foreach (FileInfo _info in _completedDirectoryFiles)
+            //        {
+            //            SortFile _file = new SortFile(_info.FullName);
 
-                        if (_file.SanitizeTelevisionEpisode(out string SanitizedfileName, out string SanitizedShowName, out string ShowSeasonNumber, out string ShowEpisodeNumber))
-                        {
-                            var classification = Type.GetType("Entities.Television.TelevisionEpisode");
+            //            if (_file.SanitizeTelevisionEpisode(out string SanitizedfileName, out string SanitizedShowName, out string ShowSeasonNumber, out string ShowEpisodeNumber))
+            //            {
+            //                var classification = Type.GetType("Entities.Television.TelevisionEpisode");
 
-                            TelevisionEpisode Episode = new TelevisionEpisode
-                            {
-                                FileName = _file.FileName,
-                                ShowName = SanitizedShowName,
-                                SeasonNumber = ShowSeasonNumber,
-                                EpisodeNumber = ShowEpisodeNumber,
-                                FilePath = _file.FilePath,
-                                FileSize = _file.FileSize,
-                                PriorityLevel = _file.PriorityLevel,
-                                FileClassification = classification,
-                                SanitizedFileName = SanitizedfileName
-                            };
+            //                TelevisionEpisode Episode = new TelevisionEpisode
+            //                {
+            //                    //FileName = _file.FileName,
+            //                    //ShowName = SanitizedShowName,
+            //                    //SeasonNumber = ShowSeasonNumber,
+            //                    //EpisodeNumber = ShowEpisodeNumber,
+            //                    //FilePath = _file.FilePath,
+            //                    //FileSize = _file.FileSize,
+            //                    //PriorityLevel = _file.PriorityLevel,
+            //                    //FileClassification = classification,
+            //                    //SanitizedFileName = SanitizedfileName
+            //                };
 
-                            _mediaFiles.Add(Episode);
-                        }
-                        else
-                        {
-                            _mediaFiles.Add(_file);
-                        }                        
-                    }
+            //                //_mediaFiles.Add(Episode);
+            //            }
+            //            else
+            //            {
+            //                _mediaFiles.Add(_file);
+            //            }                        
+            //        }
 
-                    CompletedDownloads = _mediaFiles;
-                }
+            //        CompletedDownloads = _mediaFiles;
+            //    }
 
-                //Scan for files being downloaded
-                foreach (string _file in Directory.GetFiles(SortPath + "~downloading"))
-                {
-                    _downloadingDirectoryFiles.Add(new FileInfo(_file));
-                }
+            //    //Scan for files being downloaded
+            //    foreach (string _file in Directory.GetFiles(SortPath + "~downloading"))
+            //    {
+            //        _downloadingDirectoryFiles.Add(new FileInfo(_file));
+            //    }
               
-                //populate DownloadingFiles property if any results
-                if (_downloadingDirectoryFiles.Count > 0)
-                {
-                    ObservableCollection<IMediaFile> _mediaFiles = new ObservableCollection<IMediaFile>();
+            //    //populate DownloadingFiles property if any results
+            //    if (_downloadingDirectoryFiles.Count > 0)
+            //    {
+            //        ObservableCollection<IMediaFile> _mediaFiles = new ObservableCollection<IMediaFile>();
 
-                    foreach (FileInfo _info in _downloadingDirectoryFiles)
-                    {
-                        SortFile _file = new SortFile(_info.FullName);
+            //        foreach (FileInfo _info in _downloadingDirectoryFiles)
+            //        {
+            //            SortFile _file = new SortFile(_info.FullName);
 
-                        _mediaFiles.Add(_file);
-                    }
+            //            _mediaFiles.Add(_file);
+            //        }
 
-                    DownloadingFiles = _mediaFiles;
-                }
-            }            
+            //        DownloadingFiles = _mediaFiles;
+            //    }
+            //}            
         }
 
         private string CalculateDriveSpaceInMBString(double _storageSpaceValue)

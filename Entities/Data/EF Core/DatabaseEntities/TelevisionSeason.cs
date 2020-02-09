@@ -9,13 +9,16 @@ namespace Entities.Data.EF_Core.DatabaseEntities
     {
         public int Id { get; set; }
         public string SeasonNumber { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string SeasonName { get; set; }
         public string SeasonPath { get; set; }
         public string ImdbId { get; set; }
         public string TvMazeId { get; set; }
         public string TheMovieDbId { get; set; }
-        
-        public int TelevisionShowsId { get; set; }
+        public int EpisodeCount { get { return TelevisionEpisodes.Count; } }
+
+        public int TelevisionShowId { get; set; }
         //public TelevisionShow TelevisionShow { get; set; }
 
         public virtual List<TelevisionEpisode> TelevisionEpisodes { get; set; }        

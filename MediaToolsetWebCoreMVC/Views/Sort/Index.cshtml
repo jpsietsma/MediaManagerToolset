@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Entities.Data.EF_Core.DatabaseEntities.SortFile>
+
+@{
+    ViewData["Title"] = "Automation Process | Sort Queue";
+}
+
+<h1>Automation Processing Queue</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FilePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DownloadStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DownloadSynchronized)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PriorityLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SanitizedFileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SanitizedFilePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinalClassificationFilePath)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SanitizedShowName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TelevisionShow)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FileSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FilePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DownloadStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DownloadSynchronized)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriorityLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SanitizedFileName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SanitizedFilePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinalClassificationFilePath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SanitizedShowName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TelevisionShow.ShowName)
+            </td>
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

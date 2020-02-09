@@ -22,39 +22,25 @@
 <script>
     function loadGrid() {
         var grid = document.getElementById('Grid').ej2_instances[0];
-        var rowHeight = grid.getRowHeight();  //height of the each row
+        var rowHeight = grid.getRowHeight();  //height of each row
         var gridHeight = grid.height;  //grid height
         var pageSize = grid.pageSettings.pageSize;   //initial page size
         var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
         grid.pageSettings.pageSize = pageSize + Math.round(pageResize);         
 
-        ////Create our Seasons child grid for each show 
+        //Create our Seasons child grid for each show 
         this.childGrid = {
             dataSource: null,
             allowPaging: false,             
             dataBound: function (args) {
-                //hide Grid header 
-                this.getHeaderTable().remove();
-                //add border to the content at the top 
-                this.getContent().css("border-top", "1px solid #c8c8c8");
+                this.getHeaderTable().remove(); 
+                this.getContent().css("border-top", "1px solid #c8c8c8;");
             },
             columns: [
-                { field: 'SeasonName', textAlign: 'Left', width: 60 }
+                { field: 'SeasonName', textAlign: 'Left', width: 100 },
             ],
             created: createSeasonsGrid
         };
-
-        ////Create our Episodes child grid for each season within each show
-        //this.childGrid.childGrid = {
-        //    dataSource: null,
-        //    allowPaging: true,
-        //    pageSettings: { pageSize: 10 },
-        //    columns: [
-        //        { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: 'Ep. #', width: 150 },
-        //        { field: 'EpisodePath', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 }                
-        //    ],
-        //    created: createEpisodesGrid
-        //};
     }
 
 </script>
@@ -69,10 +55,10 @@
         this.childGrid = {
             dataSource: null,
             allowPaging: true,
-            pageSettings: { pageSize: 10 },
+            pageSettings: { pageSize: 5 },
             columns: [
-                { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: 'Ep. #', width: 150 },
-                { field: 'EpisodePath', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 }                
+                { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: '#', width: 50 },
+                { field: 'EpisodePath', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 }
             ],
             created: createEpisodesGrid
         };
@@ -93,7 +79,7 @@
           allowExcelExport="true" 
           allowSelection="true" 
           toolbar=toolbarItems 
-          dataSource="@ViewBag.DataSource" 
+          dataSource="@Model" 
           allowSorting="true" 
           allowPaging="true" 
           width="100%" 
@@ -102,10 +88,10 @@
           load="loadGrid">
 
     <e-grid-columns>
-        <e-grid-column field="Id" headerTemplate="#header_id_template" headerTextAlign="Center" width="80" />
+        <e-grid-column field="Id" headerTemplate="#header_id_template" headerTextAlign="Center" width="50" />
         <e-grid-column field="ShowName" headerTemplate="#header_name_template" headerTextAlign="Center" width="150" />
-        <e-grid-column field="ShowPath" headerTemplate="#header_showPath_template" headerTextAlign="Center" width="200" />
-        <e-grid-column field="ShowGenre" headerTemplate="#header_genre_template" headerTextAlign="Center" width="80" />
+        <e-grid-column field="ShowPath" headerTemplate="#header_showPath_template" headerTextAlign="Center" width="170" />
+        <e-grid-column field="" headerTemplate="#header_actions_template" template="#content_actions_template" headerTextAlign="Center" width="120" />
     </e-grid-columns>
 
 </ejs-grid>
@@ -120,18 +106,20 @@
         Television Show Name
     </span>
 </script>
-<script type="text/x-template" id="header_overview_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        Show Overview
-    </span>
-</script>
-<script type="text/x-template" id="header_genre_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        Show Genre
-    </span>
-</script>
 <script type="text/x-template" id="header_showPath_template">
     <span style="font-size: 16px; font-weight: bold;">
         Show Path
+    </span>
+</script>
+<script type="text/x-template" id="header_actions_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        Actions
+    </span>
+</script>
+
+
+<script type="text/x-template" id="content_actions_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        [Show actions]
     </span>
 </script>
