@@ -79,8 +79,10 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         public async Task<IActionResult> RescanLibrary()
         {
-            //Clean out the existing shows in database
-            DbContext.TelevisionShows.RemoveRange(DbContext.TelevisionShows.ToList());
+            //Clean out the existing Shows, Seasons, and Episodes in database
+            DbContext.TelevisionEpisodes.RemoveRange(DbContext.TelevisionEpisodes.ToList());
+            DbContext.TelevisionSeasons.RemoveRange(DbContext.TelevisionSeasons.ToList());
+            DbContext.TelevisionShows.RemoveRange(DbContext.TelevisionShows.ToList());                     
             await DbContext.SaveChangesAsync();
 
             var dirs = AppSettings.TelevisionLibraryConfiguration.TelevisionLibrary.LibraryFolders;
@@ -120,13 +122,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
                             TelevisionEpisode newEpisode = new TelevisionEpisode
                             {
                                 EpisodePath = episode,
-                                EpisodeNumber = epNum.Match(episode.Split('\\').Last()).Value.Replace("E", "").Replace(0.ToString(), ""),
+                                EpisodeNumber = epNum.Match(episode.Split('\\').Last()).Value.Replace("E", "").Replace(01.ToString(), "1"),
                                 TelevisionSeasonId = newSeason.Id
                             };
 
                             newSeason.TelevisionEpisodes.Add(newEpisode);
                         }
 
+                        newSeason.TelevisionEpisodes = newSeason.TelevisionEpisodes.OrderBy(o => o.EpisodeNumber).ToList();
                         newShow.TelevisionSeasons.Add(newSeason);
                     }
 
@@ -157,8 +160,13 @@ namespace MediaToolsetWebCoreMVC.Controllers
         {
             string final = showPath;
 
-            final = final.Replace(@"\\JIMMYBEAST-SDN\", "");            
-            final = final.Insert(1, @":");
+            final = final.Replace(@"\\JIMMYBEAST-SDN\", "");
+
+            if (final[1] != ':')
+            {
+                final = final.Insert(1, @":");
+            }
+            
             final = UppercaseFirst(final);
 
             return final;
