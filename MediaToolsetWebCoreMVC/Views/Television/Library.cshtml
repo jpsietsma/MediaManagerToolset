@@ -9,15 +9,10 @@
     //toolbarItems.Add("Delete");
     //toolbarItems.Add("Update");
 
-    toolbarItems.Add("ExcelExport");
+    //toolbarItems.Add("ExcelExport");
+    //toolbarItems.Add("Add");
     toolbarItems.Add("Search");
 }
-
-<style>
-    #hideColumns{
-        display: none;
-    }
-</style>
 
 <script>
     function loadGrid() {
@@ -26,18 +21,19 @@
         var gridHeight = grid.height;  //grid height
         var pageSize = grid.pageSettings.pageSize;   //initial page size
         var pageResize = (gridHeight - (pageSize * rowHeight)) / rowHeight; //new page size is obtained here
-        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);         
+        grid.pageSettings.pageSize = pageSize + Math.round(pageResize);
 
-        //Create our Seasons child grid for each show 
+        //Create our Seasons child grid for each show
         this.childGrid = {
             dataSource: null,
-            allowPaging: false,             
+            allowPaging: false,
+            toolbar: [{ text: 'Add Season', tooltipText: 'Add new season', prefixIxon: 'e-add', id: 'AddSeason' }],
             dataBound: function (args) {
-                this.getHeaderTable().remove(); 
+                this.getHeaderTable().remove();
                 this.getContent().css("border-top", "1px solid #c8c8c8;");
             },
             columns: [
-                { field: 'SeasonName', textAlign: 'Left', width: 100 },
+                { field: 'SeasonName', textAlign: 'Left', width: 200 }
             ],
             created: createSeasonsGrid
         };
@@ -58,7 +54,8 @@
             pageSettings: { pageSize: 5 },
             columns: [
                 { field: 'EpisodeNumber', headerTextAlign: "Center", headerText: '#', width: 50 },
-                { field: 'EpisodePath', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 }
+                { field: 'EpisodePath', headerTextAlign: "Center", headerText: 'Episode Name', width: 150 },
+                { headerTextAlign: 'Center', template: '#content_episode_actions_template', width: 200 }
             ],
             created: createEpisodesGrid
         };
@@ -75,26 +72,35 @@
 
 <h1>Television Show Library</h1>
 
-<ejs-grid id="Grid" 
-          allowExcelExport="true" 
-          allowSelection="true" 
-          toolbar=toolbarItems 
-          dataSource="@Model" 
-          allowSorting="true" 
-          allowPaging="true" 
-          width="100%" 
-          height="750" 
-          gridLines="Both" 
+<ejs-grid id="Grid"
+          allowExcelExport="true"
+          allowSelection="true"
+          toolbar=toolbarItems
+          dataSource="@Model"
+          allowSorting="true"
+          allowPaging="true"
+          width="100%"
+          height="750"
+          gridLines="Both"
           load="loadGrid">
 
     <e-grid-columns>
         <e-grid-column field="Id" headerTemplate="#header_id_template" headerTextAlign="Center" width="50" />
         <e-grid-column field="ShowName" headerTemplate="#header_name_template" headerTextAlign="Center" width="150" />
         <e-grid-column field="ShowPath" headerTemplate="#header_showPath_template" headerTextAlign="Center" width="170" />
-        <e-grid-column field="" headerTemplate="#header_actions_template" template="#content_actions_template" headerTextAlign="Center" width="120" />
+        <e-grid-column field="" headerTemplate="#header_actions_template" template="#content_show_actions_template" headerTextAlign="Center" width="120" />
     </e-grid-columns>
 
 </ejs-grid>
+
+@*Popup model for showing Television Show, Season, and Episode details, as well as making edits*@
+<div id='PopupModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='PopupModalContent'></div>
+        </div>
+    </div>
+</div>
 
 <script type="text/x-template" id="header_id_template">
     <span style="font-size: 16px; font-weight: bold;">
@@ -118,8 +124,106 @@
 </script>
 
 
-<script type="text/x-template" id="content_actions_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        [Show actions]
+<script type="text/x-template" id="content_show_actions_template">
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;" class="showDetails">
+        <a href="javascript:void(0);" style="border: .5px solid black;" class="btn btn-info" data-id="${Id}">
+            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px; border: .5px solid black;" />
+        </a>
+    </span>
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn btn-secondary" style="border: .5px solid black;" href="MarkPriority/${Id}">
+            <img src="../images/icons/LibraryGrid/pushpin-filled-icon.png" title="Mark Priority" style="width: 20px; height: 20px;" />
+        </a>
+    </span>
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn btn-success" style="border: .5px solid black;" href="PlayAllSeasons/${Id}">
+            <img src="../images/icons/LibraryGrid/playlist-numbered-icon.png" title="Play All Seasons" style="width: 20px; height: 20px;" />
+        </a>
+    </span>
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn btn-outline-light" style="border: .5px solid black;" href="EditShow/${Id}">
+            <img src="../images/icons/LibraryGrid/edit-filled-icon.png" title="Edit Show Details" style="height: 20px; width: 20px;" />
+        </a>
+    </span>
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn btn-danger" style="border: .5px solid black;" href="RemoveShow/${Id}">
+            <img src="../images/icons/LibraryGrid/remove-trashcan-icon.png" title="Remove from library" style="height: 20px; width: 20px;" />
+        </a>
     </span>
 </script>
+<script type="text/x-template" id="content_season_actions_template">
+    <span style="font-size: 16px; font-weight: bold;">
+        [Season actions]
+    </span>
+</script>
+<script type="text/x-template" id="content_episode_actions_template">
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn" style="border: .5px solid black;" href="EpisodeDetails/${Id}">
+            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
+        </a>
+    </span>
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn" style="border: .5px solid black;" href="PlayEpisode/${Id}">
+            <img src="../images/icons/LibraryGrid/video-play-icon.png" title="Play episode" />
+        </a>
+    </span>
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn" style="border: .5px solid black;" href="EditEpisode/${Id}">
+            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
+        </a>
+    </span>
+    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+        <a class="btn" style="border: .5px solid black;" href="DeleteEpisode/${Id}">
+            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
+        </a>
+    </span>
+</script>
+
+<script type="text/x-template" id="spacer_template">
+    <span style="font-size: 16px; font-weight: bold; width: 750px;">
+
+    </span>
+</script>
+
+@section scripts
+{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+
+        var TeamDetailPostBackURL = '/Television/ShowDetails';
+        $(function () {
+            $(".showDetails").click(function () {
+                debugger;
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: TeamDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#PopupModalContent').html(data);
+                        $('#PopupModal').modal(options);
+                        $('#PopupModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+
+            $("#closbtn").click(function () {
+                $('#PopupModal').modal('hide');
+            });
+        });
+
+    </script>
+
+}

@@ -9,7 +9,6 @@ using AutoMapper;
 using Entities.Configuration;
 using Entities.Data.EF_Core.DatabaseEntities;
 using Entities.Data.TmDB;
-using Entities.Television.ViewModels;
 using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Authorization;
@@ -74,8 +73,41 @@ namespace MediaToolsetWebCoreMVC.Controllers
             //using EF core sql server
             TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == id).FirstOrDefault();
 
-            return View(Show);
+            return PartialView("_ShowDetails", Show);
         }                
+
+        public IActionResult EditShowDetails(int id)
+        {
+            TelevisionShow show = DbContext.TelevisionShows.Where(s => s.Id == id).FirstOrDefault();
+
+            return View(show);
+        }
+
+        [Authorize(Roles = "SuperAdmin, Administrator, ContentAdministrator")]
+        public async Task<IActionResult> RemoveShow(int id)
+        {
+            TelevisionShow show = DbContext.TelevisionShows.Where(s => s.Id == id).FirstOrDefault();
+            
+            if (show != null)
+            {
+                try
+                {
+                    DbContext.TelevisionShows.Remove(show);
+                    await DbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null)
+                    {
+                        throw new Exception(ex.InnerException.Message);
+                    }
+
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return View("Library", await GetLibraryContents());
+        }
 
         public async Task<IActionResult> RescanLibrary()
         {
@@ -138,23 +170,23 @@ namespace MediaToolsetWebCoreMVC.Controllers
             }
 
             //Add our new objects to the database and try to save them
-                try
-                {                    
-                    await DbContext.AddRangeAsync(shows);
-                    await DbContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
+            try
+            {                    
+                await DbContext.AddRangeAsync(shows);
+                await DbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null)
                 {
-                    if (ex.InnerException != null)
-                    {
-                        throw new Exception(ex.InnerException.Message);
-                    }
+                    throw new Exception(ex.InnerException.Message);
+                }
 
-                    throw new Exception(ex.Message);
-                }                      
+                throw new Exception(ex.Message);
+            }                      
 
             return View("Library", await GetLibraryContents());
-        }
+        }        
 
         private string FormatShowPath(string showPath)
         {

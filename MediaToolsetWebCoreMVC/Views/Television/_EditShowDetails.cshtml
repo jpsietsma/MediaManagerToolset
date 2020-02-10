@@ -1,0 +1,50 @@
+﻿@model Entities.Data.EF_Core.DatabaseEntities.TelevisionShow
+
+<h4>TelevisionShow</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="_EditShowDetails">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ShowName" class="control-label"></label>
+                <input asp-for="ShowName" class="form-control" />
+                <span asp-validation-for="ShowName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ShowPath" class="control-label"></label>
+                <input asp-for="ShowPath" class="form-control" />
+                <span asp-validation-for="ShowPath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="tvMazeId" class="control-label"></label>
+                <input asp-for="tvMazeId" class="form-control" />
+                <span asp-validation-for="tvMazeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="imdbId" class="control-label"></label>
+                <input asp-for="imdbId" class="form-control" />
+                <span asp-validation-for="imdbId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="theMovieDbId" class="control-label"></label>
+                <input asp-for="theMovieDbId" class="form-control" />
+                <span asp-validation-for="theMovieDbId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PosterImage" class="control-label"></label>
+                <input asp-for="PosterImage" class="form-control" />
+                <span asp-validation-for="PosterImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

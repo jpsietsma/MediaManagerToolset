@@ -11,6 +11,7 @@ using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Entities.Television.ViewModels;
 
 namespace MediaToolsetWebCoreMVC.Data
 {
@@ -88,5 +89,7 @@ namespace MediaToolsetWebCoreMVC.Data
 
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Entities.Television.ViewModels.TelevisionSeasonViewModel> TelevisionSeasonViewModel { get; set; }
     }
 }
