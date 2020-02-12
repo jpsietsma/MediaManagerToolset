@@ -66,12 +66,19 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         public async Task<IActionResult> ShowDetails(int Id)
         {
-            //using EF core sql server to match library show:
             TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == Id).FirstOrDefault();
-
-            //using remote REST API through MetaDataSvc:
             TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
-            
+
+            //If our show doesn't have an IMDB Id set, then set it here and save the changes to the database
+            //This makes for simpler calls later on as we known the value will be present.
+            if (Show.theMovieDbId == null)
+            {
+                Show.theMovieDbId = result.id.ToString();
+                DbContext.TelevisionShows.Update(Show);
+
+                await DbContext.SaveChangesAsync();
+            }
+
             ViewBag.ShowInfo = result;
 
             return PartialView("_ShowDetails", Show);
