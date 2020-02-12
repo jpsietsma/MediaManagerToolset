@@ -1,0 +1,50 @@
+﻿@model Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason
+
+<div>
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Admin Log Details</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    </div>
+    <div>
+        <h4>TelevisionSeason</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SeasonNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SeasonNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SeasonName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SeasonName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SeasonPath)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SeasonPath)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ImdbId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ImdbId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TvMazeId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TvMazeId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TheMovieDbId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TheMovieDbId)
+            </dd>
+        </dl>
+    </div>
+</div>

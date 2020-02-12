@@ -93,116 +93,118 @@
 
 </ejs-grid>
 
-@*Popup model for showing Television Show, Season, and Episode details, as well as making edits*@
-<div id='PopupModal' class='modal'>
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id='PopupModalContent'></div>
-        </div>
-    </div>
-</div>
-
-<script type="text/x-template" id="header_id_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        Show ID
-    </span>
-</script>
-<script type="text/x-template" id="header_name_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        Television Show Name
-    </span>
-</script>
-<script type="text/x-template" id="header_showPath_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        Show Path
-    </span>
-</script>
-<script type="text/x-template" id="header_actions_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        Actions
-    </span>
-</script>
-
-
-<script type="text/x-template" id="content_show_actions_template">
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;" class="showDetails">
-        <a href="javascript:void(0);" style="border: .5px solid black;" class="btn btn-info" data-id="${Id}">
-            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px; border: .5px solid black;" />
-        </a>
-    </span>
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn btn-secondary" style="border: .5px solid black;" href="MarkPriority/${Id}">
-            <img src="../images/icons/LibraryGrid/pushpin-filled-icon.png" title="Mark Priority" style="width: 20px; height: 20px;" />
-        </a>
-    </span>
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn btn-success" style="border: .5px solid black;" href="PlayAllSeasons/${Id}">
-            <img src="../images/icons/LibraryGrid/playlist-numbered-icon.png" title="Play All Seasons" style="width: 20px; height: 20px;" />
-        </a>
-    </span>
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn btn-outline-light" style="border: .5px solid black;" href="EditShow/${Id}">
-            <img src="../images/icons/LibraryGrid/edit-filled-icon.png" title="Edit Show Details" style="height: 20px; width: 20px;" />
-        </a>
-    </span>
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn btn-danger" style="border: .5px solid black;" href="RemoveShow/${Id}">
-            <img src="../images/icons/LibraryGrid/remove-trashcan-icon.png" title="Remove from library" style="height: 20px; width: 20px;" />
-        </a>
-    </span>
-</script>
-<script type="text/x-template" id="content_season_actions_template">
-    <span style="font-size: 16px; font-weight: bold;">
-        [Season actions]
-    </span>
-</script>
-<script type="text/x-template" id="content_episode_actions_template">
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn" style="border: .5px solid black;" href="EpisodeDetails/${Id}">
-            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
-        </a>
-    </span>
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn" style="border: .5px solid black;" href="PlayEpisode/${Id}">
-            <img src="../images/icons/LibraryGrid/video-play-icon.png" title="Play episode" />
-        </a>
-    </span>
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn" style="border: .5px solid black;" href="EditEpisode/${Id}">
-            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
-        </a>
-    </span>
-    <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
-        <a class="btn" style="border: .5px solid black;" href="DeleteEpisode/${Id}">
-            <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
-        </a>
-    </span>
-</script>
-
-<script type="text/x-template" id="spacer_template">
-    <span style="font-size: 16px; font-weight: bold; width: 750px;">
-
-    </span>
-</script>
-
 @section scripts
 {
+    @*Popup model for showing Television Show, Season, and Episode details, as well as making edits*@
+    <div id='PopupModal' class='modal'>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div id='PopupModalContent'></div>
+            </div>
+        </div>
+    </div>
+
+    @*Show column header templates*@
+    <script type="text/x-template" id="header_id_template">
+        <span style="font-size: 16px; font-weight: bold;">
+            Show ID
+        </span>
+    </script>
+    <script type="text/x-template" id="header_name_template">
+        <span style="font-size: 16px; font-weight: bold;">
+            Television Show Name
+        </span>
+    </script>
+    <script type="text/x-template" id="header_showPath_template">
+        <span style="font-size: 16px; font-weight: bold;">
+            Show Path
+        </span>
+    </script>
+    <script type="text/x-template" id="header_actions_template">
+        <span style="font-size: 16px; font-weight: bold;">
+            Actions
+        </span>
+    </script>
+
+    @*Show action template*@
+    <script type="text/x-template" id="content_show_actions_template">
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;" class="showDetails" data-id="${Id}">
+            <a href="javascript:void(0);" style="border: .5px solid black;" class="btn btn-info">
+                <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px; border: .5px solid black;" />
+            </a>
+        </span>
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+            <a class="btn btn-secondary" style="border: .5px solid black;" href="MarkPriority/${Id}">
+                <img src="../images/icons/LibraryGrid/pushpin-filled-icon.png" title="Mark Priority" style="width: 20px; height: 20px;" />
+            </a>
+        </span>
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+            <a class="btn btn-success" style="border: .5px solid black;" href="PlayAllSeasons/${Id}">
+                <img src="../images/icons/LibraryGrid/playlist-numbered-icon.png" title="Play All Seasons" style="width: 20px; height: 20px;" />
+            </a>
+        </span>
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+            <a class="btn btn-outline-light" style="border: .5px solid black;" href="EditShow/${Id}">
+                <img src="../images/icons/LibraryGrid/edit-filled-icon.png" title="Edit Show Details" style="height: 20px; width: 20px;" />
+            </a>
+        </span>
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+            <a class="btn btn-danger" style="border: .5px solid black;" href="RemoveShow/${Id}">
+                <img src="../images/icons/LibraryGrid/remove-trashcan-icon.png" title="Remove from library" style="height: 20px; width: 20px;" />
+            </a>
+        </span>
+    </script>
+
+    @*Season action template if needed*@
+    <script type="text/x-template" id="content_season_actions_template">
+        <span style="font-size: 16px; font-weight: bold;">
+            [Season Actions]
+        </span>
+    </script>
+
+    @*Episode action template*@
+    <script type="text/x-template" id="content_episode_actions_template">
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;" class="episodeDetails" data-id="${Id}">
+            <a href="javascript:void(0);" style="border: .5px solid black;" class="btn">
+                <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
+            </a>
+        </span>
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+            <a class="btn" style="border: .5px solid black;" href="PlayEpisode/${Id}">
+                <img src="../images/icons/LibraryGrid/video-play-icon.png" title="Play episode" />
+            </a>
+        </span>
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+            <a class="btn" style="border: .5px solid black;" href="EditEpisode/${Id}">
+                <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
+            </a>
+        </span>
+        <span style="font-size: 16px; font-weight: bold; padding-right: 15px;">
+            <a class="btn" style="border: .5px solid black;" href="DeleteEpisode/${Id}">
+                <img src="../images/icons/LibraryGrid/details-list-square-button.png" title="Show Page" style="height: 20px; width: 20px;" />
+            </a>
+        </span>
+    </script>
+
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    @*Make call to ShowDetails to populate details modal for shows*@
     <script>
 
-        var TeamDetailPostBackURL = '/Television/ShowDetails';
+        var ShowDetailsPostBackURL = '/Television/ShowDetails';
         $(function () {
             $(".showDetails").click(function () {
                 debugger;
                 var $buttonClicked = $(this);
                 var id = $buttonClicked.attr('data-id');
+
                 var options = { "backdrop": "static", keyboard: true };
                 $.ajax({
                     type: "GET",
-                    url: TeamDetailPostBackURL,
+                    url: ShowDetailsPostBackURL,
                     contentType: "application/json; charset=utf-8",
                     data: { "id": id },
                     datatype: "json",
@@ -214,7 +216,91 @@
 
                     },
                     error: function () {
-                        alert("Dynamic content load failed.");
+                        alert("Unable to load show information.");
+                    }
+                });
+            });
+
+            $("#closbtn").click(function () {
+                $('#PopupModal').modal('hide');
+            });
+        });
+
+    </script>
+
+    @*Make call to SeasonDetails to populate details modal for seasons*@
+    <script>
+
+        var SeasonDetailsPostBackURL = '/Television/SeasonDetails';
+        $(function () {
+            $(".seasonDetails").click(function () {
+                debugger;
+                console.log('clicked button...');
+
+                var $buttonClicked = $(this);
+                console.log('clicked ' + $buttonClicked);
+
+                var id = $buttonClicked.attr('data-id');
+                console.log('Id is equal to ' + id)
+
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: SeasonDetailsPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#PopupModalContent').html(data);
+                        $('#PopupModal').modal(options);
+                        $('#PopupModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Unable to load show information.");
+                    }
+                });
+            });
+
+            $("#closbtn").click(function () {
+                $('#PopupModal').modal('hide');
+            });
+        });
+
+    </script>
+
+    @*Make call to EpisodeDetails to populate details modal for episodes*@
+    <script>
+
+        var EpisodeDetailsPostBackURL = '/Television/EpisodeDetails';
+        $(function () {
+            $(".episodeDetails").click(function () {
+                debugger;
+                console.log('clicked button...');
+
+                var $buttonClicked = $(this);
+                console.log('clicked ' + $buttonClicked);
+
+                var id = $buttonClicked.attr('data-id');
+                console.log('Id is equal to ' + id)
+
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: EpisodeDetailsPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#PopupModalContent').html(data);
+                        $('#PopupModal').modal(options);
+                        $('#PopupModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Unable to load show information.");
                     }
                 });
             });

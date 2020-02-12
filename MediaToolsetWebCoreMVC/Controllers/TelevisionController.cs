@@ -64,23 +64,33 @@ namespace MediaToolsetWebCoreMVC.Controllers
             return View(results);
         }
 
-        public IActionResult ShowDetails(int id)
+        public async Task<IActionResult> ShowDetails(int Id)
         {
-            //using remote REST API:
-            //https://api.themoviedb.org/3/tv/3670?api_key=c0604d69b7df230f03504bdc8475887a&language=en-US
+            //using EF core sql server to match library show:
+            TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == Id).FirstOrDefault();
+
+            //using remote REST API through MetaDataSvc:
+            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
             
-            
-            //using EF core sql server
-            TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == id).FirstOrDefault();
+            ViewBag.ShowInfo = result;
 
             return PartialView("_ShowDetails", Show);
         }                
 
-        public IActionResult EditShowDetails(int id)
+        public IActionResult SeasonDetails(int id)
         {
-            TelevisionShow show = DbContext.TelevisionShows.Where(s => s.Id == id).FirstOrDefault();
+            //using EF core sql server
+            TelevisionSeason Season = DbContext.TelevisionSeasons.Where(s => s.Id == id).FirstOrDefault();
 
-            return View(show);
+            return PartialView("_SeasonDetails", Season);
+        }
+
+        public IActionResult EpisodeDetails(int id)
+        {
+            //using EF core sql server
+            TelevisionEpisode Episode = DbContext.TelevisionEpisodes.Where(e => e.Id == id).FirstOrDefault();
+
+            return PartialView("_EpisodeDetails", Episode);
         }
 
         [Authorize(Roles = "SuperAdmin, Administrator, ContentAdministrator")]

@@ -3,35 +3,41 @@
 <div>
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">@Model.ShowName details</h4>
+        <h4 class="modal-title" id="myModalLabel">@Model.ShowName - Show Details</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     </div>
 
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-md-2">
             @Html.DisplayNameFor(model => model.ShowPath)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-md-10">
             @Html.DisplayFor(model => model.ShowPath)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-md-2">
             @Html.DisplayNameFor(model => model.tvMazeId)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-md-10">
             @Html.DisplayFor(model => model.tvMazeId)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-md-2">
             @Html.DisplayNameFor(model => model.imdbId)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-md-10">
             @Html.DisplayFor(model => model.imdbId)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-md-2">
             @Html.DisplayNameFor(model => model.theMovieDbId)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-md-10">
             @Html.DisplayFor(model => model.theMovieDbId)
+        </dd>
+        <dt class="col-md-2">
+            Show Overview
+        </dt>
+        <dd class="col-md-10">
+            @ViewBag.ShowInfo.overview
         </dd>
     </dl>
 </div>
