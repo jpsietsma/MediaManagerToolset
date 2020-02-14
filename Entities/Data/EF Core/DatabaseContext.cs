@@ -15,9 +15,10 @@ namespace Entities.Data.EF_Core
     public class DatabaseContext : DbContext
     {
         //DbSet property declarations
-        public virtual DbSet<DatabaseEntities.TelevisionEpisode> TelevisionEpisodes { get; set; }
-        public virtual DbSet<DatabaseEntities.TelevisionSeason> TelevisionSeasons { get; set; }
-        public virtual DbSet<DatabaseEntities.TelevisionShow> TelevisionShows { get; set; }
+        public virtual DbSet<TelevisionEpisode> TelevisionEpisodes { get; set; }
+        public virtual DbSet<TelevisionSeason> TelevisionSeasons { get; set; }
+        public virtual DbSet<TelevisionShow> TelevisionShows { get; set; }
+        public virtual DbSet<PriorityShow> PriorityShows { get; set; }
         public virtual DbSet<TelevisionShowAiringSchedule> TelevisionShowAiringSchedules { get; set; }
         public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }
 
@@ -28,7 +29,7 @@ namespace Entities.Data.EF_Core
             
         }
 
-        public List<DatabaseEntities.TelevisionShow> SearchShows(string showName = null)
+        public List<TelevisionShow> SearchShows(string showName = null)
         {
             var showNameParameter = string.IsNullOrEmpty(showName) ? new ObjectParameter("ShowName", showName) : new ObjectParameter("ShowName", typeof(string));
 

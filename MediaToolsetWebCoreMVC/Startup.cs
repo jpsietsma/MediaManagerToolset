@@ -12,6 +12,7 @@ using MediaToolsetWebCoreMVC.Areas.Identity.Services;
 using MediaToolsetWebCoreMVC.Controllers;
 using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
+using MediaToolsetWebCoreMVC.Services.LocalLibrary;
 using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -123,6 +124,7 @@ namespace MediaToolsetWebCoreMVC
             services.AddScoped<AdministratorController>();
 
             services.AddScoped<IMetaDataApiSvc, MetaDataApiSvc>();
+            services.AddScoped<ILocalLibraryService, LocalLibraryService>();
             services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();

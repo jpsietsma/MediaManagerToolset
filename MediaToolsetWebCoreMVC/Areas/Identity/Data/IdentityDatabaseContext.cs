@@ -8,10 +8,8 @@ using Entities.Data.EF_Core.DatabaseEntities;
 using Entities.Logging;
 using MediaToolsetWebCoreMVC.Areas.Identity.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Entities.Television.ViewModels;
 
 namespace MediaToolsetWebCoreMVC.Data
 {
@@ -20,6 +18,7 @@ namespace MediaToolsetWebCoreMVC.Data
         public virtual DbSet<TelevisionEpisode> TelevisionEpisodes { get; set; }
         public virtual DbSet<TelevisionSeason> TelevisionSeasons { get; set; }
         public virtual DbSet<TelevisionShow> TelevisionShows { get; set; }
+        public virtual DbSet<PriorityShow> PriorityShows { get; set; }
         public virtual DbSet<SortFile> SortFiles { get; set; }
         public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }            
         public virtual DbSet<TelevisionShowAiringSchedule> TelevisionShowAiringSchedules { get; set; }
@@ -90,6 +89,5 @@ namespace MediaToolsetWebCoreMVC.Data
             base.OnModelCreating(builder);
         }
 
-        public DbSet<Entities.Television.ViewModels.TelevisionSeasonViewModel> TelevisionSeasonViewModel { get; set; }
     }
 }

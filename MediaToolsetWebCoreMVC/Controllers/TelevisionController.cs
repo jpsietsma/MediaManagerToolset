@@ -10,6 +10,7 @@ using Entities.Configuration;
 using Entities.Data.EF_Core.DatabaseEntities;
 using Entities.Data.TmDB;
 using MediaToolsetWebCoreMVC.Data;
+using MediaToolsetWebCoreMVC.Services.LocalLibrary;
 using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +26,9 @@ namespace MediaToolsetWebCoreMVC.Controllers
         IHttpClientFactory HttpClientFactory;
         IMapper AutoMapper;
         IMetaDataApiSvc MetaDataSvc;
+        ILocalLibraryService LocalLibSvc;
 
-        public TelevisionController(MvcProgramConfiguration _settings, IdentityDatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc, IHttpClientFactory _clientFactory)
+        public TelevisionController(MvcProgramConfiguration _settings, IdentityDatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc, IHttpClientFactory _clientFactory, ILocalLibraryService _localLibrary)
         {
             AppSettings = _settings.ProgramConfiguration;
             DbContext = _context;
@@ -86,10 +88,11 @@ namespace MediaToolsetWebCoreMVC.Controllers
         
         public async Task<IActionResult> ShowOverview(int id)
         {
-            TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == id).FirstOrDefault();
+            TelevisionShow Show = LocalLibSvc.GetLocalShow(id);
             TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
-                        
+            
             ViewBag.ShowInfo = result;
+            ViewBag.ShowSeasons = Show.TelevisionSeasons;
 
             return View(Show);
         }
