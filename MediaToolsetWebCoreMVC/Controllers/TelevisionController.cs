@@ -82,7 +82,17 @@ namespace MediaToolsetWebCoreMVC.Controllers
             ViewBag.ShowInfo = result;
 
             return PartialView("_ShowDetails", Show);
-        }                
+        }
+        
+        public async Task<IActionResult> ShowOverview(int id)
+        {
+            TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == id).FirstOrDefault();
+            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
+                        
+            ViewBag.ShowInfo = result;
+
+            return View(Show);
+        }
 
         public IActionResult SeasonDetails(int id)
         {
