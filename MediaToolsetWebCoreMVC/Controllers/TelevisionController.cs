@@ -269,6 +269,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
                     foreach (TelevisionShow Show in _libraryContents)
                     {
                         Show.ShowPath = FormatShowPath(Show.ShowPath);
+                        //Show.TelevisionSeasons = new List<TelevisionSeason>();
                     }                    
                 }
             }
