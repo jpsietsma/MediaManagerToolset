@@ -35,6 +35,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
             AutoMapper = _mapper;
             MetaDataSvc = _apiSvc;
             HttpClientFactory = _clientFactory;
+            LocalLibSvc = _localLibrary;
         }
 
         public IActionResult Index()
