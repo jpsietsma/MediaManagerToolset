@@ -100,7 +100,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
             foreach (TelevisionSeason season in seasons)
             {
-                season.TelevisionEpisodes = season.TelevisionEpisodes.OrderBy(e => e.EpisodeNumber).ToList();
+                season.TelevisionEpisodes = season.TelevisionEpisodes.OrderBy(e => int.Parse(e.EpisodeNumber)).ToList();
             }
 
             ViewBag.ShowInfo = result;
