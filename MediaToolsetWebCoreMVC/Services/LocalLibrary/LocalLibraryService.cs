@@ -3,6 +3,7 @@ using Entities.Data.EF_Core.DatabaseEntities;
 using MediaToolsetWebCoreMVC.Areas.Identity.Data;
 using MediaToolsetWebCoreMVC.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,11 @@ namespace MediaToolsetWebCoreMVC.Services.LocalLibrary
 
         public List<TelevisionShow> GetLocalLibrary()
         {
-            var shows = DatabaseContext.TelevisionShows.ToList();
+            var shows = DatabaseContext
+                .TelevisionShows
+                .Include(s => s.TelevisionSeasons)
+                .ThenInclude(e => e.TelevisionEpisodes)
+                .ToList();
 
             return shows;
         }

@@ -14,6 +14,7 @@ using MediaToolsetWebCoreMVC.Services.LocalLibrary;
 using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace MediaToolsetWebCoreMVC.Controllers
@@ -90,10 +91,20 @@ namespace MediaToolsetWebCoreMVC.Controllers
         public async Task<IActionResult> ShowOverview(int id)
         {
             TelevisionShow Show = LocalLibSvc.GetLocalShow(id);
-            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
-            
+            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);                     
+            List<TelevisionSeason> seasons = DbContext
+                .TelevisionSeasons
+                .Where(s => s.TelevisionShowId == id)
+                .Include(e => e.TelevisionEpisodes)                
+                .ToList();
+
+            foreach (TelevisionSeason season in seasons)
+            {
+                season.TelevisionEpisodes = season.TelevisionEpisodes.OrderBy(e => e.EpisodeNumber).ToList();
+            }
+
             ViewBag.ShowInfo = result;
-            ViewBag.ShowSeasons = Show.TelevisionSeasons;
+            ViewBag.ShowSeasons = seasons.OrderBy(s => int.Parse(s.SeasonNumber)).ToList();
 
             return View(Show);
         }

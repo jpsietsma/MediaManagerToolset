@@ -58,7 +58,8 @@
                 @ViewBag.ShowInfo.overview
             </p>
             <br>
-            <b>Episode Runtime: </b>60 minutes<br>
+            <b>Episode Runtime: </b>
+            <br>
             <b>Series Genre: </b>
             @if(ViewBag.ShowInfo.genres != null)
             {
@@ -73,176 +74,58 @@
             <br>
             <b>Last Episode: </b><br>
             <br>
-            <h5>Library Comparison <b style="font-size: 12px;">[Missing: 1 season; 4 episodes]</b></h5>
+            <h5>Episodes Available</h5>
             <div>
                 <!-- Tabcontrol goes here, tabheader for each season, then Grid for episodes on each tab -->
                 <div class="container">
                     <div class="container">
                         <ul class="nav nav-tabs" id="seasonTab" role="tablist">
+                            @foreach(Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason season in ViewBag.ShowSeasons){
                             <li class="nav-item">
-                                <a class="nav-link active" id="season1-tab" data-toggle="tab" href="#season1" role="tab" aria-controls="season1"
-                                   aria-selected="true"><del>Season 1</del></a>
+                                <a class="nav-link" id="@season.SeasonName.Replace(" ", "")-tab" data-toggle="tab" href="#@season.SeasonName.Replace(" ", "")" role="tab" aria-controls="@season.SeasonName.Replace(" ", "")"
+                                   >@season.SeasonName</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="season2-tab" data-toggle="tab" href="#season2" role="tab" aria-controls="season2"
-                                   aria-selected="false">Season 2</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="season3-tab" data-toggle="tab" href="#season3" role="tab" aria-controls="season3"
-                                   aria-selected="false">Season 3</a>
-                            </li>
+                            }                            
                         </ul>
                         <div class="row">
                             @*Show tabs of missing episodes and seasons*@
                             <div class="tab-content" id="seasonTabContent">
-                                <div class="tab-pane fade show active" id="season1" role="tabpanel" aria-labelledby="season1-tab">
-                                    <table id="season1-dt" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th class="th-sm">
-                                                    Episode #
-                                                </th>
-                                                <th class="th-sm">
-                                                    Name
-                                                </th>
-                                                <th class="th-sm">
-                                                    Air Date
-                                                </th>
-                                                <th class="th-sm">
-                                                    Actions
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Episode 1</td>
-                                                <td>January 01, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Episode 2</td>
-                                                <td>January 08, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Episode 3</td>
-                                                <td>January 15, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Episode 4</td>
-                                                <td>January 22, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Episode 5</td>
-                                                <td>January 29, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                                <div class="tab-pane fade" id="season2" role="tabpanel" aria-labelledby="season2-tab">
-                                    <table id="season2-dt" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th class="th-sm">
-                                                    Episode #
-                                                </th>
-                                                <th class="th-sm">
-                                                    Name
-                                                </th>
-                                                <th class="th-sm">
-                                                    Air Date
-                                                </th>
-                                                <th class="th-sm">
-                                                    Actions
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Episode 1</td>
-                                                <td>February 05, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;'></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Episode 3</td>
-                                                <td>February 19, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;'></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Episode 4</td>
-                                                <td>February 26, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;'></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="tab-pane fade" id="season3" role="tabpanel" aria-labelledby="season3-tab">
-                                    <table id="season3-dt" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th class="th-sm">
-                                                    Episode #
-                                                </th>
-                                                <th class="th-sm">
-                                                    Name
-                                                </th>
-                                                <th class="th-sm">
-                                                    Air Date
-                                                </th>
-                                                <th class="th-sm">
-                                                    Actions
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Episode 5</td>
-                                                <td>April 02, 2020</td>
-                                                <td>
-                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;'></i>
-                                                    <i class='fas fa-minus' style='font-size:24px;color:red'></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                @foreach(Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason season in ViewBag.ShowSeasons){
+                                    <div class="tab-pane fade" id="@season.SeasonName.Replace(" ", "")" role="tabpanel" aria-labelledby="@season.SeasonName.Replace(" ", "")-tab">
+                                        <table id="@season.SeasonName.Replace(" ", "")-dt" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th class="th-sm">
+                                                        Episode #
+                                                    </th>
+                                                    <th class="th-sm">
+                                                        Name
+                                                    </th>
+                                                    <th class="th-sm">
+                                                        Episode Path
+                                                    </th>
+                                                    <th class="th-sm">
+                                                        Actions
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach(Entities.Data.EF_Core.DatabaseEntities.TelevisionEpisode episode in season.TelevisionEpisodes){
+                                                    <tr>
+                                                        <td>@episode.EpisodeNumber</td>
+                                                        <td>@episode.EpisodeName</td>
+                                                        <td>@episode.EpisodePath</td>
+                                                        <td>
+                                                            <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
+                                                            <i class='fas fa-minus' style='font-size:24px;color:red'></i>
+                                                        </td>
+                                                    </tr>
+                                                }                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }                                
+                                
                             </div>
                         </div>
                     </div>
