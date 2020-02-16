@@ -99,6 +99,10 @@ namespace MediaToolsetWebCoreMVC
                     c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/search/tv?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&query=ShowQueryName&page=1");
                 });
 
+                services.AddHttpClient("TheMovieDBExternalIDQuery", c => {
+                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/tv/ShowID/external_ids?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&query=ShowQueryName&page=1");
+                });
+
                 services.AddHttpClient("TheMovieDBQueryById", c => {
                     c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/find/Imdb?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&external_source=imdb_id");
                 });

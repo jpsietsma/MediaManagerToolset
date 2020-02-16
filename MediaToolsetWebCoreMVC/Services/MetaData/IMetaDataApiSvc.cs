@@ -25,5 +25,7 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         Task<List<T1>> GetManyShowResultsAsync<T, T1>(string showName)
            where T : IApiCallMultipleResultset
            where T1 : IApiCallResult;
+
+        Task<TheMovieDbExternalIds> GetExternalIds(int theMovieDbId);
     }
 }

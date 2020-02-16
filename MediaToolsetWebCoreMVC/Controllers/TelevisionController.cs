@@ -91,7 +91,16 @@ namespace MediaToolsetWebCoreMVC.Controllers
         public async Task<IActionResult> ShowOverview(int id)
         {
             TelevisionShow Show = LocalLibSvc.GetLocalShow(id);
-            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);                     
+            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
+            TheMovieDbExternalIds externals = await MetaDataSvc.GetExternalIds(Show.Id);
+
+            Show.imdbId = externals.imdb_id;
+            Show.theMovieDbId = result.id.ToString();
+
+            //update the Show with the TheMovieDbId value, save to database
+            DbContext.TelevisionShows.Update(Show);
+            await DbContext.SaveChangesAsync();
+
             List<TelevisionSeason> seasons = DbContext
                 .TelevisionSeasons
                 .Where(s => s.TelevisionShowId == id)

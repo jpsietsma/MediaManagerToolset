@@ -218,6 +218,34 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
             return Result;
         }
 
+        public async Task<TheMovieDbExternalIds> GetExternalIds(int theMovieDbId)
+        {
+            CurrentRequestClient = HttpClientFactory.CreateClient("TheMovieDBExternalIDQuery");
+
+            using (CurrentRequestClient)
+            {
+                CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowID", theMovieDbId.ToString()));
+                RequestUrl = CurrentRequestClient.BaseAddress.ToString();
+
+                try
+                {
+                    using (var clientRequest = await CurrentRequestClient.GetAsync(CurrentRequestClient.BaseAddress))
+                    {
+                        Result = JsonConvert.DeserializeObject<TheMovieDbExternalIds>(await clientRequest.Content.ReadAsStringAsync());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //Logger.LogInformation(new EventId(5000, "Error making API Call"), ex, RequestUser.UserName + " threw an exception while searching for: " + showName);
+                }
+
+            }
+
+            //Logger.LogInformation(new EventId(6000, "Successful API call"), null, RequestUser.UserName + " successfully searched for: " + showName);
+            return Result;
+
+        }
+
         /// <summary>
         /// Get the HttpClient object from the most recent request.
         /// </summary>
