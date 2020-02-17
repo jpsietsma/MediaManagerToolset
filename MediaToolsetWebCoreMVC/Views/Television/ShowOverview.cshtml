@@ -59,20 +59,26 @@
             </p>
             <br>
             <b>Episode Runtime: </b>
+            @{
+                var runtime = (ViewBag.ShowInfo.episode_run_time as List<int>).First();
+            }
+            @runtime minutes
             <br>
             <b>Series Genre: </b>
-            @if(ViewBag.ShowInfo.genres != null)
+            @if (ViewBag.ShowInfo.genres != null)
             {
-            @foreach (var genre in ViewBag.ShowInfo.genres)
+                @foreach (var genre in ViewBag.ShowInfo.genres)
                 {
-            @genre.name
+                    @genre.name
                 }
             }
             <br>
-            <b>Premiere Date: </b>@ViewBag.ShowInfo.first_air_date<br>
-            <b>Airing Status: </b>
+            <b>Premiere Date: </b>@ViewBag.ShowInfo.first_air_date
             <br>
-            <b>Last Episode: </b><br>
+            <b>Airing Status: </b>@ViewBag.ShowInfo.in_production
+            <br>
+            <b>Last Episode: </b>@ViewBag.ShowInfo.last_air_date
+            <br>
             <br>
             <h5>Episodes Available</h5>
             <div>
@@ -80,17 +86,18 @@
                 <div class="container">
                     <div class="container">
                         <ul class="nav nav-tabs" id="seasonTab" role="tablist">
-                            @foreach(Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason season in ViewBag.ShowSeasons){
-                            <li class="nav-item">
-                                <a class="nav-link" id="@season.SeasonName.Replace(" ", "")-tab" data-toggle="tab" href="#@season.SeasonName.Replace(" ", "")" role="tab" aria-controls="@season.SeasonName.Replace(" ", "")"
-                                   >@season.SeasonName</a>
-                            </li>
-                            }                            
+                            @foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason season in ViewBag.ShowSeasons)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" id="@season.SeasonName.Replace(" ", "")-tab" data-toggle="tab" href="#@season.SeasonName.Replace(" ", "")" role="tab" aria-controls="@season.SeasonName.Replace(" ", "")">@season.SeasonName</a>
+                                </li>
+                            }
                         </ul>
                         <div class="row">
                             @*Show tabs of missing episodes and seasons*@
                             <div class="tab-content" id="seasonTabContent">
-                                @foreach(Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason season in ViewBag.ShowSeasons){
+                                @foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionSeason season in ViewBag.ShowSeasons)
+                                {
                                     <div class="tab-pane fade" id="@season.SeasonName.Replace(" ", "")" role="tabpanel" aria-labelledby="@season.SeasonName.Replace(" ", "")-tab">
                                         <table id="@season.SeasonName.Replace(" ", "")-dt" class="table table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead>
@@ -110,7 +117,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach(Entities.Data.EF_Core.DatabaseEntities.TelevisionEpisode episode in season.TelevisionEpisodes){
+                                                @foreach (Entities.Data.EF_Core.DatabaseEntities.TelevisionEpisode episode in season.TelevisionEpisodes)
+                                                {
                                                     <tr>
                                                         <td>@episode.EpisodeNumber</td>
                                                         <td>@episode.EpisodeName</td>
@@ -120,12 +128,12 @@
                                                             <i class='fas fa-minus' style='font-size:24px;color:red'></i>
                                                         </td>
                                                     </tr>
-                                                }                                                
+                                                 }
                                             </tbody>
                                         </table>
                                     </div>
-                                }                                
-                                
+                                 }
+
                             </div>
                         </div>
                     </div>

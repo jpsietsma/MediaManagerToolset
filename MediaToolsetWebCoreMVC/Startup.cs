@@ -104,7 +104,7 @@ namespace MediaToolsetWebCoreMVC
                 });
 
                 services.AddHttpClient("TheMovieDBQueryById", c => {
-                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/find/Imdb?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US&external_source=imdb_id");
+                    c.BaseAddress = new Uri(@$"https://api.themoviedb.org/3/tv/ShowId?api_key={ ProgramConfiguration.MediaAPIKeyConfiguration.ApiKeyInfo.Where(p => p.Name == "TheMovieDB").First().ApiToken }&language=en-US");
                 });
 
                 services.AddHttpClient("TvMazeLibraryScan", c => {

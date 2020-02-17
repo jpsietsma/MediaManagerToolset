@@ -78,8 +78,8 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         /// Return the information of the search using an ImdbId int
         /// </summary>
         /// <typeparam name="T">Type to hold our return result information</typeparam>
-        /// <param name="ImdbId">Integer Imdb ID to query for information</param>
-        public async Task<T1> GetShowResultAsync<T, T1>(int ImdbId)
+        /// <param name="TheMovieDbId">Integer Imdb ID to query for information</param>
+        public async Task<T1> GetShowResultAsync<T, T1>(int TheMovieDbId)
             where T : class
             where T1 : IApiCallResult
         {
@@ -89,7 +89,7 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
             using (CurrentRequestClient)
             {
                 //Include our ImdbId in the base address, and remove default query info about show name from url
-                CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("Imdb", ImdbId.ToString()).Replace("query=ShowQueryName&", ""));
+                CurrentRequestClient.BaseAddress = new Uri(CurrentRequestClient.BaseAddress.ToString().Replace("ShowId", TheMovieDbId.ToString()));
                 RequestUrl = CurrentRequestClient.BaseAddress.ToString();
 
                 try

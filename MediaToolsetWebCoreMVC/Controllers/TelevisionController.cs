@@ -92,7 +92,8 @@ namespace MediaToolsetWebCoreMVC.Controllers
         {
             TelevisionShow Show = LocalLibSvc.GetLocalShow(id);
             TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
-            TheMovieDbExternalIds externals = await MetaDataSvc.GetExternalIds(Show.Id);
+
+            TheMovieDbExternalIds externals = await MetaDataSvc.GetExternalIds(result.id);
 
             Show.imdbId = externals.imdb_id;
             Show.theMovieDbId = result.id.ToString();
@@ -101,6 +102,8 @@ namespace MediaToolsetWebCoreMVC.Controllers
             DbContext.TelevisionShows.Update(Show);
             await DbContext.SaveChangesAsync();
 
+            result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowResult, TheMovieDbShowResult>(int.Parse(Show.theMovieDbId));
+                        
             List<TelevisionSeason> seasons = DbContext
                 .TelevisionSeasons
                 .Where(s => s.TelevisionShowId == id)
