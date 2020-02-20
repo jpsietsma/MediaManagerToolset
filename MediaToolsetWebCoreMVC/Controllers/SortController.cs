@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.Configuration;
 using Entities.Data.EF_Core.DatabaseEntities;
 using MediaToolsetWebCoreMVC.Data;
+using MediaToolsetWebCoreMVC.Services.Sort;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +14,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
     public class SortController : Controller
     {
         IdentityDatabaseContext DbContext;
+        ProgramConfiguration AppSettings;
+        ISortClassificationSvc SortSvc;
 
-        public SortController(IdentityDatabaseContext _dbContext)
+        public SortController(IdentityDatabaseContext _dbContext, ProgramConfiguration _programSettings, ISortClassificationSvc _sortClassification)
         {
             DbContext = _dbContext;
+            AppSettings = _programSettings;
+            SortSvc = _sortClassification;
         }
 
         public IActionResult Index()
@@ -26,11 +32,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
         }
 
         public async Task<IActionResult> RescanContents()
-        {
-            //Clear the current queue
-            DbContext.SortFiles.RemoveRange(DbContext.SortFiles.ToList());
-            await DbContext.SaveChangesAsync();
-
+        {       
             await PopulateTestSort();
 
             return View("Index", DbContext.SortFiles.ToList());
@@ -38,6 +40,10 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         private async Task PopulateTestSort()
         {
+            //Clear the current queue
+            DbContext.SortFiles.RemoveRange(DbContext.SortFiles.ToList());
+            await DbContext.SaveChangesAsync();
+
             List<SortFile> _newfiles = new List<SortFile>
             {
              new SortFile
@@ -89,6 +95,11 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
             await DbContext.SortFiles.AddRangeAsync(_newfiles);
             await DbContext.SaveChangesAsync();
+        }
+
+        private async Task RepopulateSortQueue()
+        {
+
         }
     }
 }

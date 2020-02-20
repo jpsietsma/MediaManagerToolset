@@ -1,4 +1,5 @@
 ﻿using Entities.Abstract;
+using Entities.Enums;
 using Entities.Ext;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Entities.Data.EF_Core.DatabaseEntities
 {  
-    public class SortFile
+    public class SortFile : IClassifiableMediaFile
     {
         public int Id { get; set; }
         public string FileName { get; set; }
@@ -23,6 +24,7 @@ namespace Entities.Data.EF_Core.DatabaseEntities
 
         public int? TelevisionShowId { get; set; }
         public TelevisionShow TelevisionShow { get; set; }
+        public MediaClassificationTypes ClassificationType { get; set; }
 
         public SortFile()
         {

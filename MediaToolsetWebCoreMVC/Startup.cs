@@ -14,6 +14,7 @@ using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Models.Identity;
 using MediaToolsetWebCoreMVC.Services.LocalLibrary;
 using MediaToolsetWebCoreMVC.Services.MetaData;
+using MediaToolsetWebCoreMVC.Services.Sort;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -129,6 +130,7 @@ namespace MediaToolsetWebCoreMVC
 
             services.AddScoped<IMetaDataApiSvc, MetaDataApiSvc>();
             services.AddScoped<ILocalLibraryService, LocalLibraryService>();
+            services.AddScoped<ISortClassificationSvc, SortClassificationSvc>();
             services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();
