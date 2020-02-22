@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Entities.Abstract;
 using Entities.Configuration;
 using Entities.Data.EF_Core;
 using Entities.Data.EF_Core.DatabaseEntities;
-using Entities.Sort;
-using Microsoft.AspNetCore.Http;
+using Entities.Enums;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace MediaToolsetAPI.Controllers
 {    
@@ -32,24 +27,14 @@ namespace MediaToolsetAPI.Controllers
 
         // GET: api/Sort
         [HttpGet]
-        public List<string> Get()
+        public async Task<List<SortFile>> Get()
         {
-            string username = "jpsietsma@gmail.com";
-            string password = "A!12@lop^6";
-            List<string> sortFiles = new List<string>();
-
-            UnMountDrive("\\\\jimmybeast-sdn\\s\\");
-
-            MountDrive('S', "\\\\jimmybeast-sdn\\s\\", username, password);
-
-            foreach (string file in Directory.GetFiles("\\\\jimmybeast-sdn\\s\\"))
+            if (DbContext.SortFiles.ToList().Count == 0)
             {
-                sortFiles.Add(file);
+                await ScanUpdateSortLibraryDatabase();
             }
 
-            UnMountDrive("\\\\jimmybeast-sdn\\s\\");
-
-            return sortFiles;
+            return DbContext.SortFiles.ToList();
         }
 
         public int ExecuteCommand(string command, int timeout)
@@ -80,44 +65,35 @@ namespace MediaToolsetAPI.Controllers
             ExecuteCommand(command, 5000);
         }
 
-        public void ScanUpdateSortLibraryDatabase(bool _replaceAll = false)
+        public async Task ScanUpdateSortLibraryDatabase(bool _replaceAll = false)
         {
+            List<SortFile> newSortFiles = new List<SortFile>();
 
-            if (_replaceAll)
+            if (_replaceAll && DbContext.SortFiles.Count() > 0)
+            {               
+                DbContext.SortFiles.RemoveRange(DbContext.SortFiles.ToList());                              
+            }
+
+            foreach (string sortFile in Directory.GetFiles(AppSettings.SortConfiguration.LocalSortDirectory))
             {
-                List<SortFile> newSortFiles = new List<SortFile>();
+                FileInfo fileInfo = new FileInfo(sortFile);
 
-                // Delete all existing entities from the database on a scan with forced replacement.
-                if (DbContext.SortFiles.Count() > 0)
+                SortFile newFile = new SortFile
                 {
-                    DbContext.SortFiles.RemoveRange(DbContext.SortFiles.ToList());
-                }
+                    ClassificationType = MediaClassificationTypes.UNDETERMINED,
+                    DownloadSynchronized = DateTime.Now,
+                    FileName = fileInfo.Name,
+                    FilePath = fileInfo.FullName,
+                    FileSize = fileInfo.Length,
+                    DownloadStartDate = fileInfo.CreationTime
+                };              
                 
-                foreach (string sortFile in Directory.GetFiles(AppSettings.SortConfiguration.LocalSortDirectory))
-                {
-                    newSortFiles.Add(
-                        AutoMapper.Map<TelevisionShowViewModel>(
-                            new Entities.Television.TelevisionLibraryScannedDirectory(_showDirectory)
-                            )
-                        );
-                }
-
-                foreach (TelevisionShowViewModel vm in modelList)
-                {
-                    newShows.Add(AutoMapper.Map<TelevisionShow>(vm));
-                }
-
-                DbContext.TelevisionShows.AddRange(newShows);
-                DbContext.SaveChanges();
-
-            }
-            else
-            {
-                //logic for when we want to only add new show entries to the library without truncating current library contents.
+                //Add each processed string as a sort file to the newSortFiles
+                newSortFiles.Add(newFile);
             }
 
+            DbContext.SortFiles.UpdateRange(newSortFiles);
+            await DbContext.SaveChangesAsync();
         }
-
     }
-
 }

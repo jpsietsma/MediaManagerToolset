@@ -6,6 +6,7 @@ using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -13,130 +14,105 @@ namespace MediaToolsetWebCoreMVC.Services.Sort
 {
     public class SortClassificationSvc : ISortClassificationSvc
     {
-        DatabaseContext DbContext;
         ProgramConfiguration AppSettings;
 
-        public SortClassificationSvc(DatabaseContext _dbContext, ProgramConfiguration _programSettings)
+        public SortClassificationSvc(ProgramConfiguration _programSettings)
         {
-            DbContext = _dbContext;
             AppSettings = _programSettings;
         }
 
-        public MediaClassificationTypes MediaTypeClassification(string filepath)
-        {
-            return filepath != null ? DetermineMediaClassificationType(filepath) : MediaClassificationTypes.UNKNOWN;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(string filepath, out string sanitizedPath)
-        {
-            MediaClassificationTypes _classification = filepath != null ? DetermineMediaClassificationType(filepath) : MediaClassificationTypes.UNKNOWN;
-            sanitizedPath = SanitizeFilePath(filepath, _classification);
-
-            return _classification;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(IClassifiableMediaFile _mediaFile)
-        {
-            return _mediaFile.FilePath != null ? DetermineMediaClassificationType(_mediaFile.FilePath) : MediaClassificationTypes.UNKNOWN;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(IClassifiableMediaFile _mediaFile, out string sanitizedPath)
-        {
-            MediaClassificationTypes _classification = _mediaFile.FilePath != null ? DetermineMediaClassificationType(_mediaFile.FilePath) : MediaClassificationTypes.UNKNOWN;
-            sanitizedPath = SanitizeFilePath(_mediaFile.FilePath, _classification);
-
-            return _classification;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(TelevisionEpisode _episode)
-        {
-            return _episode.ClassificationType;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(TelevisionEpisode _episode, out string sanitizedPath)
-        {
-            sanitizedPath = _episode.EpisodePath;
-            return _episode.ClassificationType;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(Movie _movie)
-        {
-            return _movie.ClassificationType;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(Movie _movie, out string sanitizedName)
-        {
-            sanitizedName = _movie.FilePath;
-            return _movie.ClassificationType;
-        }
-
-        public MediaClassificationTypes MediaTypeClassification(SortFile _sortFile)
-        {
-            if (_sortFile.ClassificationType == MediaClassificationTypes.UNDETERMINED)
+        #region Section: Media Classification Service Methods
+            public MediaClassificationTypes MediaTypeClassification(string filepath)
             {
-                return DetermineMediaClassificationType(_sortFile.FilePath);
+                return filepath != null ? DetermineMediaClassificationType(filepath) : MediaClassificationTypes.UNKNOWN;
             }
-            else
+
+            public MediaClassificationTypes MediaTypeClassification(IClassifiableMediaFile _mediaFile)
             {
-                return _sortFile.ClassificationType;
+                return _mediaFile.FilePath != null ? DetermineMediaClassificationType(_mediaFile.FilePath) : MediaClassificationTypes.UNKNOWN;
             }
-        }
 
-        public MediaClassificationTypes MediaTypeClassification(SortFile _sortFile, out string sanitizedPath)
-        {
-            MediaClassificationTypes _classification = _sortFile.FilePath != null ? DetermineMediaClassificationType(_sortFile.FilePath) : MediaClassificationTypes.UNKNOWN;
-            sanitizedPath = SanitizeFilePath(_sortFile.FilePath, _classification);
-
-            return _classification;
-        }
-
-
-
-        private MediaClassificationTypes DetermineMediaClassificationType(string fileName)
-        {
-            Regex TelevisionRegex = new Regex("");
-            Regex MovieRegex = new Regex("");
-            List<string> allowedFiletypes = new List<string> { ".mkv", ".mp4", ".avi", ".mpeg" };
-
-            if (allowedFiletypes.Contains(fileName.Split('.').Last()))
+            public MediaClassificationTypes MediaTypeClassification(TelevisionEpisode _episode)
             {
-                if (TelevisionRegex.IsMatch(fileName))
+                return _episode.ClassificationType;
+            }
+
+            public MediaClassificationTypes MediaTypeClassification(Movie _movie)
+            {
+                return _movie.ClassificationType;
+            }
+
+            public MediaClassificationTypes MediaTypeClassification(SortFile _sortFile)
+            {
+                if (_sortFile.ClassificationType == MediaClassificationTypes.UNDETERMINED)
                 {
-                    return MediaClassificationTypes.TELEVISION;
+                    return DetermineMediaClassificationType(_sortFile.FilePath);
                 }
-                else if (MovieRegex.IsMatch(fileName))
+                else
                 {
-                    return MediaClassificationTypes.MOVIE;
+                    return _sortFile.ClassificationType;
+                }
+            }
+        #endregion
+
+        #region Section: Media Sanitization Service Methods
+                public string SanitizeFilePath(string _filePath, MediaClassificationTypes _classification)
+                {                    
+                    string sanitizedFileName = _filePath;
+
+                    switch (_classification)
+                    {
+                        case MediaClassificationTypes.TELEVISION:
+                        {
+                            Regex TelevisionRegex = new Regex(@"(?<ShowName>.*)[.][S](?<ShowSeason>\d\d)[E](?<ShowEpisode>\d\d)(?<FileJunk>.*)[.](?<FileExtension>mkv|mp4|avi|mpeg)");
+                            Match NameMatch = TelevisionRegex.Match(sanitizedFileName);
+                        
+                            StringBuilder finalSanitized = new StringBuilder()
+                                .Append(NameMatch.Groups["ShowName"].Value + @".")
+                                .Append('S' + NameMatch.Groups["ShowSeason"].Value)
+                                .Append('E' + NameMatch.Groups["ShowEpisode"].Value)
+                                .Append('.' + NameMatch.Groups["FileExtension"].Value);
+                                
+
+                            return finalSanitized.ToString();
+                        }
+                        case MediaClassificationTypes.MOVIE:
+                        {
+                            //Determine proper movie filename using regex and return that
+                            return sanitizedFileName;
+                        }
+                        default:
+                            return sanitizedFileName;
+                    }
+                }
+            #endregion
+
+            private MediaClassificationTypes DetermineMediaClassificationType(string fileName)
+            {
+                Regex TelevisionRegex = new Regex(@"(?<ShowName>.*)[.][S](?<ShowSeason>\d\d)[E](?<ShowEpisode>\d\d)(?<FileJunk>.*)[.](?<FileExtension>mkv|mp4|avi|mpeg)");
+                Regex MovieRegex = new Regex(@"123change456me");
+                List<string> allowedFiletypes = new List<string> { "mkv", "mp4", "avi", "mpeg" };
+
+                if (allowedFiletypes.Contains(fileName.Split('.').Last()))
+                {
+                    if (TelevisionRegex.IsMatch(fileName))
+                    {
+                        return MediaClassificationTypes.TELEVISION;
+                    }
+                    else if (MovieRegex.IsMatch(fileName))
+                    {
+                        return MediaClassificationTypes.MOVIE;
+                    }
+                    else
+                    {
+                        return MediaClassificationTypes.UNKNOWN;
+                    }
                 }
                 else
                 {
                     return MediaClassificationTypes.UNKNOWN;
                 }
             }
-            else
-            {
-                return MediaClassificationTypes.UNKNOWN;
-            }
-        }
-
-        private string SanitizeFilePath(string FilePath, MediaClassificationTypes _classification)
-        {
-            switch (_classification)
-            {
-                case MediaClassificationTypes.TELEVISION:
-                    {
-                        //Determine proper television episode filename using regex and return that
-                        return FilePath;
-                    }
-                case MediaClassificationTypes.MOVIE:
-                    {
-                        //Determine proper movie filename using regex and return that
-                        return FilePath;
-                    }
-                default:
-                    throw new Exception("Unable to sanitize files classified as undetermined or unknown");
-            }
-        }
 
     }
 }

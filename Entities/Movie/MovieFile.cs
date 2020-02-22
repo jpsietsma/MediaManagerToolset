@@ -1,11 +1,12 @@
 ﻿using Entities.Abstract;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Entities.Movie
 {
-    public class MovieFile : IClassifiedMediaFile
+    public class MovieFile : IClassifiableMediaFile
     {
         public int Id { get; set; }
         public string FileName { get; set; }
@@ -14,6 +15,7 @@ namespace Entities.Movie
         public string PriorityLevel { get; set; }
 
         public Type FileClassification { get; set; }
+        public MediaClassificationTypes ClassificationType { get; set; }
 
         public MovieFile()
         {
