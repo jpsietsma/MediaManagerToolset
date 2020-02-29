@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaToolsetAPI", "MediaToo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaToolsetWebCoreMVC", "MediaToolsetWebCoreMVC\MediaToolsetWebCoreMVC.csproj", "{71AF28B7-016A-4087-ACC0-8786EE052F3F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RemoteSortSyncService", "RemoteSortSyncService\RemoteSortSyncService.csproj", "{0202676C-4C8E-4F48-9037-C0E6AE27BA3E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{3783396D-5A12-4B9D-9520-742E5563F3DA}"
 EndProject
 Global

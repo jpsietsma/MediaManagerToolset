@@ -5,18 +5,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DatabaseSchema\**" />
+    <Content Remove="DatabaseSchema\**" />
+    <EmbeddedResource Remove="DatabaseSchema\**" />
+    <None Remove="DatabaseSchema\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="MailKit" Version="2.5.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1">
+    <PackageReference Include="MailKit" Version="2.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
-    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="17.4.0.43" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="17.4.0.51" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DatabaseSchema\" />
     <Folder Include="wwwroot\images\icons\ShowDetails\" />
   </ItemGroup>
 

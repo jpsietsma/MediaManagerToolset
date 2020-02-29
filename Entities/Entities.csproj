@@ -6,8 +6,11 @@
 
   <ItemGroup>
     <Compile Remove="Data\SDNMediaAPI\**" />
+    <Compile Remove="User\**" />
     <EmbeddedResource Remove="Data\SDNMediaAPI\**" />
+    <EmbeddedResource Remove="User\**" />
     <None Remove="Data\SDNMediaAPI\**" />
+    <None Remove="User\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,10 +20,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="User\" />
   </ItemGroup>
 
 </Project>
