@@ -7,9 +7,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Configuration;
+using Entities.Data.EF_Core;
 using Entities.Data.EF_Core.DatabaseEntities;
 using Entities.Data.TmDB;
-using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Services.LocalLibrary;
 using MediaToolsetWebCoreMVC.Services.MetaData;
 using Microsoft.AspNetCore.Authorization;
@@ -22,14 +22,14 @@ namespace MediaToolsetWebCoreMVC.Controllers
     [Authorize]
     public class TelevisionController : Controller
     {
-        IdentityDatabaseContext DbContext;
+        DatabaseContext DbContext;
         ProgramConfiguration AppSettings;
         IHttpClientFactory HttpClientFactory;
         IMapper AutoMapper;
         IMetaDataApiSvc MetaDataSvc;
         ILocalLibraryService LocalLibSvc;
 
-        public TelevisionController(MvcProgramConfiguration _settings, IdentityDatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc, IHttpClientFactory _clientFactory, ILocalLibraryService _localLibrary)
+        public TelevisionController(MvcProgramConfiguration _settings, DatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc, IHttpClientFactory _clientFactory, ILocalLibraryService _localLibrary)
         {
             AppSettings = _settings.ProgramConfiguration;
             DbContext = _context;

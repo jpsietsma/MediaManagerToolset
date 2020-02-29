@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace MediaToolsetWebCoreMVC.Models.Identity
+namespace Entities.Configuration.Identity.User
 {
     // Add profile data for application users by adding properties to the AuthenticatedUser class
     public class AuthenticatedUser : IdentityUser

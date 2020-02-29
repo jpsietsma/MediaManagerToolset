@@ -1,21 +1,19 @@
-﻿using MediaToolsetWebCoreMVC.Data;
-using MediaToolsetWebCoreMVC.Models.Identity;
+﻿using Entities.Data.EF_Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
+namespace Entities.Configuration.Identity.User
 {
     public class AuthenticatedUserInfo
     {
         private readonly IHttpContextAccessor HttpContextAccessor;
         private readonly UserManager<AuthenticatedUser> UserManager;
         private readonly AuthenticatedUser AuthenticatedUser;
-        private readonly IdentityDatabaseContext DatabaseContext;
+        private readonly DatabaseContext DatabaseContext;
 
         public string Id { get; private set; }
         public List<string> UserRoles { get; private set; }
@@ -28,7 +26,7 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
         public DateTime? RegistrationDate { get; private set; }
         public List<AuthenticatedUserLoginPermission> LoginPermissions { get; private set; }
 
-        public AuthenticatedUserInfo(IHttpContextAccessor _httpContextAccessor, UserManager<AuthenticatedUser> _userManager, IdentityDatabaseContext _identityContext)
+        public AuthenticatedUserInfo(IHttpContextAccessor _httpContextAccessor, UserManager<AuthenticatedUser> _userManager, DatabaseContext _identityContext)
         {            
             HttpContextAccessor = _httpContextAccessor;
             UserManager = _userManager;

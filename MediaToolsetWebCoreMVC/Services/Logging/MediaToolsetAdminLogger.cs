@@ -1,6 +1,6 @@
-﻿using Entities.Logging;
-using MediaToolsetWebCoreMVC.Areas.Identity.Data;
-using MediaToolsetWebCoreMVC.Data;
+﻿using Entities.Configuration.Identity.User;
+using Entities.Data.EF_Core;
+using Entities.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,11 +13,11 @@ namespace MediaToolsetWebCoreMVC.Services.Logging
 {
     public class MediaToolsetAdminLogger : ILogger
     {
-        private readonly IdentityDatabaseContext DatabaseContext;
+        private readonly DatabaseContext DatabaseContext;
         private readonly AuthenticatedUserInfo UserInfo;
         private readonly HttpContext HttpContext;
 
-        public MediaToolsetAdminLogger(IdentityDatabaseContext _databaseContext, AuthenticatedUserInfo _userInfo, IHttpContextAccessor _httpContext)
+        public MediaToolsetAdminLogger(DatabaseContext _databaseContext, AuthenticatedUserInfo _userInfo, IHttpContextAccessor _httpContext)
         {
             DatabaseContext = _databaseContext;
             UserInfo = _userInfo;

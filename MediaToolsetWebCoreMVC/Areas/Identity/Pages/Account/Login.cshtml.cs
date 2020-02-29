@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MediaToolsetWebCoreMVC.Data;
+using Entities.Configuration.Identity.User;
+using Entities.Data.EF_Core;
 
 namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
 {
@@ -22,12 +20,12 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
         private readonly UserManager<AuthenticatedUser> _userManager;
         private readonly SignInManager<AuthenticatedUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly IdentityDatabaseContext DatabaseContext;
+        private readonly DatabaseContext DatabaseContext;
 
         public LoginModel(SignInManager<AuthenticatedUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<AuthenticatedUser> userManager,
-            IdentityDatabaseContext _databaseContext)
+            DatabaseContext _databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;

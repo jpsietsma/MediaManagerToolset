@@ -7,15 +7,14 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using MediaToolsetWebCoreMVC.Data;
-using MediaToolsetWebCoreMVC.Areas.Identity.Data;
+using Entities.Configuration.Identity.User;
+using Entities.Data.EF_Core;
 
 namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
 {
@@ -26,14 +25,14 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account
         private readonly UserManager<AuthenticatedUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IdentityDatabaseContext DatabaseContext;
+        private readonly DatabaseContext DatabaseContext;
 
         public RegisterModel(
             UserManager<AuthenticatedUser> userManager,
             SignInManager<AuthenticatedUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            IdentityDatabaseContext _databaseContext)
+            DatabaseContext _databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MediaToolsetWebCoreMVC.Areas.Identity.Data
+namespace Entities.Configuration.Identity.User
 {
     public class AuthenticatedUserDefaultLoginPermissions
     {

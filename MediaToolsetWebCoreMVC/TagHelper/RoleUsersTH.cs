@@ -1,4 +1,4 @@
-﻿using MediaToolsetWebCoreMVC.Models.Identity;
+﻿using Entities.Configuration.Identity.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;

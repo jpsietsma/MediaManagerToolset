@@ -1,29 +1,26 @@
 ﻿using Entities.Data.EF_Core.DatabaseEntities;
 using Entities.Logging;
-using Entities.Television;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
-using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Entities.Configuration.Identity.User;
 
 namespace Entities.Data.EF_Core
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<AuthenticatedUser>
     {
         //DbSet property declarations
         public virtual DbSet<TelevisionEpisode> TelevisionEpisodes { get; set; }
         public virtual DbSet<TelevisionSeason> TelevisionSeasons { get; set; }
         public virtual DbSet<TelevisionShow> TelevisionShows { get; set; }
-        public virtual DbSet<SortFile> SortFiles { get; set; }
         public virtual DbSet<PriorityShow> PriorityShows { get; set; }
+        public virtual DbSet<SortFile> SortFiles { get; set; }
+        public virtual DbSet<AuthenticatedUserLoginPermission> AspNetUserLoginPermissions { get; set; }
         public virtual DbSet<TelevisionShowAiringSchedule> TelevisionShowAiringSchedules { get; set; }
-        public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }
-
-
+        public virtual DbSet<AdministratorLog> AdministrationMessageLog { get; set; }       
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -69,6 +66,27 @@ namespace Entities.Data.EF_Core
 
             TelevisionShows.FromSqlRaw("[dbo].[AddPriorityLevel] @PriorityLevelName, @PriorityLevelCode", PriorityLevelNameParam, PriorityLevelCodeParam);
             SaveChanges();
+        }
+
+        public List<AdministratorLog> GetAdministrationLogs()
+        {
+            var x = Set<AdministratorLog>().FromSqlRaw("dbo.GetAdminLogs").ToList();
+
+            return x;
+        }
+
+        #region Section: Login Stored Procedures
+        public List<AuthenticatedUserLoginPermission> GetLoginPermissions(string userId)
+        {
+            return AspNetUserLoginPermissions.Where(u => u.UserId == userId).ToList();
+        }
+        #endregion
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            //model building
+
+            base.OnModelCreating(builder);
         }
     }
 }

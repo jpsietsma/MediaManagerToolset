@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using MediaToolsetWebCoreMVC.Models.Identity;
+using Entities.Configuration.Identity.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

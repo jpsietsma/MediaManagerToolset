@@ -1,10 +1,8 @@
 ﻿using Entities.Configuration;
+using Entities.Configuration.Identity.User;
 using Entities.Data.EF_Core;
 using Entities.Data.TmDB;
-using MediaToolsetWebCoreMVC.Areas.Identity.Data;
-using MediaToolsetWebCoreMVC.Data;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,7 +17,7 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
     {
         private readonly IHttpContextAccessor HttpContext;
         private readonly ProgramConfiguration AppSettings;
-        private readonly IdentityDatabaseContext DatabaseContext;
+        private readonly DatabaseContext DatabaseContext;
         private readonly AuthenticatedUserInfo RequestUser;
         private readonly IHttpClientFactory HttpClientFactory;
         //private readonly ILogger Logger;
@@ -28,7 +26,7 @@ namespace MediaToolsetWebCoreMVC.Services.MetaData
         public dynamic Result { get; private set; }
         public string RequestUrl { get; private set; }
 
-        public MetaDataApiSvc(IHttpContextAccessor _httpContext, IHttpClientFactory _webclientFactory, ProgramConfiguration _programSettings, IdentityDatabaseContext _dbContext, AuthenticatedUserInfo _userInfo)
+        public MetaDataApiSvc(IHttpContextAccessor _httpContext, IHttpClientFactory _webclientFactory, ProgramConfiguration _programSettings, DatabaseContext _dbContext, AuthenticatedUserInfo _userInfo)
         {
             HttpContext = _httpContext;
             AppSettings = _programSettings;

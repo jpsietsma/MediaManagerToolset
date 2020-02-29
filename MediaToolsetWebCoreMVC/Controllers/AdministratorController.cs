@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Entities.Data.EF_Core;
 using Entities.Logging;
-using MediaToolsetWebCoreMVC.Areas.Identity.Data;
-using MediaToolsetWebCoreMVC.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +11,9 @@ namespace MediaToolsetWebCoreMVC.Controllers
     [Authorize(Roles = "Administrator, SuperAdmin")]
     public class AdministratorController : Controller
     {
-        private readonly IdentityDatabaseContext DatabaseContext;
+        private readonly DatabaseContext DatabaseContext;
 
-        public AdministratorController(IdentityDatabaseContext _databaseContext)
+        public AdministratorController(DatabaseContext _databaseContext)
         {
             DatabaseContext = _databaseContext;
         }

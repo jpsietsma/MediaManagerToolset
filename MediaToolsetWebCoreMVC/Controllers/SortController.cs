@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities.Configuration;
+using Entities.Data.EF_Core;
 using Entities.Data.EF_Core.DatabaseEntities;
-using MediaToolsetWebCoreMVC.Data;
 using MediaToolsetWebCoreMVC.Services.Sort;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediaToolsetWebCoreMVC.Controllers
 {
     public class SortController : Controller
     {
-        IdentityDatabaseContext DbContext;
+        DatabaseContext DbContext;
         ProgramConfiguration AppSettings;
         ISortClassificationSvc SortSvc;
 
-        public SortController(IdentityDatabaseContext _dbContext, ProgramConfiguration _programSettings, ISortClassificationSvc _sortClassification)
+        public SortController(DatabaseContext _dbContext, ProgramConfiguration _programSettings, ISortClassificationSvc _sortClassification)
         {
             DbContext = _dbContext;
             AppSettings = _programSettings;

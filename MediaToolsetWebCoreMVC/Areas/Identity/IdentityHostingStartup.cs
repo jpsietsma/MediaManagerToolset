@@ -1,6 +1,4 @@
 ﻿using System;
-using MediaToolsetWebCoreMVC.Data;
-using MediaToolsetWebCoreMVC.Models.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -16,12 +14,12 @@ namespace MediaToolsetWebCoreMVC.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             //builder.ConfigureServices((context, services) => {
-            //    services.AddDbContext<IdentityDatabaseContext>(options =>
+            //    services.AddDbContext<DatabaseContext>(options =>
             //        options.UseSqlServer(
-            //            context.Configuration.GetConnectionString("IdentityDatabaseContextConnection")));
+            //            context.Configuration.GetConnectionString("DatabaseContextConnection")));
 
             //    services.AddDefaultIdentity<AuthenticatedUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //        .AddEntityFrameworkStores<IdentityDatabaseContext>();
+            //        .AddEntityFrameworkStores<DatabaseContext>();
             //});
         }
     }

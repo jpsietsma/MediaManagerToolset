@@ -1,27 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using AutoMapper;
 using Entities.Configuration;
 using Entities.Configuration.AutoMapper;
-using MediaToolsetWebCoreMVC.Areas.Identity.Data;
-using MediaToolsetWebCoreMVC.Areas.Identity.Pages.Account.Manage;
+using Entities.Configuration.Identity.User;
+using Entities.Data.EF_Core;
 using MediaToolsetWebCoreMVC.Areas.Identity.Services;
 using MediaToolsetWebCoreMVC.Controllers;
-using MediaToolsetWebCoreMVC.Data;
-using MediaToolsetWebCoreMVC.Models.Identity;
 using MediaToolsetWebCoreMVC.Services.LocalLibrary;
 using MediaToolsetWebCoreMVC.Services.MetaData;
 using MediaToolsetWebCoreMVC.Services.Sort;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,7 +39,7 @@ namespace MediaToolsetWebCoreMVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<IdentityDatabaseContext>(options =>
+            services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(
                     ProgramConfiguration.DatabaseConfiguration.ConnectionString));
             services
@@ -62,7 +56,7 @@ namespace MediaToolsetWebCoreMVC
                 })
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<IdentityDatabaseContext>()
+                .AddEntityFrameworkStores<DatabaseContext>()
                 .AddSignInManager<SignInManager<AuthenticatedUser>>()
                 .AddUserManager<UserManager<AuthenticatedUser>>()
                 .AddDefaultTokenProviders();
@@ -81,7 +75,7 @@ namespace MediaToolsetWebCoreMVC
 
                 services.AddAutoMapper(c => c.AddProfile<AutoMapperProfiles>(), typeof(Startup));
 
-                services.AddScoped<IdentityDatabaseContext>();
+                services.AddScoped<DatabaseContext>();
 
                 services.AddSingleton(ProgramConfiguration);
                 services.AddSingleton(Configuration.Get<MvcProgramConfiguration>());

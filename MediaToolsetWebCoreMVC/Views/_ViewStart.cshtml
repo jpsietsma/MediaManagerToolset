@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using MediaToolsetWebCoreMVC.Models.Identity
+@using Entities.Configuration.Identity.User
 
 @inject SignInManager<AuthenticatedUser> SignInManager
 @inject UserManager<AuthenticatedUser> UserManager
@@ -15,7 +15,7 @@
         Category = "Television",
         text = "Television",
         items = new List<object>()
-        {
+{
             new
             {
                 text = "Show Library",
@@ -40,7 +40,7 @@
         Category = "Sort",
         text = "Sort Queue",
         items = new List<object>()
-        {
+{
             new
             {
                 text = "Current Queue"
@@ -68,7 +68,7 @@
         Category = "Media Lookup",
         text = "Media Lookup",
         items = new List<object>()
-        {
+{
             new
             {
                 text = "Tv Maze"
@@ -91,12 +91,12 @@
         Category = "Media Acquisition",
         text = "Media Acquisition",
         items = new List<object>()
-        {
+{
             new
             {
                 text = "EzTV",
                 items = new List<object>()
-                {
+        {
                     new
                     {
                         text = "Add Download"
@@ -116,7 +116,7 @@
         Category = "Administration",
         text = "Administration",
         items = new List<object>()
-        {
+{
             new
             {
                 text = "Settings"
@@ -131,7 +131,7 @@
                 Category = "Administration",
                 text = "User Management",
                 items = new List<object>()
-                {
+        {
                     new
                     {
                         text = "User Accounts"
