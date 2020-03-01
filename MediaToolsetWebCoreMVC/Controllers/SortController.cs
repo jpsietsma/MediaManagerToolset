@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Entities.Configuration;
 using Entities.Data.EF_Core;
 using Entities.Data.EF_Core.DatabaseEntities;
-using MediaToolsetWebCoreMVC.Services.Sort;
+using Entities.Services.Sort;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediaToolsetWebCoreMVC.Controllers

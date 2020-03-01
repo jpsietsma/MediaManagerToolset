@@ -1,6 +1,6 @@
 ﻿using Entities.Configuration;
 using Entities.Data.EF_Core;
-using MediaToolsetWebCoreMVC.Services.Sort;
+using Entities.Services.Sort;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
