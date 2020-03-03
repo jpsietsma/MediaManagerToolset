@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaToolsetWebCoreMVC", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{3783396D-5A12-4B9D-9520-742E5563F3DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A New Class Library", "A New Class Library\A New Class Library.csproj", "{27AFED79-B090-444A-A44F-6F154A4A30C7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,10 +63,6 @@ Global
 		{3783396D-5A12-4B9D-9520-742E5563F3DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3783396D-5A12-4B9D-9520-742E5563F3DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3783396D-5A12-4B9D-9520-742E5563F3DA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27AFED79-B090-444A-A44F-6F154A4A30C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27AFED79-B090-444A-A44F-6F154A4A30C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27AFED79-B090-444A-A44F-6F154A4A30C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27AFED79-B090-444A-A44F-6F154A4A30C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
