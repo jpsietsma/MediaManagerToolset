@@ -2,14 +2,10 @@
 using Entities.Data.EF_Core;
 using Entities.Logging;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace MediaToolsetWebCoreMVC.Services.Logging
+namespace Entities.Services.Logging
 {
     public class MediaToolsetAdminLogger : ILogger
     {

@@ -3,7 +3,6 @@ using Entities.Configuration.Identity.User;
 using Entities.Data.EF_Core;
 using Entities.Data.TmDB;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

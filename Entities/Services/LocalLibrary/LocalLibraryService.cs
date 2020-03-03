@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace MediaToolsetWebCoreMVC.Services.LocalLibrary
+namespace Entities.Services.LocalLibrary
 {
     public class LocalLibraryService : ILocalLibraryService
     {

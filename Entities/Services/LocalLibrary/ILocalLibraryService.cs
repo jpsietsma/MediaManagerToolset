@@ -1,7 +1,7 @@
 ﻿using Entities.Data.EF_Core.DatabaseEntities;
 using System.Collections.Generic;
 
-namespace MediaToolsetWebCoreMVC.Services.LocalLibrary
+namespace Entities.Services.LocalLibrary
 {
     public interface ILocalLibraryService
     {
