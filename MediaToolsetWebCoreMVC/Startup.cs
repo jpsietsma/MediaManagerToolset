@@ -6,6 +6,7 @@ using Entities.Configuration;
 using Entities.Configuration.AutoMapper;
 using Entities.Configuration.Identity.User;
 using Entities.Data.EF_Core;
+using Entities.Services.Download;
 using Entities.Services.LocalLibrary;
 using Entities.Services.MetaData;
 using Entities.Services.Sort;
@@ -106,6 +107,10 @@ namespace MediaToolsetWebCoreMVC
                     c.BaseAddress = new Uri(@"http://api.tvmaze.com/singlesearch/shows?q=FBI&embed[]=episodes&embed[]=seasons");
                 });
 
+                services.AddHttpClient("EztvShowDownloads", c => {
+                    c.BaseAddress = new Uri(@"https://eztv.io/api/get-torrents?imdb_id=IMDBID");
+                });
+
                 var request = new HttpRequestMessage() { Method = HttpMethod.Get };
                 request.Headers.Add("Accept", "application/json");
 
@@ -125,6 +130,7 @@ namespace MediaToolsetWebCoreMVC
             services.AddScoped<IMetaDataApiSvc, MetaDataApiSvc>();
             services.AddScoped<ILocalLibraryService, LocalLibraryService>();
             services.AddScoped<ISortClassificationSvc, SortClassificationSvc>();
+            services.AddScoped<IDownloadAPISvc, EztvDownloadAPISvc>();
             services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();

@@ -9,7 +9,9 @@ using AutoMapper;
 using Entities.Configuration;
 using Entities.Data.EF_Core;
 using Entities.Data.EF_Core.DatabaseEntities;
+using Entities.Data.EzTv;
 using Entities.Data.TmDB;
+using Entities.Services.Download;
 using Entities.Services.LocalLibrary;
 using Entities.Services.MetaData;
 using Microsoft.AspNetCore.Authorization;
@@ -28,8 +30,9 @@ namespace MediaToolsetWebCoreMVC.Controllers
         IMapper AutoMapper;
         IMetaDataApiSvc MetaDataSvc;
         ILocalLibraryService LocalLibSvc;
+        IDownloadAPISvc DownloadApiSvc;
 
-        public TelevisionController(MvcProgramConfiguration _settings, DatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc, IHttpClientFactory _clientFactory, ILocalLibraryService _localLibrary)
+        public TelevisionController(MvcProgramConfiguration _settings, DatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc, IHttpClientFactory _clientFactory, ILocalLibraryService _localLibrary, IDownloadAPISvc _downloadSvc)
         {
             AppSettings = _settings.ProgramConfiguration;
             DbContext = _context;
@@ -37,6 +40,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
             MetaDataSvc = _apiSvc;
             HttpClientFactory = _clientFactory;
             LocalLibSvc = _localLibrary;
+            DownloadApiSvc = _downloadSvc;
         }
 
         public IActionResult Index()
@@ -71,10 +75,11 @@ namespace MediaToolsetWebCoreMVC.Controllers
         public async Task<IActionResult> ShowDetails(int Id)
         {
             TelevisionShow Show = DbContext.TelevisionShows.Where(x => x.Id == Id).FirstOrDefault();
-            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
+            TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);            
 
-            //If our show doesn't have an IMDB Id set, then set it here and save the changes to the database
+            //If our show doesn't have a MovieDb Id set, then set it here and save the changes to the database
             //This makes for simpler calls later on as we known the value will be present.
+            //This would then allow us to get the Imdb ID which is necessary for missing episode calculation and download display
             if (Show.theMovieDbId == null)
             {
                 Show.theMovieDbId = result.id.ToString();
@@ -82,7 +87,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
                 await DbContext.SaveChangesAsync();
             }
-
+            
             ViewBag.ShowInfo = result;
 
             return PartialView("_ShowDetails", Show);
@@ -92,7 +97,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
         {
             TelevisionShow Show = LocalLibSvc.GetLocalShow(id);
             TheMovieDbShowResult result = await MetaDataSvc.GetShowResultAsync<TheMovieDbShowSearchResults, TheMovieDbShowResult>(Show.ShowName);
-
+            List<EztvResultTorrentDetails> downloadsAvailable = new List<EztvResultTorrentDetails>();
             TheMovieDbExternalIds externals = await MetaDataSvc.GetExternalIds(result.id);
 
             Show.imdbId = externals.imdb_id;
@@ -114,6 +119,21 @@ namespace MediaToolsetWebCoreMVC.Controllers
             {
                 season.TelevisionEpisodes = season.TelevisionEpisodes.OrderBy(e => int.Parse(e.EpisodeNumber)).ToList();
             }
+
+            if (Show.imdbId != null)
+            {
+                downloadsAvailable = await DownloadApiSvc.GetAvailableShowDownloadsAsync(Show.imdbId.Replace("tt", ""));
+            }
+            //else if (Show.theMovieDbId != null)
+            //{
+            //    downloadsAvailable = await DownloadApiSvc.get
+            //}
+            else
+            {
+                downloadsAvailable = await DownloadApiSvc.GetAvailableShowDownloadsByNameAsync(Show.ShowName);
+            }
+
+            ViewBag.ShowDownloads = downloadsAvailable;
 
             ViewBag.ShowInfo = result;
             ViewBag.ShowSeasons = seasons.OrderBy(s => int.Parse(s.SeasonNumber)).ToList();

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Entities.Data.EzTv.EztvResultTorrentDetails>
+
+@{
+    Layout = "~/Views/Shared/_DetailsLayout.cshtml";
+}
+
+<table id="downloads-dt" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th class="th-sm">
+                Title
+            </th>
+            <th class="th-sm">
+                File Name
+            </th>
+            <th class="th-sm">
+                Show Season
+            </th>
+            <th class="th-sm">
+                Show Episode
+            </th>
+            <th class="th-sm">
+                Download Seeds
+            </th>
+            <th class="th-sm">
+                Magnet Link
+            </th>
+            <th class="th-sm">
+                Download Url
+            </th>
+            <th class="th-sm">
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Entities.Data.EzTv.EztvResultTorrentDetails availableDownload in Model)
+        {
+            <tr>
+                <td>@availableDownload.title</td>
+                <td>@availableDownload.filename</td>
+                <td>@availableDownload.season</td>
+                <td>@availableDownload.episode</td>
+                <td>@availableDownload.seeds</td>
+                <td>@availableDownload.magnet_url</td>
+                <td>@availableDownload.torrent_url</td>
+                <td>
+                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

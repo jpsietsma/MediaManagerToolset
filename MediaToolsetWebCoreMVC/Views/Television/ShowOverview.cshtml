@@ -92,6 +92,9 @@
                                     <a class="nav-link" id="@season.SeasonName.Replace(" ", "")-tab" data-toggle="tab" href="#@season.SeasonName.Replace(" ", "")" role="tab" aria-controls="@season.SeasonName.Replace(" ", "")">@season.SeasonName</a>
                                 </li>
                             }
+                            <li class="nav-item">
+                                <a class="nav-link" id="missingEpisodes-tab" data-toggle="tab" href="#missingEpisodes" role="tab" aria-controls="missingEpisodes">Missing Episodes</a>
+                            </li>
                         </ul>
                         <div class="row">
                             @*Show tabs of missing episodes and seasons*@
@@ -128,12 +131,54 @@
                                                             <i class='fas fa-minus' style='font-size:24px;color:red'></i>
                                                         </td>
                                                     </tr>
-                                                 }
+                                                }
                                             </tbody>
                                         </table>
                                     </div>
-                                 }
-
+                                }
+                                <div class="tab-pane fade" id="missingEpisodes" role="tabpanel" aria-labelledby="missingEpisodes-tab">
+                                    <table id="missingEpisodes-dt" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th class="th-sm">
+                                                    Season #
+                                                </th>
+                                                <th class="th-sm">
+                                                    Episode #
+                                                </th>
+                                                <th class="th-sm">
+                                                    Filename
+                                                </th>
+                                                <th class="th-sm">
+                                                    Seeds
+                                                </th>
+                                                <th class="th-sm">
+                                                    Url
+                                                </th>
+                                                <th class="th-sm">
+                                                    Actions
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (Entities.Data.EzTv.EztvResultTorrentDetails availableDownload in ViewBag.ShowDownloads)
+                                            {
+                                            <tr>
+                                                <td>@availableDownload.season</td>
+                                                <td>@availableDownload.episode</td>
+                                                <td>@availableDownload.filename</td>
+                                                <td>@availableDownload.seeds</td>
+                                                <td>
+                                                    <a href="@availableDownload.torrent_url">.torrent File</a>
+                                                </td>
+                                                <td>
+                                                    <i class='fas fa-plus' style='font-size:24px;color:green; padding-right: 20px;' data-toggle="modal" data-target="#AddMissingEpisodeModal"></i>
+                                                </td>
+                                            </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -172,7 +217,7 @@
     </div>
     <!--Modal: modalYT-->
 
-    <!-- Modal Add Missing Episode for automation -->
+    <!-- Modal Add Missing Episode Modal -->
     <div class="modal fade" id="AddMissingEpisodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">

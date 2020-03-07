@@ -16,6 +16,7 @@ namespace Entities.Data.EF_Core.DatabaseEntities
         public string FilePath { get; set; }
         public DateTime DownloadStartDate { get; set; }
         public DateTime? DownloadSynchronized { get; set; }
+        public string DownloadStatus { get; set; }
         public string PriorityLevel { get; set; } = "Unknown";        
         public string SanitizedFileName { get; set; }
         public string SanitizedFilePath { get; set; }
