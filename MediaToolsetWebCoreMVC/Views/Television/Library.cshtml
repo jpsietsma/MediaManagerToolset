@@ -11,6 +11,7 @@
 
     //toolbarItems.Add("ExcelExport");
     //toolbarItems.Add("Add");
+    toolbarItems.Add("Refresh");
     toolbarItems.Add("Search");
 }
 
@@ -64,9 +65,8 @@
         };
     }
 
-    function createEpisodesGrid() {
-
-        // render episodes grid data
+    // render episodes grid data
+    function createEpisodesGrid() {       
         this.dataSource = this.parentDetails.parentRowData.TelevisionEpisodes;
         this.query = new ej.data.Query();
     }
@@ -78,6 +78,7 @@
 <ejs-grid id="Grid"
           allowExcelExport="true"
           allowSelection="true"
+          enableAltRow="true"
           toolbar=toolbarItems
           dataSource="@Model"
           allowSorting="true"
@@ -188,11 +189,6 @@
             </a>
         </span>
     </script>
-
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
     @*Make call to ShowDetails to populate details modal for shows*@
     <script>

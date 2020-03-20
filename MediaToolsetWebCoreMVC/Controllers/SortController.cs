@@ -30,5 +30,12 @@ namespace MediaToolsetWebCoreMVC.Controllers
             return View(_sortFiles);
         }
 
+        public IActionResult EditSortFile(int Id)
+        {
+            SortFile SortFile = DbContext.SortFiles.Where(x => x.Id == Id).FirstOrDefault();                                   
+
+            return PartialView("_EditSortFile", SortFile);
+        }
+
     }
 }

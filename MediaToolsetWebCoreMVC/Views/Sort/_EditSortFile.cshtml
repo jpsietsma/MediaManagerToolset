@@ -1,0 +1,56 @@
+﻿@model Entities.Data.EF_Core.DatabaseEntities.SortFile
+
+@using Syncfusion.EJ2
+
+<div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="Id" name="Id" value=@Model.Id.ToString() disabled type='text' />
+                <span class="e-float-line"></span>
+                <label asp-for="Id" class="e-float-text e-label-top">Sort ID</label>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="FileName" name="fileName" value=@Model.FileName />
+                <span class="e-float-line"></span>
+                <label asp-for="FileName" class="e-float-text e-label-top">File Name</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <ejs-numerictextbox id="FileSize" value=@Model.FileSize format="C2" placeholder="File Size" floatLabelType="Always"></ejs-numerictextbox>
+        </div>
+        <div class="form-group col-md-6">
+            <ejs-datepicker id="DownloadDate" value=@Model.DownloadStartDate placeholder="Download Date" floatLabelType="Always"></ejs-datepicker>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <ejs-dropdownlist id="PriorityLevel" value=@Model.PriorityLevel dataSource="@ViewBag.PriorityLevels" placeholder="Ship Country" floatLabelType="Always" popupHeight="300px">
+                <e-dropdownlist-fields text="Unknown" value="Unknown"></e-dropdownlist-fields>
+                <e-dropdownlist-fields text="Low" value="Low"></e-dropdownlist-fields>
+                <e-dropdownlist-fields text="Medium" value="Medium"></e-dropdownlist-fields>
+                <e-dropdownlist-fields text="High" value="High"></e-dropdownlist-fields>
+                <e-dropdownlist-fields text="Top Priority" value="Top Priority"></e-dropdownlist-fields>
+            </ejs-dropdownlist>
+            <span class="e-float-line"></span>
+            <label asp-for="PriorityLevel" class="e-float-text e-label-top">Priority Level</label>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="e-float-input e-control-wrapper">
+                <input asp-for="DownloadStatus" name="DownloadStatus" value=@Model.DownloadStatus disabled type='text' />
+                <span class="e-float-line"></span>
+                <label asp-for="DownloadStatus" class="e-float-text e-label-top">Download Status</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ejs-scripts></ejs-scripts>

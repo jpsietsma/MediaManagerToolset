@@ -2,91 +2,130 @@
 
 @{
     ViewData["Title"] = "Automation Process | Sort Queue";
+    Layout = "~/Views/Shared/_SortDashboardLayout.cshtml";
+
 }
 
 <h1>Automation Processing Queue</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FileSize)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FilePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DownloadStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DownloadSynchronized)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PriorityLevel)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SanitizedFileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SanitizedFilePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FinalClassificationFilePath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SanitizedShowName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TelevisionShow)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FileSize)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FilePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DownloadStartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DownloadSynchronized)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PriorityLevel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SanitizedFileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SanitizedFilePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinalClassificationFilePath)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SanitizedShowName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TelevisionShow.ShowName)
-            </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Bar Chart Example</div>
+            @*<div class="card-body"><canvas id="myBarChart" width="100%" height="50"></canvas></div>*@
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-header"><i class="fas fa-chart-pie mr-1"></i>Pie Chart Example</div>
+            <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
+            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
+    </div>
+</div>
+
+<div class="control-section">
+
+    <ejs-grid id="Grid" dataSource="@Model" allowPaging="true" allowSorting="true" gridLines="Both" actionComplete="actionComplete">
+        <e-grid-selectionSettings persistSelection="true"></e-grid-selectionSettings>
+        <e-grid-editSettings allowAdding="true" allowDeleting="true" allowEditing="true" allowEditOnDblClick="true" mode="Dialog" template='#editDialogTemplate'></e-grid-editSettings>
+        <e-grid-pagesettings pageSize="20" pageCount="10"></e-grid-pagesettings>
+        <e-grid-columns>
+            <e-grid-column field="Id" isIdentity="true" isPrimaryKey="true" visible="false"></e-grid-column>
+            <e-grid-column field="TelevisionShow.ShowName" allowEditing="false" headerText="Show Name" textAlign="Center" width="100"></e-grid-column>
+            <e-grid-column field="FileName" headerText="File Name" textAlign="Left" headerTextAlign="Center" width="200"></e-grid-column>
+            <e-grid-column field="FileSize" headerText="File Size" allowEditing="false" textAlign="Center" width="50"></e-grid-column>
+            <!-- <e-grid-column field="FilePath" headerText="File Path" textAlign="Center" width="150"></e-grid-column> -->
+            <e-grid-column field="DownloadStartDate" headerText="Downloaded" allowEditing="false" textAlign="Center" format="yyyy-MM-dd hh:mm:ss" width="75"></e-grid-column>
+            <e-grid-column field="DownloadSynchronized" headerText="Last Sync" allowEditing="false" textAlign="Center" format="yyyy-MM-dd hh:mm:ss" width="75"></e-grid-column>
+            <e-grid-column field="PriorityLevel" headerText="Priority" textAlign="Center" allowEditing="true" editType="dropdownedit" width="50"></e-grid-column>
+            <e-grid-column headerText="Actions" textAlign="Center" allowSorting="false" allowEditing="false" width="100"></e-grid-column>
+            <!-- <e-grid-column field="SanitizedFileName" headerText="Classified Filename" textAlign="Center" width="100"></e-grid-column> -->
+            <!-- <e-grid-column field="SanitizedFilePath" headerText="Classified Filepath" textAlign="Center" width="100"></e-grid-column> -->
+        </e-grid-columns>
+    </ejs-grid>
+
+</div>
+
+<script id='editDialogTemplate' type="text/x-template">
+    <div id="editDialogTemp">
+        <div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <div class="e-float-input e-control-wrapper">
+                        <input asp-for="Id" name="Id" value="${Id}" disabled type='text' />
+                        <span class="e-float-line"></span>
+                        <label asp-for="Id" class="e-float-text e-label-top">Sort ID</label>
+                    </div>
+                </div>
+                <div class="form-group col-md-2">
+                    <div class="e-float-input e-control-wrapper">
+                        <input asp-for="FileName" name="fileName" value="${FileName}" />
+                        <span class="e-float-line"></span>
+                        <label asp-for="FileName" class="e-float-text e-label-top">File Name</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <ejs-numerictextbox id="FileSize" value="${FileSize}" format="C2" placeholder="File Size" floatLabelType="Always"></ejs-numerictextbox>
+                </div>
+                <div class="form-group col-md-2">
+                    <ejs-datepicker id="DownloadDate" value="${DownloadStartDate}" placeholder="Download Date" floatLabelType="Always"></ejs-datepicker>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <ejs-dropdownlist id="PriorityLevel" value="${PriorityLevel}" placeholder="Priority Level..." floatLabelType="Always" popupHeight="300px">
+                        <e-dropdownlist-fields text="Unknown" value="Unknown"></e-dropdownlist-fields>
+                        <e-dropdownlist-fields text="Low" value="Low"></e-dropdownlist-fields>
+                        <e-dropdownlist-fields text="Medium" value="Medium"></e-dropdownlist-fields>
+                        <e-dropdownlist-fields text="High" value="High"></e-dropdownlist-fields>
+                        <e-dropdownlist-fields text="Top Priority" value="Top Priority"></e-dropdownlist-fields>
+                    </ejs-dropdownlist>
+                    <span class="e-float-line"></span>
+                    <label asp-for="PriorityLevel" class="e-float-text e-label-top">Priority Level</label>
+                </div>
+                <div class="form-group col-md-3">
+
+                    <span class="e-float-line"></span>
+                    <label asp-for="ClassificationType" class="e-float-text e-label-top">ClassificationType</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="e-float-input e-control-wrapper">
+                        <input asp-for="DownloadStatus" name="DownloadStatus" value="${DownloadStatus}" disabled type='text' />
+                        <span class="e-float-line"></span>
+                        <label asp-for="DownloadStatus" class="e-float-text e-label-top">Download Status</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script>
+    function actionComplete(args) {
+        if ((args.requestType === 'beginEdit')) {
+            var dialog = args.dialog;
+            dialog.height = 600;
+            dialog.width = 850;
+            // change the header of the dialog
+            dialog.header = 'Sort Details: ' + args.rowData['FileName'];
+        }
+    }
+</script>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="~/assets/demo/chart-area-demo.js"></script>
+<script src="~/assets/demo/chart-bar-demo.js"></script>
+<script src="~/assets/demo/chart-pie-demo.js"></script>
