@@ -6,20 +6,22 @@ namespace Entities.Abstract
 {
     public abstract class QueryStringURLParameters
 	{
-		const int maxPageSize = 50;
-		public int PageNumber { get; set; } = 1;
+		#region Section: Pagination Query Parameters
+			const int maxPageSize = 50;
+			public int PageNumber { get; set; } = 1;
 
-		private int _pageSize = 10;
-		public int PageSize
-		{
-			get
+			private int _pageSize = 10;
+			public int PageSize
 			{
-				return _pageSize;
+				get
+				{
+					return _pageSize;
+				}
+				set
+				{
+					_pageSize = (value > maxPageSize) ? maxPageSize : value;
+				}
 			}
-			set
-			{
-				_pageSize = (value > maxPageSize) ? maxPageSize : value;
-			}
-		}
-	}
+        #endregion
+    }
 }

@@ -39,34 +39,24 @@ namespace MediaToolsetAPI.Controllers
             if (DbContext.TelevisionShows.Count() == 0)
             {
                 ScanUpdateTelevisionLibraryDatabase(true);
-            }            
+            }                     
 
-           dynamic metadata = GetPagedResults(_gridParams);           
+            var results = GetPagedResults(_gridParams);
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            Response.Headers.Add("X-Pagination", results.GetPagedMetaData());
 
-            return _dataList;                        
+            return results;                        
         }                     
 
-        public dynamic GetPagedResults(TelevisionLibraryGridParameters _gridParams)
+        public PagedList<TelevisionShow> GetPagedResults(TelevisionLibraryGridParameters _gridParams)
         {
-            _dataList = PagedList<TelevisionShow>
+            return PagedList<TelevisionShow>
                             .ToPagedList(DbContext.TelevisionShows
                                 .OrderBy(x => x.ShowName)                
                                 .Include(seasons => seasons.TelevisionSeasons)
                                     .ThenInclude(episodes => episodes.TelevisionEpisodes),
                             _gridParams.PageNumber,
                             _gridParams.PageSize);
-            
-            return new
-                    {
-                        _dataList.TotalCount,
-                        _dataList.PageSize,
-                        _dataList.CurrentPage,
-                        _dataList.TotalPages,
-                        _dataList.HasNext,
-                        _dataList.HasPrevious
-                    };
         }
                
         public void ScanUpdateTelevisionLibraryDatabase(bool _replaceAll = false)

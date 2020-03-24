@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,19 @@ namespace Entities.Custom
 			var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
 			return new PagedList<T>(items, count, pageNumber, pageSize);
+		}
+
+		public string GetPagedMetaData()
+		{
+			return JsonConvert.SerializeObject(new
+			{
+				TotalCount,
+				PageSize,
+				CurrentPage,
+				TotalPages,
+				HasNext,
+				HasPrevious
+			});
 		}
 	}
 }
