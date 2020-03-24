@@ -11,6 +11,7 @@ using Entities.Television.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Entities.Configuration.Grid;
+using Entities.Custom;
 
 namespace MediaToolsetAPI.Controllers
 {
@@ -18,7 +19,7 @@ namespace MediaToolsetAPI.Controllers
     [ApiController]
     public class TelevisionLibraryController : ControllerBase
     {
-        List<TelevisionShow> _dataList;
+        PagedList<TelevisionShow> _dataList;
         ProgramConfiguration AppSettings;
         DatabaseContext DbContext;
         IMapper AutoMapper;
@@ -29,65 +30,43 @@ namespace MediaToolsetAPI.Controllers
             AppSettings = _programSettings;
             DbContext = _context;
             AutoMapper = _mapper;
-
-            _dataList = new List<TelevisionShow>();
         }
 
         // GET: TV/TelevisionLibrary
         [HttpGet]
-        public List<TelevisionShow> Get([FromQuery] TelevisionLibraryGridParameters _gridParams)
+        public PagedList<TelevisionShow> Get([FromQuery] TelevisionLibraryGridParameters _gridParams)
         {
             if (DbContext.TelevisionShows.Count() == 0)
             {
                 ScanUpdateTelevisionLibraryDatabase(true);
             }            
 
-            PopulateDataList(_gridParams);
+           dynamic metadata = GetPagedResults(_gridParams);           
+
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
             return _dataList;                        
-        }
+        }                     
 
-        //// GET: TV/TelevisionLibrary/5
-        //[HttpGet("{id}", Name = "Get")]
-        //public string Get(int id)
-        //{
-        //    if (id == 0)
-        //    {
-        //        if (DbContext.TelevisionShows.Count() == 0)
-        //        {
-        //            ScanUpdateTelevisionLibraryDatabase(true);
-        //        }
-
-        //        PopulateDataList();
-
-        //        var data = _dataList;
-        //        data = data.OrderBy(x => x.ShowName).ToList();
-
-        //        return JsonConvert.SerializeObject(_dataList);
-        //    }
-        //    else
-        //    {
-        //        return "null";
-        //    }           
-        //}
-      
-
-        public void PopulateDataList(TelevisionLibraryGridParameters _gridParams)
+        public dynamic GetPagedResults(TelevisionLibraryGridParameters _gridParams)
         {
-            _dataList.Clear();
-
-            var shows = DbContext.TelevisionShows
-                .OrderBy(x => x.ShowName)
-                .Skip((_gridParams.PageNumber - 1) * _gridParams.PageSize)
-                .Take(_gridParams.PageSize)
-                .Include(seasons => seasons.TelevisionSeasons)
-                    .ThenInclude(episodes => episodes.TelevisionEpisodes)
-                .ToList();
-
-            foreach (TelevisionShow _show in shows)
-            {                
-                _dataList.Add(_show);
-            }                                       
+            _dataList = PagedList<TelevisionShow>
+                            .ToPagedList(DbContext.TelevisionShows
+                                .OrderBy(x => x.ShowName)                
+                                .Include(seasons => seasons.TelevisionSeasons)
+                                    .ThenInclude(episodes => episodes.TelevisionEpisodes),
+                            _gridParams.PageNumber,
+                            _gridParams.PageSize);
+            
+            return new
+                    {
+                        _dataList.TotalCount,
+                        _dataList.PageSize,
+                        _dataList.CurrentPage,
+                        _dataList.TotalPages,
+                        _dataList.HasNext,
+                        _dataList.HasPrevious
+                    };
         }
                
         public void ScanUpdateTelevisionLibraryDatabase(bool _replaceAll = false)
