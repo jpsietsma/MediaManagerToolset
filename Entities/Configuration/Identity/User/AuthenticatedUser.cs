@@ -13,5 +13,6 @@ namespace Entities.Configuration.Identity.User
         public string LastName { get; set; }
         public DateTime? RegistrationDate { get; set; }
         public bool IsAdminApproved { get; set; }
+        public string ProfileImage { get; set; }
     }
 }

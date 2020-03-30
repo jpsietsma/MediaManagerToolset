@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Entities.Configuration.Identity.User;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MediaToolsetWebCoreMVC.Controllers
 {
-    [AllowAnonymous]
     public class UserController : Controller
     {
         private readonly AuthenticatedUserInfo UserInfo;
@@ -26,10 +28,10 @@ namespace MediaToolsetWebCoreMVC.Controllers
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles = "SuperAdmin, Administrator, UserModerator, ContentModerator, ContentViewer")]
         public IActionResult Profile()
         {
-            return View(UserInfo);
+            return View();
         }
 
         [Authorize]
@@ -52,5 +54,24 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [Authorize]
+        public async Task<IActionResult> UploadProfilePhoto(IFormFile file)
+        {
+            await Task.Run(() => {
+
+                using (var reader = new StreamReader(file.OpenReadStream()))
+                {
+                    var fileContent = reader.ReadToEnd();
+                    var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
+                    var fileName = parsedContentDisposition.FileName;
+                }
+
+            });
+
+            return View("Profile", "User");
+
+        }
+
     }
 }

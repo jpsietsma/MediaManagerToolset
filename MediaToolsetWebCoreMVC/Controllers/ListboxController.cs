@@ -73,29 +73,30 @@ namespace MediaToolsetWebCoreMVC.Controllers
                         text = "Sort Queue",
                         items = new List<object>()
                         {
-                        new
-                        {
-                            text = "Current Queue",
-                            url = "/Sort"
-                        },
+                            new
+                            {
+                                text = "Dashboard",
+                                url = "/Sort/Dashboard"
+                            },
 
-                        new
-                        {
-                            text = "ReScan Contents",
-                            url = "/Sort/RescanContents"
-                        },
+                            new
+                            {
+                                text = "Current Queue",
+                                url = "/Sort"
+                            },
 
-                        new
-                        {
-                            text = "Classify Contents"
-                        },
+                            new
+                            {
+                                text = "ReScan Contents",
+                                url = "/Sort/RescanContents"
+                            },
 
-                        new
-                        {
-                            text = "Admin Dashboard"
+                            new
+                            {
+                                text = "Classify Contents"
+                            }
                         }
-                    }
-                });
+                    });
 
                 NavMenuItems.Add(new
                 {

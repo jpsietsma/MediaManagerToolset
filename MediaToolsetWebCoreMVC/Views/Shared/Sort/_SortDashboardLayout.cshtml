@@ -1,0 +1,114 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Entities.Configuration.Identity.User
+
+@using MediaToolsetWebCoreMVC.Controllers
+
+@inject SignInManager<AuthenticatedUser> SignInManager
+@inject UserManager<AuthenticatedUser> UserManager
+@inject ListboxController ListboxDataService
+@inject AuthenticatedUserInfo UserDetails
+
+<!doctype html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>@ViewData["Title"] - MediaToolsetCoreMVC</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon ============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/AdminPro/img/favicon.ico">
+
+    <!-- Google Fonts ============================================ -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i,800" rel="stylesheet">
+
+    <!-- Bootstrap CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/bootstrap.min.css">
+
+    <!-- Bootstrap CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/font-awesome.min.css">
+
+    <!-- adminpro icon CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/adminpro-custon-icon.css">
+
+    <!-- meanmenu icon CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/meanmenu.min.css">
+
+    <!-- mCustomScrollbar CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/jquery.mCustomScrollbar.min.css">
+
+    <!-- animate CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/animate.css">
+
+    <!-- normalize CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/normalize.css">
+
+    <!-- tabs CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/tabs.css">
+
+    <!-- style CSS  ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/style.css">
+
+    <!-- responsive CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/responsive.css">
+
+    <!-- Syncfusion Essential JS 2 Styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+
+    <!-- modernizr JS ============================================ -->
+    <script src="~/AdminPro/js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <!-- Syncfusion Essential JS 2 Scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+</head>
+    <body class="darklayout">
+    <!-- Header top area start-->
+        <div class="wrapper-pro">
+            <div class="left-sidebar-pro">
+                <partial name="~/Views/Shared/Sort/_SortLeftNav.cshtml" model="@UserDetails" />
+            </div>
+            <!-- Header top area start-->
+            <div class="content-inner-all">
+                <div class="header-top-area">
+                    <div class="fixed-header-top">
+                        <div class="container-fluid">
+                            <partial name="~/Views/Shared/Sort/_SortTopNav.cshtml" model="@UserDetails" />
+                        </div>
+                    </div>
+                </div>
+                <!-- Header top area end-->
+                @RenderBody();
+                <!-- Footer Start-->
+                <div class="footer-copyright-area" style="vertical-align: bottom;">
+                    <partial name="~/Views/Shared/Sort/_SortFooter.cshtml" model="@UserDetails" />
+                </div>
+                <!-- Footer End-->       
+            </div>
+
+        </div>
+
+        <!-- jquery ============================================ -->
+        <script src="~/AdminPro/js/vendor/jquery-1.11.3.min.js"></script>
+
+        <!-- bootstrap JS ============================================ -->
+        <script src="~/AdminPro/js/bootstrap.min.js"></script>
+
+        <!-- meanmenu JS ============================================ -->
+        <script src="~/AdminPro/js/jquery.meanmenu.js"></script>
+
+        <!-- mCustomScrollbar JS  ============================================ -->
+        <script src="~/AdminPro/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+        <!-- sticky JS ============================================ -->
+        <script src="~/AdminPro/js/jquery.sticky.js"></script>
+
+        <!-- scrollUp JS ============================================ -->
+        <script src="~/AdminPro/js/jquery.scrollUp.min.js"></script>
+
+        <!-- main JS ============================================ -->
+        <script src="~/AdminPro/js/main.js"></script>
+
+        <!-- Syncfusion Essential JS 2 ScriptManager -->
+        <ejs-scripts></ejs-scripts>
+    </body>
+</html>

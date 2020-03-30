@@ -3,68 +3,62 @@
 
 @{
     ViewData["Title"] = "Please Log in";
+    Layout = null;
 }
-<div class="container" style="width: 300px; padding-top: 150px;">
-    <div class="row">
-        <div class="col-md-auto" style="margin: 0 auto 0;">
-            <section>
-                <form id="account" method="post">
-                    <h4>Please log in to continue.</h4>
-                    <hr />
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="Input.Email"></label>
-                        <input asp-for="Input.Email" class="form-control" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Input.Password"></label>
-                        <input asp-for="Input.Password" class="form-control" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox">
-                            <label asp-for="Input.RememberMe">
-                                <input asp-for="Input.RememberMe" />
-                                @Html.DisplayNameFor(m => m.Input.RememberMe)
-                            </label>
+<link href="~/css/styles.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
+
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header"><h3 class="text-center font-weight-light my-4">Please Login to Continue...</h3></div>
+                            <div class="card-body">
+                                <form id="account" method="post">
+                                    <div class="form-group">
+                                        <label class="small mb-1" asp-for="Input.Email"></label>
+                                        <input asp-for="Input.Email" class="form-control py-4" id="inputEmailAddress" type="email" placeholder="Enter email address" />
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="small mb-1" asp-for="Input.Password"></label>
+                                        <input asp-for="Input.Password" id="inputPassword" type="password" placeholder="Enter password" class="form-control py-4" />
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control checkbox">
+                                            <label class="custom-control-label" asp-for="Input.RememberMe">
+                                                <input class="custom-control-input" asp-for="Input.RememberMe" />
+                                                @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                        <a class="small" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                                        <button type="submit" class="btn btn-primary">Log in</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer text-center">
+                                <div class="small">
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Need an Account? Request one!</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Log in</button>
-                    </div>
-                    <div class="form-group">
-                        <p>
-                            <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                        </p>
-                        <p>
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                        </p>
-                    </div>
-                </form>
-            </section>
-        </div>
-        @if ((Model.ExternalLogins?.Count ?? 0) > 0)
-        {
-            <div class="col-md-4 col-md-offset-2">
-                <section>
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                </section>
+                </div>
             </div>
-        }
+        </main>
     </div>
 </div>
 
- 
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="~/js/scripts.js"></script>
+
     <partial name="_ValidationScriptsPartial" />
 }

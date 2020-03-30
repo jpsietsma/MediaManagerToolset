@@ -22,6 +22,7 @@ namespace Entities.Configuration.Identity.User
         public string PhoneNumber { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
+        public string ProfileImage { get; private set; }
 
         public DateTime? RegistrationDate { get; private set; }
         public List<AuthenticatedUserLoginPermission> LoginPermissions { get; private set; }
@@ -52,6 +53,7 @@ namespace Entities.Configuration.Identity.User
             RegistrationDate = AuthenticatedUser.RegistrationDate;
             UserRoles = UserManager.GetRolesAsync(AuthenticatedUser).Result.ToList();
             LoginPermissions = DatabaseContext.GetLoginPermissions(Id);
+            ProfileImage = AuthenticatedUser.ProfileImage;
         }
 
         public bool IsRoleMember(string roleName)

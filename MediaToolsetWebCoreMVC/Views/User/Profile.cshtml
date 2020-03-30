@@ -1,120 +1,62 @@
-﻿@model Entities.Configuration.Identity.User.AuthenticatedUserInfo
-@{
-    ViewData["Title"] = Model.FirstName + "'s User Profile";
+﻿@{
+    Layout = "~/Views/Shared/Sort/_SortDashboardLayout.cshtml";
+    ViewData["Title"] = "User Profile";
+
 }
 
-<div class="container text-center">
-    <div class="row">
-        <div class="col-sm-3 well">
-            <div class="well">
-                <p><a href="#">My Profile</a></p>
-                <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-            </div>
-            <div class="well">
-                <p><a href="#">Interests</a></p>
-                <p>
-                    <span class="label label-default">News</span>
-                    <span class="label label-primary">W3Schools</span>
-                    <span class="label label-success">Labels</span>
-                    <span class="label label-info">Football</span>
-                    <span class="label label-warning">Gaming</span>
-                    <span class="label label-danger">Friends</span>
-                </p>
-            </div>
-            <div class="alert alert-success fade in">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                <p><strong>Ey!</strong></p>
-                People are looking at your profile. Find out who.
-            </div>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-            <p><a href="#">Link</a></p>
-        </div>
-        <div class="col-sm-7">
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default text-left">
-                        <div class="panel-body">
-                            <p contenteditable="true">Status: Feeling Blue</p>
-                            <button type="button" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-thumbs-up"></span> Like
-                            </button>
+<div class="admintab-area">
+    <div class="container-fluid">                    
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="admintab-wrap mg-b-40">
+                    <ul class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
+                        <li class="active">
+                            <a data-toggle="tab" href="#Account"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>Account</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#ProfileInfo"><span class="adminpro-icon adminpro-analytics-arrow tab-custon-ic"></span>Profile Info</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#Roles"><span class="adminpro-icon adminpro-analytics-arrow tab-custon-ic"></span>Roles</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#Permissions"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>Permissions</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#Notifications"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>Notifications</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#UserSettings"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>Settings</a>
+                        </li>
+                        <li>
+                            <a data-toggle="tab" href="#DeleteAccount"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic warning"></span>Delete</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="Account" class="tab-pane in active animated fadeIn custon-tab-style1">
+                            <p>account tab - wee woo</p>
+                        </div>
+                        <div id="ProfileInfo" class="tab-pane animated fadeIn custon-tab-style1">
+                            <p>profile info tab - wee woo</p>
+                        </div>
+                        <div id="Roles" class="tab-pane animated fadeIn custon-tab-style1">
+                            <p>roles tab - wee woo</p>
+                        </div>
+                        <div id="Permissions" class="tab-pane animated fadeIn custon-tab-style1">
+                            <p>permissions tab - wee woo</p>
+                        </div>
+                        <div id="Notifications" class="tab-pane animated fadeIn custon-tab-style1">
+                            <p>notifications tab - wee woo</p>
+                        </div>
+                        <div id="UserSettings" class="tab-pane animated fadeIn custon-tab-style1">
+                            <p>settings tab - wee woo</p>
+                        </div>
+                        <div id="DeleteAccount" class="tab-pane animated fadeIn custon-tab-style1">
+                            <p>delete tab - wee woo</p>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>John</p>
-                        <img src="bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Bo</p>
-                        <img src="bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Jane</p>
-                        <img src="bandmember.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="well">
-                        <p>Anja</p>
-                        <img src="bird.jpg" class="img-circle" height="55" width="55" alt="Avatar">
-                    </div>
-                </div>
-                <div class="col-sm-9">
-                    <div class="well">
-                        <p>Just Forgot that I had to mention something about someone to someone about how I forgot something, but now I forgot it. Ahh, forget it! Or wait. I remember.... no I don't.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2 well">
-            <div class="thumbnail">
-                <p>Upcoming Events:</p>
-                <img src="paris.jpg" alt="Paris" width="400" height="300">
-                <p><strong>Paris</strong></p>
-                <p>Fri. 27 November 2015</p>
-                <button class="btn btn-primary">Info</button>
-            </div>
-            <div class="well">
-                <p>ADS</p>
-            </div>
-            <div class="well">
-                <p>ADS</p>
-            </div>
+            </div>                        
         </div>
     </div>
 </div>
-
-
-
