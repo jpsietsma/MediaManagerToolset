@@ -4,17 +4,19 @@
 
 }
 
+@inject RoleManager<IdentityRole> RoleManager
+
 <div class="admintab-area">
-    <div class="container-fluid">                    
+    <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <div class="admintab-wrap mg-b-40">
                     <ul class="nav nav-tabs custom-menu-wrap custon-tab-menu-style1">
                         <li class="active">
-                            <a data-toggle="tab" href="#Account"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>Account</a>
+                            <a data-toggle="tab" href="#ProfileInfo"><span class="adminpro-icon adminpro-analytics-arrow tab-custon-ic"></span>Profile Info</a>
                         </li>
                         <li>
-                            <a data-toggle="tab" href="#ProfileInfo"><span class="adminpro-icon adminpro-analytics-arrow tab-custon-ic"></span>Profile Info</a>
+                            <a data-toggle="tab" href="#Account"><span class="adminpro-icon adminpro-analytics tab-custon-ic"></span>Account</a>
                         </li>
                         <li>
                             <a data-toggle="tab" href="#Roles"><span class="adminpro-icon adminpro-analytics-arrow tab-custon-ic"></span>Roles</a>
@@ -29,24 +31,28 @@
                             <a data-toggle="tab" href="#UserSettings"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic"></span>Settings</a>
                         </li>
                         <li>
-                            <a data-toggle="tab" href="#DeleteAccount"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic warning"></span>Delete</a>
+                            <a data-toggle="tab" href="#DeleteAccount" class="btn-outline-danger"><span class="adminpro-icon adminpro-analytics-bridge tab-custon-ic warning"></span>Delete</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div id="Account" class="tab-pane in active animated fadeIn custon-tab-style1">
-                            <p>account tab - wee woo</p>
-                        </div>
                         <div id="ProfileInfo" class="tab-pane animated fadeIn custon-tab-style1">
                             <p>profile info tab - wee woo</p>
                         </div>
+                        <div id="Account" class="tab-pane in active animated fadeIn custon-tab-style1">
+                            <p>account tab - wee woo</p>
+                        </div>
                         <div id="Roles" class="tab-pane animated fadeIn custon-tab-style1">
-                            <p>roles tab - wee woo</p>
+                            <p id="Roles_Content">
+                                <partial name="~/Views/Role/Index.cshtml" model="@RoleManager.Roles" />
+                            </p>
                         </div>
                         <div id="Permissions" class="tab-pane animated fadeIn custon-tab-style1">
                             <p>permissions tab - wee woo</p>
                         </div>
                         <div id="Notifications" class="tab-pane animated fadeIn custon-tab-style1">
-                            <p>notifications tab - wee woo</p>
+                            <p>
+                                notifications tab - wee woo
+                            </p>
                         </div>
                         <div id="UserSettings" class="tab-pane animated fadeIn custon-tab-style1">
                             <p>settings tab - wee woo</p>
@@ -56,7 +62,7 @@
                         </div>
                     </div>
                 </div>
-            </div>                        
+            </div>
         </div>
     </div>
 </div>
