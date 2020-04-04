@@ -43,6 +43,16 @@
     <!-- normalize CSS ============================================ -->
     <link rel="stylesheet" href="~/AdminPro/css/normalize.css">
 
+    <!-- normalize CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/data-table/bootstrap-table.css">
+    <link rel="stylesheet" href="~/AdminPro/css/data-table/bootstrap-editable.css">
+    
+    <!-- normalize CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/normalize.css">
+    
+    <!-- charts CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/c3.min.css">
+
     <!-- tabs CSS ============================================ -->
     <link rel="stylesheet" href="~/AdminPro/css/tabs.css">
 
@@ -82,7 +92,10 @@
                 <div class="footer-copyright-area" style="vertical-align: bottom;">
                     <partial name="~/Views/Shared/Sort/_SortFooter.cshtml" model="@UserDetails" />
                 </div>
-                <!-- Footer End-->       
+                <!-- Footer End-->
+                <!-- Automation Chatbox Begin -->
+                    <partial name="~/Views/Shared/Automation/_AutomationChat.cshtml" />
+                <!-- Automation Chatbox End -->
             </div>
 
         </div>
@@ -105,10 +118,41 @@
         <!-- scrollUp JS ============================================ -->
         <script src="~/AdminPro/js/jquery.scrollUp.min.js"></script>
 
-        <!-- main JS ============================================ -->
-        <script src="~/AdminPro/js/main.js"></script>
+        <!-- counterup JS ============================================ -->
+        <script src="~/AdminPro/js/counterup/jquery.counterup.min.js"></script>
+        <script src="~/AdminPro/js/counterup/waypoints.min.js"></script>
+    
+        <!-- peity JS ============================================ -->
+        <script src="~/AdminPro/js/peity/jquery.peity.min.js"></script>
+        <script src="~/AdminPro/js/peity/peity-active.js"></script>
+        <!-- sparkline JS
+        ============================================ -->
+        <script src="~/AdminPro/js/sparkline/jquery.sparkline.min.js"></script>
+        <script src="~/AdminPro/js/sparkline/sparkline-active.js"></script>
+    
+        <!-- map JS ============================================ -->
+        <script src="~/AdminPro/js/map/raphael.min.js"></script>
+        <script src="~/AdminPro/js/map/jquery.mapael.js"></script>
+        <script src="~/AdminPro/js/map/france_departments.js"></script>
+        <script src="~/AdminPro/js/map/world_countries.js"></script>
+        <script src="~/AdminPro/js/map/usa_states.js"></script>
+        <script src="~/AdminPro/js/map/map-active.js"></script>
+        
+        <!-- data table JS ============================================ -->
+        <script src="~/AdminPro/js/data-table/bootstrap-table.js"></script>
+        <script src="~/AdminPro/js/data-table/tableExport.js"></script>
+        <script src="~/AdminPro/js/data-table/data-table-active.js"></script>
+        <script src="~/AdminPro/js/data-table/bootstrap-table-editable.js"></script>
+        <script src="~/AdminPro/js/data-table/bootstrap-editable.js"></script>
+        <script src="~/AdminPro/js/data-table/bootstrap-table-resizable.js"></script>
+        <script src="~/AdminPro/js/data-table/colResizable-1.5.source.js"></script>
+        <script src="~/AdminPro/js/data-table/bootstrap-table-export.js"></script>
 
         <!-- Syncfusion Essential JS 2 ScriptManager -->
         <ejs-scripts></ejs-scripts>
+
+        <!-- main JS  ============================================ -->
+        <script src="~/AdminPro/js/main.js"></script>
+
     </body>
 </html>
