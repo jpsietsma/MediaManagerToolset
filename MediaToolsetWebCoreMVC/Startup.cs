@@ -2,9 +2,11 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using AutoMapper;
+using Entities.Abstract;
 using Entities.Configuration;
 using Entities.Configuration.AutoMapper;
 using Entities.Configuration.Identity.User;
+using Entities.Configuration.Services;
 using Entities.Data.EF_Core;
 using Entities.Services.Download;
 using Entities.Services.LocalLibrary;
@@ -131,6 +133,8 @@ namespace MediaToolsetWebCoreMVC
             services.AddScoped<ILocalLibraryService, LocalLibraryService>();
             services.AddScoped<ISortClassificationSvc, SortClassificationSvc>();
             services.AddScoped<IDownloadAPISvc, EztvDownloadAPISvc>();
+            services.AddScoped<ILibraryStorageSvc, LibraryStorageSvc>();
+
             services.AddCors();
             services.AddControllersWithViews();
             services.AddRazorPages();

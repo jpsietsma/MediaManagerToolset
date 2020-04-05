@@ -46,12 +46,15 @@
     <!-- normalize CSS ============================================ -->
     <link rel="stylesheet" href="~/AdminPro/css/data-table/bootstrap-table.css">
     <link rel="stylesheet" href="~/AdminPro/css/data-table/bootstrap-editable.css">
-    
+
     <!-- normalize CSS ============================================ -->
     <link rel="stylesheet" href="~/AdminPro/css/normalize.css">
-    
+
     <!-- charts CSS ============================================ -->
     <link rel="stylesheet" href="~/AdminPro/css/c3.min.css">
+
+    <!-- charts CSS ============================================ -->
+    <link rel="stylesheet" href="~/AdminPro/css/charts.css">
 
     <!-- tabs CSS ============================================ -->
     <link rel="stylesheet" href="~/AdminPro/css/tabs.css">
@@ -71,88 +74,92 @@
     <!-- Syncfusion Essential JS 2 Scripts -->
     <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 </head>
-    <body class="darklayout">
+<body class="darklayout">
     <!-- Header top area start-->
-        <div class="wrapper-pro">
-            <div class="left-sidebar-pro">              
-                <partial name="~/Views/Shared/Sort/_SortLeftNav.cshtml" model="@UserDetails" />
-            </div>
-            <!-- Header top area start-->
-            <div class="content-inner-all">
-                <div class="header-top-area">
-                    <div class="fixed-header-top">
-                        <div class="container-fluid">
-                            <partial name="~/Views/Shared/Sort/_SortTopNav.cshtml" model="@UserDetails" />
-                        </div>
+    <div class="wrapper-pro">
+        <div class="left-sidebar-pro">
+            <partial name="~/Views/Shared/Sort/_SortLeftNav.cshtml" model="@UserDetails" />
+        </div>
+        <!-- Header top area start-->
+        <div class="content-inner-all">
+            <div class="header-top-area">
+                <div class="fixed-header-top">
+                    <div class="container-fluid">
+                        <partial name="~/Views/Shared/Sort/_SortTopNav.cshtml" model="@UserDetails" />
                     </div>
                 </div>
-                <!-- Header top area end-->
-                @RenderBody();
-                <!-- Footer Start-->
-                <div class="footer-copyright-area" style="vertical-align: bottom;">
-                    <partial name="~/Views/Shared/Sort/_SortFooter.cshtml" model="@UserDetails" />
-                </div>
-                <!-- Footer End-->
-                <!-- Automation Chatbox Begin -->
-                    <partial name="~/Views/Shared/Automation/_AutomationChat.cshtml" />
-                <!-- Automation Chatbox End -->
             </div>
-
+            <!-- Header top area end-->
+            @RenderBody();
+            <!-- Footer Start-->
+            <div class="footer-copyright-area" style="vertical-align: bottom;">
+                <partial name="~/Views/Shared/Sort/_SortFooter.cshtml" model="@UserDetails" />
+            </div>
+            <!-- Footer End-->
+            <!-- Automation Chatbox Begin -->
+            <partial name="~/Views/Shared/Automation/_AutomationChat.cshtml" />
+            <!-- Automation Chatbox End -->
         </div>
 
-        <!-- jquery ============================================ -->
-        <script src="~/AdminPro/js/vendor/jquery-1.11.3.min.js"></script>
+    </div>
 
-        <!-- bootstrap JS ============================================ -->
-        <script src="~/AdminPro/js/bootstrap.min.js"></script>
+    <!-- jquery ============================================ -->
+    <script src="~/AdminPro/js/vendor/jquery-1.11.3.min.js"></script>
 
-        <!-- meanmenu JS ============================================ -->
-        <script src="~/AdminPro/js/jquery.meanmenu.js"></script>
+    <!-- bootstrap JS ============================================ -->
+    <script src="~/AdminPro/js/bootstrap.min.js"></script>
 
-        <!-- mCustomScrollbar JS  ============================================ -->
-        <script src="~/AdminPro/js/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- meanmenu JS ============================================ -->
+    <script src="~/AdminPro/js/jquery.meanmenu.js"></script>
 
-        <!-- sticky JS ============================================ -->
-        <script src="~/AdminPro/js/jquery.sticky.js"></script>
+    <!-- mCustomScrollbar JS  ============================================ -->
+    <script src="~/AdminPro/js/jquery.mCustomScrollbar.concat.min.js"></script>
 
-        <!-- scrollUp JS ============================================ -->
-        <script src="~/AdminPro/js/jquery.scrollUp.min.js"></script>
+    <!-- sticky JS ============================================ -->
+    <script src="~/AdminPro/js/jquery.sticky.js"></script>
 
-        <!-- counterup JS ============================================ -->
-        <script src="~/AdminPro/js/counterup/jquery.counterup.min.js"></script>
-        <script src="~/AdminPro/js/counterup/waypoints.min.js"></script>
-    
-        <!-- peity JS ============================================ -->
-        <script src="~/AdminPro/js/peity/jquery.peity.min.js"></script>
-        <script src="~/AdminPro/js/peity/peity-active.js"></script>
-        <!-- sparkline JS
-        ============================================ -->
-        <script src="~/AdminPro/js/sparkline/jquery.sparkline.min.js"></script>
-        <script src="~/AdminPro/js/sparkline/sparkline-active.js"></script>
-    
-        <!-- map JS ============================================ -->
-        <script src="~/AdminPro/js/map/raphael.min.js"></script>
-        <script src="~/AdminPro/js/map/jquery.mapael.js"></script>
-        <script src="~/AdminPro/js/map/france_departments.js"></script>
-        <script src="~/AdminPro/js/map/world_countries.js"></script>
-        <script src="~/AdminPro/js/map/usa_states.js"></script>
-        <script src="~/AdminPro/js/map/map-active.js"></script>
-        
-        <!-- data table JS ============================================ -->
-        <script src="~/AdminPro/js/data-table/bootstrap-table.js"></script>
-        <script src="~/AdminPro/js/data-table/tableExport.js"></script>
-        <script src="~/AdminPro/js/data-table/data-table-active.js"></script>
-        <script src="~/AdminPro/js/data-table/bootstrap-table-editable.js"></script>
-        <script src="~/AdminPro/js/data-table/bootstrap-editable.js"></script>
-        <script src="~/AdminPro/js/data-table/bootstrap-table-resizable.js"></script>
-        <script src="~/AdminPro/js/data-table/colResizable-1.5.source.js"></script>
-        <script src="~/AdminPro/js/data-table/bootstrap-table-export.js"></script>
+    <!-- scrollUp JS ============================================ -->
+    <script src="~/AdminPro/js/jquery.scrollUp.min.js"></script>
 
-        <!-- Syncfusion Essential JS 2 ScriptManager -->
-        <ejs-scripts></ejs-scripts>
+    <!-- counterup JS ============================================ -->
+    <script src="~/AdminPro/js/counterup/jquery.counterup.min.js"></script>
+    <script src="~/AdminPro/js/counterup/waypoints.min.js"></script>
 
-        <!-- main JS  ============================================ -->
-        <script src="~/AdminPro/js/main.js"></script>
+    <!-- peity JS ============================================ -->
+    <script src="~/AdminPro/js/peity/jquery.peity.min.js"></script>
+    <script src="~/AdminPro/js/peity/peity-active.js"></script>
+    <!-- sparkline JS
+    ============================================ -->
+    <script src="~/AdminPro/js/sparkline/jquery.sparkline.min.js"></script>
+    <script src="~/AdminPro/js/sparkline/sparkline-active.js"></script>
 
-    </body>
+    <!-- map JS ============================================ -->
+    <script src="~/AdminPro/js/map/raphael.min.js"></script>
+    <script src="~/AdminPro/js/map/jquery.mapael.js"></script>
+    <script src="~/AdminPro/js/map/france_departments.js"></script>
+    <script src="~/AdminPro/js/map/world_countries.js"></script>
+    <script src="~/AdminPro/js/map/usa_states.js"></script>
+    <script src="~/AdminPro/js/map/map-active.js"></script>
+
+    <!-- data table JS ============================================ -->
+    <script src="~/AdminPro/js/data-table/bootstrap-table.js"></script>
+    <script src="~/AdminPro/js/data-table/tableExport.js"></script>
+    <script src="~/AdminPro/js/data-table/data-table-active.js"></script>
+    <script src="~/AdminPro/js/data-table/bootstrap-table-editable.js"></script>
+    <script src="~/AdminPro/js/data-table/bootstrap-editable.js"></script>
+    <script src="~/AdminPro/js/data-table/bootstrap-table-resizable.js"></script>
+    <script src="~/AdminPro/js/data-table/colResizable-1.5.source.js"></script>
+    <script src="~/AdminPro/js/data-table/bootstrap-table-export.js"></script>
+
+    <!-- Charts JS ============================================ -->
+    <script src="~/AdminPro/js/charts/Chart.js"></script>
+    <script src="~/AdminPro/js/charts/rounded-chart.js"></script>
+
+    <!-- Syncfusion Essential JS 2 ScriptManager -->
+    <ejs-scripts></ejs-scripts>
+
+    <!-- main JS  ============================================ -->
+    <script src="~/AdminPro/js/main.js"></script>
+
+</body>
 </html>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Entities.Abstract;
 using Entities.Library;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,13 @@ namespace MediaToolsetWebCoreMVC.Controllers
     [Authorize]
     public class StorageController : Controller
     {
+        private ILibraryStorageSvc StorageSvc;
+
+        public StorageController(ILibraryStorageSvc _storageSvc)
+        {
+            StorageSvc = _storageSvc;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -18,18 +26,10 @@ namespace MediaToolsetWebCoreMVC.Controllers
 
         public IActionResult Overview()
         {
-            var models = GetStorageInfo();
+            var models = StorageSvc.GetStorageInfo();
 
             return View("Overview", models);
         }
 
-        public List<MediaLibraryStorageDrive> GetStorageInfo()
-        {
-            List<MediaLibraryStorageDrive> _storageDrivesFinal = new List<MediaLibraryStorageDrive>();
-
-
-
-            return _storageDrivesFinal;
-        }
     }
 }

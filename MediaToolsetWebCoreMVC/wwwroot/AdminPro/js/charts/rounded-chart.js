@@ -1,30 +1,147 @@
 (function ($) {
  "use strict";
  
-	 /*----------------------------------------*/
-	/*  1.  pie Chart
-	/*----------------------------------------*/
-	var ctx = document.getElementById("piechart");
+	/*  E: Storage Pie Chart */
+	var ctx = document.getElementById("piechart-e");
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["Red", "Orange", "Yellow", "Green", "Blue"],
+			labels: ["Free Space", "TV Shows"],
 			datasets: [{
 				label: 'pie Chart',
                 backgroundColor: [
-					'rgb(255, 99, 132)',
-					'rgb(255, 159, 64)',
-					'rgb(255, 205, 86)',
 					'#03a9f4',
 					'#303030'
 				],
-				data: [10, 20, 30, 40, 60]
+				data: [725, 1322]
             }]
 		},
 		options: {
 			responsive: true
 		}
 	});
+
+
+	/*  F: Storage Pie Chart */
+	var ctx = document.getElementById("piechart-f");
+	var piechart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ["Free Space", "TV Shows"],
+			datasets: [{
+			label: 'Storage Drive F:',
+				backgroundColor: [
+					'#03a9f4',
+					'#303030'
+				],
+				data: [725, 1322]
+			}]
+		},
+		options: {
+			responsive: true
+		}
+	});
+
+	/*  G: Storage Pie Chart */
+	var ctx = document.getElementById("piechart-g");
+	var piechart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ["Free Space", "TV Shows"],
+			datasets: [{
+				label: 'Storage Drive F:',
+				backgroundColor: [
+					'#03a9f4',
+					'#303030'
+				],
+				data: [725, 1322]
+			}]
+		},
+		options: {
+			responsive: true
+		}
+	});
+
+	/*  H: Storage Pie Chart */
+	var ctx = document.getElementById("piechart-h");
+	var piechart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ["Free Space", "TV Shows"],
+			datasets: [{
+				label: 'Storage Drive F:',
+				backgroundColor: [
+					'#03a9f4',
+					'#303030'
+				],
+				data: [725, 1322]
+			}]
+		},
+		options: {
+			responsive: true
+		}
+	});
+
+	/*  I: Storage Pie Chart */
+	var ctx = document.getElementById("piechart-i");
+	var piechart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ["Free Space", "TV Shows"],
+			datasets: [{
+				label: 'Storage Drive F:',
+				backgroundColor: [
+					'#03a9f4',
+					'#303030'
+				],
+				data: [725, 1322]
+			}]
+		},
+		options: {
+			responsive: true
+		}
+	});
+
+	/*  M: Storage Pie Chart */
+	var ctx = document.getElementById("piechart-m");
+	var piechart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ["Free Space", "Movies & Videos"],
+			datasets: [{
+				label: 'Storage Drive F:',
+				backgroundColor: [
+					'#03a9f4',
+					'#303030'
+				],
+				data: [725, 1322]
+			}]
+		},
+		options: {
+			responsive: true
+		}
+	});
+
+	/*  S: Storage Pie Chart */
+	var ctx = document.getElementById("piechart-s");
+	var piechart = new Chart(ctx, {
+		type: 'pie',
+		data: {
+			labels: ["Free Space", "Sort Files"],
+			datasets: [{
+				label: 'Storage Drive F:',
+				backgroundColor: [
+					'#03a9f4',
+					'#303030'
+				],
+				data: [725, 1322]
+			}]
+		},
+		options: {
+			responsive: true
+		}
+	});
+
 	 /*----------------------------------------*/
 	/*  2.  polar Chart
 	/*----------------------------------------*/
