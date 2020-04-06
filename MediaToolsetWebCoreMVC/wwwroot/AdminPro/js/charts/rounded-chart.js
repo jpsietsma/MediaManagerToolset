@@ -6,7 +6,7 @@
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["Free Space", "TV Shows"],
+			labels: ["Unused", "TV Shows"],
 			datasets: [{
 				label: 'pie Chart',
                 backgroundColor: [
@@ -27,7 +27,7 @@
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["Free Space", "TV Shows"],
+			labels: ["Unused", "TV Shows"],
 			datasets: [{
 			label: 'Storage Drive F:',
 				backgroundColor: [
@@ -47,7 +47,7 @@
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["Free Space", "TV Shows"],
+			labels: ["Unused", "TV Shows"],
 			datasets: [{
 				label: 'Storage Drive F:',
 				backgroundColor: [
@@ -67,7 +67,7 @@
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["Free Space", "TV Shows"],
+			labels: ["Unused", "TV Shows"],
 			datasets: [{
 				label: 'Storage Drive F:',
 				backgroundColor: [
@@ -87,7 +87,7 @@
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["Free Space", "TV Shows"],
+			labels: ["Unused", "TV Shows"],
 			datasets: [{
 				label: 'Storage Drive F:',
 				backgroundColor: [
@@ -107,7 +107,7 @@
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["Free Space", "Movies"],
+			labels: ["Unused", "Movies"],
 			datasets: [{
 				label: 'Storage Drive F:',
 				backgroundColor: [
@@ -127,7 +127,7 @@
 	var piechart = new Chart(ctx, {
 		type: 'pie',
 		data: {
-			labels: ["<br>Free Space", "Sort Files"],
+			labels: ["Unused", "Sort Files"],
 			datasets: [{
 				label: 'Storage Drive F:',
 				backgroundColor: [
