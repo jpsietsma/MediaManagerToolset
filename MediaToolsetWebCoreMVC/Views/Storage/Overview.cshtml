@@ -1,74 +1,98 @@
-﻿@{
+﻿@model IEnumerable<Entities.Library.MediaLibraryStorageDrive>
+
+@{
     ViewData["Title"] = "Overview";
     Layout = "~/Views/Shared/Sort/_SortDashboardLayout.cshtml";
 }
 
 <br />
-<!-- Charts Start-->
-<div class="charts-area mg-b-15">
+<!-- Library Charts Start-->
+<div class="charts-area mg-b-30">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="charts-single-pro shadow-reset nt-mg-b-30">
-                    <div class="alert-title">
-                        <h2>E: Television Shows</h2>
+        <div class="row row-cols-lg-2">
+            <div class="col-lg-12">
+                <div class="sparkline7-list profile-online-mg-t-30 shadow-reset">
+                    <div class="sparklne7-hd">
+                        <div class="main-spark7-hd">
+                            <h1>Television Library Storage Drives <i class="fa fa-television"></i></h1>
+                            <div class="sparkline7-outline-icon">
+                                <span class="sparkline7-collapse-link"><i class="fa fa-chevron-up"></i></span>
+                                <span><i class="fa fa-wrench"></i></span>
+                                <span class="sparkline7-collapse-close"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
                     </div>
-                    <hr />
-                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Airing Shows</span>
-                    <div id="pie-chart-e">
-                        <canvas id="piechart-e"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="charts-single-pro shadow-reset nt-mg-b-30">
-                    <div class="alert-title">
-                        <h2>F: Television Shows</h2>
-                    </div>
-                    <hr />
-                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Airing Shows</span>
-                    <div id="pie-chart-f">
-                        <canvas id="piechart-f"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="charts-single-pro shadow-reset nt-mg-b-30">
-                    <div class="alert-title">
-                        <h2>G: Television Shows</h2>
-                    </div>
-                    <hr />
-                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Ended Shows</span>
-                    <div id="pie-chart-g">
-                        <canvas id="piechart-g"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="charts-single-pro shadow-reset nt-mg-b-30">
-                    <div class="alert-title">
-                        <h2>H: Television Shows</h2>
-                    </div>
-                    <hr />
-                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Airing Shows</span>
-                    <div id="pie-chart-h">
-                        <canvas id="piechart-h"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-2">
-                <div class="charts-single-pro shadow-reset nt-mg-b-30">
-                    <div class="alert-title">
-                        <h2>I: Television Shows</h2>
-                    </div>
-                    <hr />
-                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Ended Shows</span>
-                    <div id="pie-chart-i">
-                        <canvas id="piechart-i"></canvas>
-                    </div>
-                </div>
-            </div>
+                    <div class="sparkline7-graph">
+                        <div class="user-profile-contact user-profile-scrollbar mCustomScrollbar _mCS_6 mCS-autoHide" style="height: 400px; position: relative; overflow: visible;">
+                            @foreach(Entities.Library.MediaLibraryStorageDrive _drive in @Model)
+                            {
+                                <div class="col-lg-2">
+                                    <div class="charts-single-pro shadow-reset nt-mg-b-30">
+                                        <div class="alert-title">
+                                            <h2>@_drive.DriveLetter.ToUpper(): @_drive.DriveName</h2>
+                                        </div>
+                                        <hr />
+                                        <span style="font-size: 12px; margin: 0 auto 0; color: white;">@_drive.DriveStatus</span>
+                                        <div id=@string.Concat("pie-chart-", @_drive.DriveLetter)>
+                                            <canvas id=@string.Concat("piechart-", @_drive.DriveLetter)></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            @*<div class="col-lg-2">
+                                <div class="charts-single-pro shadow-reset nt-mg-b-30">
+                                    <div class="alert-title">
+                                        <h2>F: Television Shows</h2>
+                                    </div>
+                                    <hr />
+                                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Airing Shows</span>
+                                    <div id="pie-chart-f">
+                                        <canvas id="piechart-f"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="charts-single-pro shadow-reset nt-mg-b-30">
+                                    <div class="alert-title">
+                                        <h2>G: Television Shows</h2>
+                                    </div>
+                                    <hr />
+                                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Ended Shows</span>
+                                    <div id="pie-chart-g">
+                                        <canvas id="piechart-g"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="charts-single-pro shadow-reset nt-mg-b-30">
+                                    <div class="alert-title">
+                                        <h2>H: Television Shows</h2>
+                                    </div>
+                                    <hr />
+                                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Airing Shows</span>
+                                    <div id="pie-chart-h">
+                                        <canvas id="piechart-h"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="charts-single-pro shadow-reset nt-mg-b-30">
+                                    <div class="alert-title">
+                                        <h2>I: Television Shows</h2>
+                                    </div>
+                                    <hr />
+                                    <span style="font-size: 12px; margin: 0 auto 0; color: white;">Status: Ended Shows</span>
+                                    <div id="pie-chart-i">
+                                        <canvas id="piechart-i"></canvas>
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>                        
+                </div>                
+            </div>            
         </div>
+        <br />
         <div class="row">           
             <div class="col-lg-2">
                 <div class="charts-single-pro shadow-reset nt-mg-b-30">
@@ -97,3 +121,4 @@
         </div>
     </div>
 </div>
+<!-- Library Charts End -->

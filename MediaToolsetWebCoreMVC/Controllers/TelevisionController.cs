@@ -24,13 +24,13 @@ namespace MediaToolsetWebCoreMVC.Controllers
     [Authorize]
     public class TelevisionController : Controller
     {
-        DatabaseContext DbContext;
-        ProgramConfiguration AppSettings;
-        IHttpClientFactory HttpClientFactory;
-        IMapper AutoMapper;
-        IMetaDataApiSvc MetaDataSvc;
-        ILocalLibraryService LocalLibSvc;
-        IDownloadAPISvc DownloadApiSvc;
+        readonly DatabaseContext DbContext;
+        readonly ProgramConfiguration AppSettings;
+        readonly IHttpClientFactory HttpClientFactory;
+        readonly IMapper AutoMapper;
+        readonly IMetaDataApiSvc MetaDataSvc;
+        readonly ILocalLibraryService LocalLibSvc;
+        readonly IDownloadAPISvc DownloadApiSvc;
 
         public TelevisionController(MvcProgramConfiguration _settings, DatabaseContext _context, IMapper _mapper, IMetaDataApiSvc _apiSvc, IHttpClientFactory _clientFactory, ILocalLibraryService _localLibrary, IDownloadAPISvc _downloadSvc)
         {

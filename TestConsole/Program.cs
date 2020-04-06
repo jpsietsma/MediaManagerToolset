@@ -28,8 +28,6 @@ namespace TestConsole
             var downloadsvc = serviceProvider.GetService<IDownloadAPISvc>();
             var results = downloadsvc.GetAvailableShowDownloadsAsync("6048596");
 
-
-            var x = 123;
         }
     }
 }

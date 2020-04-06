@@ -60,12 +60,11 @@ namespace MediaToolsetWebCoreMVC.Controllers
         {
             await Task.Run(() => {
 
-                using (var reader = new StreamReader(file.OpenReadStream()))
-                {
-                    var fileContent = reader.ReadToEnd();
-                    var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
-                    var fileName = parsedContentDisposition.FileName;
-                }
+                using var reader = new StreamReader(file.OpenReadStream());
+
+                var fileContent = reader.ReadToEnd();
+                var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
+                var fileName = parsedContentDisposition.FileName;
 
             });
 

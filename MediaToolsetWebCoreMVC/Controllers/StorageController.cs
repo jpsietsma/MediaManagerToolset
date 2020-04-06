@@ -12,7 +12,7 @@ namespace MediaToolsetWebCoreMVC.Controllers
     [Authorize]
     public class StorageController : Controller
     {
-        private ILibraryStorageSvc StorageSvc;
+        private readonly ILibraryStorageSvc StorageSvc;
 
         public StorageController(ILibraryStorageSvc _storageSvc)
         {

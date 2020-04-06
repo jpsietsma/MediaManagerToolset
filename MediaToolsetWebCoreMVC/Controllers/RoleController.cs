@@ -22,7 +22,6 @@ namespace Identity.Controllers
         }
  
         public ViewResult Index() => View(RoleManager.Roles);
-        public ViewResult Index(IQueryable<IdentityRole> _roles) => View(_roles);
  
         public IActionResult Create() => View();
  

@@ -16,66 +16,46 @@ namespace Entities.Configuration.Services
 
         public List<MediaLibraryStorageDrive> GetStorageInfo()
         {
-            List<MediaLibraryStorageDrive> _storageDrivesFinal = new List<MediaLibraryStorageDrive>();
-
-
             //Replace with real code later on, but this will suffice as test data for generating graphs and charts
             //Begin test data
-            _storageDrivesFinal.Add(new MediaLibraryStorageDrive
-            {
-                DriveLetter = "E", 
-                DriveName = "E: Television Shows", 
-                DriveSpaceTotal = 8192, 
-                DriveSpaceRemaining = 1322.56
-            });
+            List<MediaLibraryStorageDrive> _storageDrivesFinal = new List<MediaLibraryStorageDrive>
+            {               
+                new MediaLibraryStorageDrive(8192, 1233.56)
+                {
+                    DriveLetter = "e",
+                    DriveName = "Television Shows",
+                    DriveStatus = string.Concat("Status: ", "Active ", " Shows")
+                },
 
-            _storageDrivesFinal.Add(new MediaLibraryStorageDrive
-            {
-                DriveLetter = "F",
-                DriveName = "F: Television Shows",
-                DriveSpaceTotal = 2048,
-                DriveSpaceRemaining = 1322.56
-            });
+                new MediaLibraryStorageDrive(2048, 1322.56)
+                {
+                    DriveLetter = "f",
+                    DriveName = "Television Shows",
+                    DriveStatus = string.Concat("Status: ", "Active", " Shows")
+                },
 
-            _storageDrivesFinal.Add(new MediaLibraryStorageDrive
-            {
-                DriveLetter = "G",
-                DriveName = "G: Television Shows",
-                DriveSpaceTotal = 4096,
-                DriveSpaceRemaining = 1322.56
-            });
+                new MediaLibraryStorageDrive(4096, 1322.56)
+                {
+                    DriveLetter = "g",
+                    DriveName = "Television Shows",
+                    DriveStatus = string.Concat("Status: ", "Ended", " Shows")
+                },
 
-            _storageDrivesFinal.Add(new MediaLibraryStorageDrive
-            {
-                DriveLetter = "H",
-                DriveName = "H: Television Shows",
-                DriveSpaceTotal = 8192,
-                DriveSpaceRemaining = 1322.56
-            });
+                new MediaLibraryStorageDrive(8192, 1322.56)
+                {
+                    DriveLetter = "h",
+                    DriveName = "Television Shows",
+                    DriveStatus = string.Concat("Status: ", "Active", " Shows")
+                },
 
-            _storageDrivesFinal.Add(new MediaLibraryStorageDrive
-            {
-                DriveLetter = "I",
-                DriveName = "I: Television Shows",
-                DriveSpaceTotal = 4096,
-                DriveSpaceRemaining = 1322.56
-            });
+                new MediaLibraryStorageDrive(4096, 1322.56)
+                {
+                    DriveLetter = "i",
 
-            _storageDrivesFinal.Add(new MediaLibraryStorageDrive
-            {
-                DriveLetter = "M",
-                DriveName = "M: Movies",
-                DriveSpaceTotal = 1024,
-                DriveSpaceRemaining = 67.56
-            });
-
-            _storageDrivesFinal.Add(new MediaLibraryStorageDrive
-            {
-                DriveLetter = "S",
-                DriveName = "S: Automation Sort",
-                DriveSpaceTotal = 500,
-                DriveSpaceRemaining = 23.21
-            });
+                    DriveName = "Television Shows",
+                    DriveStatus = string.Concat("Status: ", "Ended", " Shows")
+                }
+            };
             //End test data
 
             return _storageDrivesFinal;
