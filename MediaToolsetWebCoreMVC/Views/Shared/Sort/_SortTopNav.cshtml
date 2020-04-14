@@ -1,4 +1,6 @@
-﻿<div class="row">
+﻿@model Entities.Configuration.Identity.User.AuthenticatedUserInfo;
+
+<div class="row">
     <div class="col-lg-1 col-md-6 col-sm-6 col-xs-12">
         <button type="button" id="sidebarCollapse" class="btn bar-button-pro header-drl-controller-btn btn-info navbar-btn">
             <i class="fa fa-bars"></i>
@@ -165,7 +167,7 @@
                 <li class="nav-item">
                     <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
                         <span class="adminpro-icon adminpro-user-rounded header-riht-inf"></span>
-                        <span class="admin-name">Advanda Cro</span>
+                        <span class="admin-name">@Model.FirstName</span>
                         <span class="author-project-icon adminpro-icon adminpro-down-arrow"></span>
                     </a>
                     <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated flipInX">
@@ -484,7 +486,6 @@
                                             </div>
                                         </li>
                                     </ul>
-
                                 </div>
                             </div>
                         </div>

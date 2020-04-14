@@ -1,4 +1,18 @@
 (function ($) {
+	$.fn.GetStorageChart = function (spaceUsed, spaceRemaining) {
+
+		this.sparkline([spaceUsed, spaceRemaining], {
+			type: 'pie',
+			width: '80',
+			height: '80',
+			sliceColors: ['#03a9f4', '#303030', '#ff9999']
+		});
+
+		return this;
+	};
+})(jQuery);
+
+(function ($) {
  "use strict";
  
 	$("#sparkline1").sparkline([34, 43, 43, 35, 44, 32, 44, 52, 25], {

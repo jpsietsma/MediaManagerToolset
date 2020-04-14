@@ -27,9 +27,26 @@ namespace MediaToolsetWebCoreMVC.Controllers
         public IActionResult Overview()
         {
             var models = StorageSvc.GetStorageInfo();
+            var chartData = new List<StoragePieData>();
 
+            chartData.Add(
+                new StoragePieData
+                {
+                    xValue = "Available",
+                    yValue = models.First().DriveSpaceRemaining,
+                    text = string.Concat(models.First().DriveSpaceRemaining, " MB")
+                });
+
+            ViewBag.DataSource = chartData;
             return View("Overview", models);
         }
 
+    }
+
+    public class StoragePieData
+    {
+        public string xValue { get; set; }
+        public double yValue { get; set; }
+        public string text { get; set; }                
     }
 }
